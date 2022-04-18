@@ -625,7 +625,7 @@ Decoration {
         height: Math.max(auroraeTheme.titleHeight, auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor)
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
         font: options.titleFont
-       style: decoration.client.active ? Text.Raised : Text.Normal // crashes if text contains emoji
+        //style: decoration.client.active ? Text.Raised : Text.Normal // crashes if text contains emoji
         styleColor: "black"
         renderType: Text.NativeRendering
         anchors {

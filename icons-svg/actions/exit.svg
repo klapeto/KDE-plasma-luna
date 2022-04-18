@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   inkscape:export-ydpi="96"
+   inkscape:export-xdpi="96"
+   inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/exit.png"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="exit.svg"
+   id="svg19"
+   version="1.1"
+   width="256"
+   height="256"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata
+     id="metadata23">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:current-layer="svg19"
+     inkscape:window-maximized="1"
+     inkscape:window-y="0"
+     inkscape:window-x="3840"
+     inkscape:cy="219.77126"
+     inkscape:cx="-803.64117"
+     inkscape:zoom="0.60972486"
+     showgrid="false"
+     id="namedview21"
+     inkscape:window-height="2045"
+     inkscape:window-width="3840"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     inkscape:pagecheckerboard="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid832" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid834"
+       spacingx="0.5"
+       spacingy="0.5" />
+  </sodipodi:namedview>
+  <path
+     d="M 33.358417,4 C 25.582372,4 18.50556,6.9127544 13.378188,12.378188 7.9127544,17.50556 5,24.582372 5,32.358417 V 216.1658 c 0,7.49206 2.9622185,14.3769 8.372448,19.45217 5.127742,5.46871 12.207523,8.38201 19.985969,8.38201 H 217.1658 c 7.469,0 14.33971,-2.71088 19.46939,-7.84056 5.40838,-5.40838 8.36479,-12.42737 8.36479,-19.99362 V 32.358417 c 0,-7.757689 -2.6593,-14.812365 -7.84056,-19.993622 C 231.75105,6.9564174 224.73205,4 217.1658,4 Z"
+     style="fill:#212121;fill-opacity:1;stroke-width:10.5033;filter:url(#filter878)"
+     id="path848" />
+  <g
+     id="g8"
+     transform="matrix(10.503282,0,0,10.503282,128.14004,128.6652)">
+    <path
+       style="fill:url(#gradient0)"
+       id="path2"
+       stroke="none"
+       fill-rule="evenodd"
+       fill="url(#gradient0)"
+       d="m 9.55,-11.1 q 0.6,0.6 0.6,1.55 V 7.95 Q 10.15,8.85 9.5,9.5 8.9,10.1 8,10.1 H -9.5 q -0.95,0 -1.55,-0.65 -0.65,-0.6 -0.65,-1.5 v -17.5 q 0,-0.95 0.65,-1.55 0.6,-0.65 1.55,-0.65 H 8 q 0.9,0 1.55,0.65" />
+    <path
+       id="path4"
+       stroke-width="1"
+       stroke-linejoin="round"
+       stroke-linecap="round"
+       stroke="#ffffff"
+       fill="none"
+       d="m 9.55,-11.1 q 0.6,0.6 0.6,1.55 V 7.95 Q 10.15,8.85 9.5,9.5 8.9,10.1 8,10.1 H -9.5 q -0.95,0 -1.55,-0.65 -0.65,-0.6 -0.65,-1.5 v -17.5 q 0,-0.95 0.65,-1.55 0.6,-0.65 1.55,-0.65 H 8 q 0.9,0 1.55,0.65 z" />
+    <path
+       id="path6"
+       stroke-width="3"
+       stroke-linejoin="round"
+       stroke-linecap="round"
+       stroke="#ffffff"
+       fill="none"
+       d="M -6.1,-6.25 -0.75,-0.8 4.5,-6.3 M 4.45,4.55 -0.75,-0.8 -5.9,4.55" />
+  </g>
+  <defs
+     id="defs17">
+    <radialGradient
+       spreadMethod="pad"
+       r="819.20001"
+       id="gradient0"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.0209,0,0,0.0209,-6.1,-6.25)"
+       cy="0"
+       cx="0">
+      <stop
+         id="stop10"
+         stop-color="#ff837d"
+         offset="0.0" />
+      <stop
+         id="stop12"
+         stop-color="#e13300"
+         offset="0.5843137254901961" />
+      <stop
+         id="stop14"
+         stop-color="#ab2200"
+         offset="1.0" />
+    </radialGradient>
+    <filter
+       height="1.096"
+       y="-0.048000001"
+       width="1.096"
+       x="-0.048000001"
+       id="filter878"
+       style="color-interpolation-filters:sRGB"
+       inkscape:collect="always">
+      <feGaussianBlur
+         id="feGaussianBlur880"
+         stdDeviation="4.7999996"
+         inkscape:collect="always" />
+    </filter>
+  </defs>
+</svg>
