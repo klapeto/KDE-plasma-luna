@@ -51,7 +51,7 @@ If anything goes wrong (like crashes) or you simply don't want it anymore do the
  - Enabling text shadow on window titles will cause Kwin to enter a crash loop when a window has an emoji on its title. This a known QT [bug](https://bugreports.qt.io/browse/QTBUG-82311)
 
 # Attributions
- - Multiple assets were derived/modified from the [Expose](www.opencode.net/phob1an/expose) theme from Phob1an
+ - Multiple assets were derived/modified from the [Expose](https://www.opencode.net/phob1an/expose) theme from Phob1an
  - Decorations were derived/modified from [XBoomer](https://github.com/efskap/XBoomer) from efskap
 
  # License
