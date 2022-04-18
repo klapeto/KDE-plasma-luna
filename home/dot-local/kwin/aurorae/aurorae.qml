@@ -617,7 +617,7 @@ Decoration {
     }
     Text {
         id: caption
-        text: "<strong>" + decoration.client.caption + "</strong>"
+        text: "<strong>" + getCleanText(decoration.client.caption) + "</strong>"
         textFormat: Text.StyledText
         horizontalAlignment: auroraeTheme.horizontalAlignment
         verticalAlignment: auroraeTheme.verticalAlignment
@@ -625,7 +625,7 @@ Decoration {
         height: Math.max(auroraeTheme.titleHeight, auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor)
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
         font: options.titleFont
-        //style: decoration.client.active ? Text.Raised : Text.Normal // crashes if text contains emoji
+        style: decoration.client.active ? Text.Raised : Text.Normal // crashes if text contains emoji
         styleColor: "black"
         renderType: Text.NativeRendering
         anchors {
@@ -641,6 +641,10 @@ Decoration {
             ColorAnimation {
                 duration: auroraeTheme.animationTime
             }
+        }
+        
+        function getCleanText(text){
+         return text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');  // Remove emojis to avoid crash
         }
     }
     PlasmaCore.FrameSvgItem {

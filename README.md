@@ -16,7 +16,6 @@ Windows Xp Luna theme pack for KDE Plasma
 3. Copy anything inside [home/dot-config](./home/dot-config) to your `~/.config/`
 4. Copy anything inside [home/dot-local](./home/dot-local) to your `~/.local/`. **Attention!** If you already have a theme that overrides certain parts of the UI, please back the folders that are about to be replaced (if applicable).
 5. Switch your theme to Luna from KDE Settings and the application style to Kvantum
-6. Optionaly (not recomended right for now, see [Known Issues](#known-issues)): Edit the file `~/.local/kwin/aurorae/aurorae.qml` and uncomment the line 628 to enable text shadow on the window titles.
 
 # Disabling the UI Override (to use other themes)
 1. Rename the `~/.local/kwin/aurorae` folder to something else to prevent KDE Plasma from loading the window decoration override
@@ -48,7 +47,7 @@ If anything goes wrong (like crashes) or you simply don't want it anymore do the
 - Store size in 256x256 should be 5.00~5.33px unless some icons need more.
 
 # Known Issues
- - Enabling text shadow on window titles will cause Kwin to enter a crash loop when a window has an emoji on its title. This a known QT [bug](https://bugreports.qt.io/browse/QTBUG-82311)
+ - Emojis are removed from window titles. It causes crashes to Kwin. This a known QT [bug](https://bugreports.qt.io/browse/QTBUG-82311)
 
 # Attributions
  - Multiple assets were derived/modified from the [Expose](https://www.opencode.net/phob1an/expose) theme from Phob1an
