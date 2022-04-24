@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="Expose.svg"
-   inkscape:version="1.0 (1.0+r73+1)"
+   sodipodi:docname="Luna.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
    id="svg8"
    version="1.1"
    viewBox="0 0 742.54633 746.53361"
    height="746.53357"
-   width="742.54633">
+   width="742.54633"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs2">
     <linearGradient
@@ -827,8 +826,8 @@
          style="stop-color:#ece9d9;stop-opacity:1" />
     </linearGradient>
     <linearGradient
-       osb:paint="solid"
-       id="hiedge">
+       id="hiedge"
+       inkscape:swatch="solid">
       <stop
          offset="0"
          stop-opacity=".54118"
@@ -836,8 +835,8 @@
          id="stop4831" />
     </linearGradient>
     <linearGradient
-       osb:paint="solid"
-       id="loedge">
+       id="loedge"
+       inkscape:swatch="solid">
       <stop
          offset="0"
          stop-opacity=".50196"
@@ -3906,7 +3905,7 @@
      inkscape:window-maximized="1"
      inkscape:window-y="0"
      inkscape:window-x="3840"
-     inkscape:window-height="2045"
+     inkscape:window-height="2043"
      inkscape:window-width="3840"
      inkscape:document-rotation="0"
      inkscape:snap-intersection-paths="true"
@@ -3928,9 +3927,9 @@
      showgrid="false"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="191.61154"
-     inkscape:cx="77.991786"
-     inkscape:zoom="8"
+     inkscape:cy="224"
+     inkscape:cx="-149.5"
+     inkscape:zoom="2"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -3956,7 +3955,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
       </cc:Work>
     </rdf:RDF>
     <rdf:RDF>
@@ -16500,22 +16498,11 @@
        transform="matrix(1,0,0,-1,107.22553,1740.4781)"
        id="g3955-7"
        style="fill:#405073;fill-opacity:1">
-      <rect
-         transform="rotate(45)"
-         y="31.113432"
-         x="932.65765"
-         height="6.436193"
-         width="2.2311604"
+      <path
          id="rect3912-5"
-         style="fill:#405073;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round" />
-      <rect
-         style="fill:#405073;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
-         id="rect3912-6-3"
-         width="2.2311604"
-         height="6.436193"
-         x="31.113432"
-         y="932.65765"
-         transform="matrix(-0.70710678,0.70710678,0.70710678,0.70710678,0,0)" />
+         style="stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
+         d="M 193.30664 586.81445 L 191.72852 588.39258 L 194.70117 591.36523 L 196.2793 592.94336 L 197.85742 591.36523 L 200.83008 588.39258 L 199.25391 586.81445 L 196.2793 589.78711 L 193.30664 586.81445 z "
+         transform="matrix(1,0,0,-1,441.20835,1274.4318)" />
     </g>
     <g
        inkscape:label="scarrow-right-normal"
@@ -17015,22 +17002,11 @@
          width="1"
          id="rect3451"
          style="fill:#c1cde4;fill-opacity:0.698347;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <rect
-         style="fill:#405073;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
+      <path
          id="rect3912-5-61"
-         width="2.2311604"
-         height="6.436193"
-         x="-237.83006"
-         y="-1259.3538"
-         transform="matrix(0.70710678,-0.70710678,-0.70710678,-0.70710678,0,0)" />
-      <rect
-         transform="rotate(-135)"
-         y="-237.83006"
-         x="-1259.3538"
-         height="6.436193"
-         width="2.2311604"
-         id="rect3912-6-3-29"
-         style="fill:#405073;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round" />
+         style="fill:#405073;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
+         d="M 170.91992 586.49414 L 169.3418 588.07227 L 172.31445 591.04492 L 173.89258 592.62305 L 175.4707 591.04492 L 178.44336 588.07227 L 176.86523 586.49414 L 173.89258 589.4668 L 170.91992 586.49414 z "
+         transform="translate(548.43388,466.04626)" />
     </g>
     <g
        inkscape:label="cind-toggled"
@@ -17114,22 +17090,11 @@
          x="1083.6685"
          y="-729.87762"
          transform="rotate(90)" />
-      <rect
-         style="fill:#546998;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
+      <path
          id="rect3912-5-6753"
-         width="2.2311604"
-         height="6.436193"
-         x="-251.9722"
-         y="-1273.4958"
-         transform="matrix(0.70710678,-0.70710678,-0.70710678,-0.70710678,0,0)" />
-      <rect
-         transform="rotate(-135)"
-         y="-251.97218"
-         x="-1273.4958"
-         height="6.436193"
-         width="2.2311604"
-         id="rect3912-6-3-56"
-         style="fill:#546998;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round" />
+         style="fill:#546998;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
+         d="M 170.91992 606.49414 L 169.3418 608.07227 L 172.31445 611.04492 L 173.89258 612.62305 L 175.4707 611.04492 L 178.44336 608.07227 L 176.86523 606.49414 L 173.89258 609.4668 L 170.91992 606.49414 z "
+         transform="translate(548.43388,466.04626)" />
     </g>
     <g
        id="cind-normal"
@@ -17213,22 +17178,11 @@
          x="1063.6685"
          y="-709.87762"
          transform="rotate(90)" />
-      <rect
-         style="fill:#4c5f89;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
+      <path
          id="rect3912-5-1"
-         width="2.2311604"
-         height="6.436193"
-         x="-251.9722"
-         y="-1245.2117"
-         transform="matrix(0.70710678,-0.70710678,-0.70710678,-0.70710678,0,0)" />
-      <rect
-         transform="rotate(-135)"
-         y="-251.9722"
-         x="-1245.2117"
-         height="6.436193"
-         width="2.2311604"
-         id="rect3912-6-3-27"
-         style="fill:#4c5f89;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round" />
+         style="fill:#4c5f89;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
+         d="M 150.91992 586.49414 L 149.3418 588.07227 L 152.31445 591.04492 L 153.89258 592.62305 L 155.4707 591.04492 L 158.44336 588.07227 L 156.86523 586.49414 L 153.89258 589.4668 L 150.91992 586.49414 z "
+         transform="translate(548.43388,466.04626)" />
     </g>
     <g
        inkscape:label="cind-focused"
@@ -17312,22 +17266,11 @@
          width="1"
          id="rect3387"
          style="fill:#c1cde4;fill-opacity:0.698347;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <rect
-         style="fill:#546998;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
+      <path
          id="rect3912-5-67535"
-         width="2.2311604"
-         height="6.436193"
-         x="-266.11432"
-         y="-1259.3538"
-         transform="matrix(0.70710678,-0.70710678,-0.70710678,-0.70710678,0,0)" />
-      <rect
-         transform="rotate(-135)"
-         y="-266.11432"
-         x="-1259.3538"
-         height="6.436193"
-         width="2.2311604"
-         id="rect3912-6-3-62"
-         style="fill:#546998;fill-opacity:1;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round" />
+         style="fill:#546998;stroke-width:0.7;stroke-linecap:square;stroke-linejoin:round"
+         d="M 150.91992 606.49414 L 149.3418 608.07227 L 152.31445 611.04492 L 153.89258 612.62305 L 155.4707 611.04492 L 158.44336 608.07227 L 156.86523 606.49414 L 153.89258 609.4668 L 150.91992 606.49414 z "
+         transform="translate(548.43388,466.04626)" />
     </g>
     <g
        id="checkbox-tristate-focused">
