@@ -170,69 +170,69 @@ Type=Fixed
 [256x256/actions]
 Context=Actions
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
 
 [256x256/apps]
 Context=Applications
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
 
 [256x256/emblems]
 Context=Emblems
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
 
 [256x256/notifications]
 Context=Notifications
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
 
 [256x256/places]
 Context=Places
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
 
 [256x256/status]
 Context=Status
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
 
 [256x256/devices]
 Context=Devices
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
 
 [256x256/preferences]
 Context=Actions
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
 
 [256x256/mimetypes]
 Context=MimeTypes
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
 
 [256x256/categories]
 Context=Categories
 Size=256
-MinSize=16
+MinSize=22
 MaxSize=512
 Type=Scalable
