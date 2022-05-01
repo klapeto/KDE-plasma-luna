@@ -1,5 +1,5 @@
 [%General]
-author=Phob1an
+author=Klapeto
 comment=Derived from Expose from Phob1an
 left_tabs=true
 attach_active_tab=true
@@ -27,7 +27,7 @@ vertical_spin_indicators=false
 translucent_windows=false
 blurring=false
 popup_blurring=false
-toolbar_icon_size=16
+toolbar_icon_size=22
 animate_states=false
 alt_mnemonic=true
 button_contents_shift=true
@@ -128,6 +128,7 @@ scroll_jump_workaround=false
 tint_on_mouseover=0
 transparent_pcmanfm_sidepane=false
 style_vertical_toolbars=false
+blur_only_active_window=false
 
 [WindowTranslucent]
 interior=true

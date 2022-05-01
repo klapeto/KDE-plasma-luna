@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 256 256"
+   width="256"
+   height="256"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="channelmixer.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/channelmixer.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs16">
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1362"
+       x="-0.048000001"
+       y="-0.048000001"
+       width="1.096"
+       height="1.096">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.4"
+         id="feGaussianBlur1364" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="namedview14"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="1.4466146"
+     inkscape:cx="-57.029703"
+     inkscape:cy="74.657066"
+     inkscape:window-width="3840"
+     inkscape:window-height="2043"
+     inkscape:window-x="3840"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg12" />
+  <path
+     id="circle1241"
+     style="fill:#212121;fill-opacity:1;stroke-width:13.75;filter:url(#filter1362)"
+     d="M 133,22 A 68.749991,68.749991 0 0 0 64.249999,90.749998 68.749991,68.749991 0 0 0 66.865721,109.34115 68.749991,68.749991 0 0 0 23,173.25001 68.749991,68.749991 0 0 0 91.749998,242 68.749991,68.749991 0 0 0 133,228.03158 68.749991,68.749991 0 0 0 174.25,242 68.749991,68.749991 0 0 0 243,173.25001 68.749991,68.749991 0 0 0 199.1665,109.19613 68.749991,68.749991 0 0 0 201.75,90.749998 68.749991,68.749991 0 0 0 133,22 Z" />
+  <g
+     transform="matrix(13.750003,0,0,13.750003,-23.250049,-23.250085)"
+     id="g10">
+    <g
+       transform="translate(-544.57141,-742.93359)"
+       id="g8">
+      <circle
+         r="4.9999981"
+         cy="756.93359"
+         cx="558.57141"
+         style="fill:#fdbc4b"
+         id="circle2" />
+      <circle
+         r="4.9999981"
+         cy="756.93359"
+         cx="552.57141"
+         style="fill:#da4453"
+         id="circle4" />
+      <circle
+         r="4.9999981"
+         cy="750.93359"
+         cx="555.57141"
+         style="fill:#1d99f3"
+         id="circle6" />
+    </g>
+  </g>
+</svg>
