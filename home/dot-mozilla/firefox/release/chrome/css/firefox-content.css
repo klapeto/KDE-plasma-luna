@@ -1,0 +1,236 @@
+
+@-moz-document url-prefix(about:) {
+
+#category-general > .category-icon,
+.sync-engine-prefs .checkbox-icon,
+.sync-engine-prefs.sync-engine-image {
+    list-style-image: url("./../images/configure.svg") !important;
+  }
+  
+  #category-home > .category-icon {
+    list-style-image: url("./../images/home.svg") !important;
+  }
+  
+  #category-sync > .category-icon {
+    list-style-image: url("./../images/sync.svg") !important;
+  }
+  
+  .category[name="discover"] {
+    background-image: url("./../images/catalogue.svg") !important;
+  }
+  
+  .category[name="extension"],
+  .category[name="plugin"],
+  .sync-engine-addons .checkbox-icon,
+  .sync-engine-addons.sync-engine-image {
+    background-image: url("./../images/plugin.svg") !important;
+  }
+  
+  .category[name="theme"] {
+    background-image: url("./../images/theme-file.svg") !important;
+  }
+  
+  .category[name="dictionary"] {
+    background-image: url("./../images/dictionary.svg") !important;
+  }
+  
+  .category[name="locale"] {
+    background-image: url("./../images/localization.svg") !important;
+  }
+
+  #category-privacy > .category-icon {
+    list-style-image: url("./../images/lock.svg") !important;
+  }
+  
+  #category-search > .category-icon {
+    list-style-image: url("./../images/search.svg") !important;
+  }
+
+  .addons-icon {
+    list-style-image: url("./../images/plugin.svg") !important;
+  }
+  
+  .help-icon {
+    list-style-image: url("./../images/help.svg") !important;
+  }
+
+.checkbox-check {
+    border: none !important;
+    background-color: initial !important;
+    background-position: center  !important;
+    background-repeat: no-repeat  !important;
+    background-image: url("./../controls/checkbox-unchecked.svg") !important;
+}
+
+checkbox:hover > .checkbox-check {
+    background-image: url("./../controls/checkbox-hover.svg") !important;
+}
+
+.checkbox-check[checked] {
+    background-image: url("./../controls/checkbox-checked.svg") !important;
+}
+
+checkbox:hover > .checkbox-check[checked] {
+    background-image: url("./../controls/checkbox-checked-hover.svg") !important;
+}
+
+#trackingProtectionShield {
+  list-style-image: url("./../images/lock.svg") !important;
+}
+
+.content-blocking-warning-image{
+  list-style-image: url("./../images/warning.svg") !important;
+  height: 16px !important;
+}
+
+.info-icon {
+  list-style-image: url("./../images/info.svg") !important;
+}
+
+.geo-icon {
+  list-style-image: url("./../images/geo.svg") !important;
+}
+
+.camera-icon {
+  list-style-image: url("./../images/camera-photo.svg") !important;
+}
+
+.microphone-icon {
+  list-style-image: url("./../images/microphone.svg") !important;
+}
+
+.desktop-notification-icon {
+  list-style-image: url("./../images/tag.svg") !important;
+}
+
+.autoplay-media-icon {
+  list-style-image: url("./../images/autoplay.svg") !important;
+}
+
+.xr-icon {
+  list-style-image: url("./../images/game-controller.svg") !important;
+}
+
+.sync-engine-bookmarks .checkbox-icon,
+.sync-engine-bookmarks.sync-engine-image {
+  list-style-image: url("./../images/favourites.svg") !important;
+}
+
+.sync-engine-history .checkbox-icon,
+.sync-engine-history.sync-engine-image {
+  list-style-image: url("./../images/history.svg") !important;
+}
+
+.sync-engine-passwords .checkbox-icon,
+.sync-engine-passwords.sync-engine-image {
+  list-style-image: url("./../images/keys.svg") !important;
+}
+
+.page-options-menu > .more-options-button {
+  background-image: url("./../images/configure.svg") !important;
+}
+
+/* Radio */
+input[type=radio],
+.radio-check {
+  outline: none !important;
+  appearance: none !important;
+  background-size: contain!important;
+  border: none !important;
+  height: 1em !important;
+  width: 1em !important;
+  margin: 0 !important;
+  background-image: url("./../controls/radio-unchecked.svg") !important;
+}
+
+input[type=radio]:hover,
+radio:hover .radio-check {
+  background-image: url("./../controls/radio-unchecked-hover.svg") !important;
+}
+
+input[type=radio]:active,
+radio:active > .radio-check {
+  background-image: url("./../controls/radio-unchecked-pressed.svg") !important;
+}
+
+input[type=radio]:checked,
+.radio-check:checked,
+.radio-check[selected] {
+  background-image: url("./../controls/radio-checked.svg") !important;
+}
+
+input[type=radio]:checked:hover,
+.radio-check:checked:hover,
+radio:hover > .radio-check[selected] {
+  background-image: url("./../controls/radio-checked-hover.svg") !important;
+}
+
+input[type=radio]:checked:active,
+.radio-check:checked:active,
+radio:active > .radio-check[selected] {
+  background-image: url("./../controls/radio-checked-pressed.svg") !important;
+}
+
+/* Radio */
+
+
+.navigation {
+  color: white !important;
+  background: linear-gradient(0deg, rgb(99, 117, 214) 0%, rgb(122, 161, 230) 100%) !important;
+}
+
+
+#categories > .category {
+  background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(198, 211, 247) 100%) !important;
+  color: #215dc6 !important;
+  margin-bottom: 0.5em !important;
+  border-radius: .5em 0 0 .5em !important;
+}
+
+#categories > .category:hover,
+#categories > .category[selected] {
+  background: linear-gradient(90deg, #024ab6 0%, #295dce 100%)  !important;
+  color:white  !important;
+}
+
+#categories {
+  padding: 0 !important;
+}
+
+.sticky-container {
+  background-color: rgba(130, 161, 219, 0.8) !important;
+}
+
+.main-content {
+  background-color: #6375d6 !important;
+  color: white !important;
+}
+
+.subcategory > h1 {
+  color: white !important;
+}
+
+.text-link {
+  color: #c6c6de;
+}
+
+.content-blocking-warning {
+  background-color: #eae666 !important;
+  color: black !important;
+}
+
+#openChangeProfileImage {
+  list-style-image: url("./../images/msn.svg") !important;
+}
+
+.info-box-container {
+  background-color: #9393ff !important;
+  color: white !important;
+}
+
+
+input[type="checkbox"].toggle-button:checked::before {
+  transform: revert !important;
+}
+
+}

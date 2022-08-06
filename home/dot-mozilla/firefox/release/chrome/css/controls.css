@@ -1,0 +1,87 @@
+.checkbox-check {
+    border: none !important;
+    background-color: initial !important;
+    background-position: center  !important;
+    background-repeat: no-repeat  !important;
+    background-image: url("./../controls/checkbox-unchecked.svg") !important;
+}
+
+checkbox:hover > .checkbox-check {
+    background-image: url("./../controls/checkbox-hover.svg") !important;
+}
+
+.checkbox-check[checked] {
+    background-image: url("./../controls/checkbox-checked.svg") !important;
+}
+
+checkbox:hover > .checkbox-check[checked] {
+    background-image: url("./../controls/checkbox-checked-hover.svg") !important;
+}
+
+input.findbar-textbox{
+    background-color: white !important;
+    border: 1px solid #7f9db9 !important;
+    border-radius: 0 !important;
+    margin: 2px 4px !important;
+}
+
+input.findbar-textbox:focus {
+    border-color: #7f9db9 !important;
+    outline-offset: initial !important;
+    outline: initial !important;
+}
+
+.findbar-find-previous{
+    list-style-image: url("./../images/up.svg") !important;
+}
+
+.findbar-find-next{
+    list-style-image: url("./../images/down.svg") !important;
+}
+
+.findbar-find-next > image,
+.findbar-find-previous > image {
+    width: 2em !important;
+}
+
+#urlbar-background, #searchbar {
+    background-color: white !important;
+    border: 1px solid #7f9db9 !important;
+    border-radius: 0 !important;
+}
+
+#tabbrowser-tabs:not([noshadowfortests]) .tab-background {
+    border-top: 1px solid #91a7b4 !important;
+    border-left: 1px solid #91a7b4 !important;
+    border-right: 1px solid #91a7b4 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    margin: 0 !important;
+    background: linear-gradient(0deg, #f0f0ea 0%, #f6f6f3 70%, rgb(255, 255, 255) 100%) !important;
+    box-shadow: inset -2px 0px 2px #eae7e0;
+}
+
+.tabbrowser-tab:hover > .tab-stack > .tab-background {
+    border-top-color: #e68b2c !important;
+    box-shadow: inset 0 2.5px 0 0px #ffc73c, inset -2px 0px 2px #eae7e0 !important;
+}
+
+#tabbrowser-tabs:not([noshadowfortests]) .tab-background:is([selected], [multiselected]) {
+    background: #fcfcfe !important;
+    border-top-color: #e68b2c !important;
+    box-shadow: inset 0 2.5px 0 0px #ffc73c !important;
+}
+
+.tabbrowser-tab {
+    padding: 0 !important;
+    margin-right: -1px !important;
+}
+
+#TabsToolbar {
+    height: 3em !important;
+}
+
+#nav-bar {
+    background-color: #fcfcfe !important;
+    margin-top: 1px;
+}
