@@ -1,6 +1,8 @@
 # KDE Plasma Luna
 Windows Xp Luna theme pack for KDE Plasma
 
+![KDE Luna Screenshot](./Screenshot-1.jpg)
+
 # Features
  - Desktop theme as close as possible to Windows Xp colours/style
  - Custom overriden QML ui files to better adapt to the theme needs
@@ -16,6 +18,7 @@ Windows Xp Luna theme pack for KDE Plasma
 3. Copy anything inside [home/dot-config](./home/dot-config) to your `~/.config/`
 4. Copy anything inside [home/dot-local](./home/dot-local) to your `~/.local/`. **Attention!** If you already have a theme that overrides certain parts of the UI, please back the folders that are about to be replaced (if applicable).
 5. Switch your theme to Luna from KDE Settings and the application style to Kvantum
+6. (Optional) To switch Start button text to your own, edit to the file `~/.local/share/plasma/plasmoids/org.kde.plasma.kickoff/contents/ui/Kickoff.qml` at line 63 `property string buttonText: "start"`. Change `"start"` to `"your own text"`.
 
 # Disabling the UI Override (to use other themes)
 1. Rename the `~/.local/kwin/aurorae` folder to something else to prevent KDE Plasma from loading the window decoration override
