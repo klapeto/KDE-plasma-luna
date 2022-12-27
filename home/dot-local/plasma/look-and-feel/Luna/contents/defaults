@@ -19,3 +19,6 @@ theme=__aurorae__svg__Luna
 
 [plasmarc][Theme]
 name=Luna
+
+[kdeglobals][Icons]
+Theme=Luna
