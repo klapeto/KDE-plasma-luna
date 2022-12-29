@@ -10,6 +10,8 @@ PlasmaCore.FrameSvgItem {
         
         property double topMargin: 0.0
         property double bottomMargin: 0.0
+        property double leftMargin: 0.0
+        property double rightMargin: 0.0
         property double borderSize: 3.0
         property string image
 
@@ -18,8 +20,8 @@ PlasmaCore.FrameSvgItem {
 
             topMargin: topMargin * targetScale
             bottomMargin: bottomMargin * targetScale
-            leftMargin: 0
-            rightMargin: 0
+            leftMargin: leftMargin * targetScale
+            rightMargin: rightMargin * targetScale
         }
             
         PlasmaCore.FrameSvgItem {

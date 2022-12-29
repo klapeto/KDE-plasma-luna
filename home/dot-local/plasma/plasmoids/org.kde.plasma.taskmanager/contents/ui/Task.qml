@@ -28,6 +28,8 @@ MouseArea {
     LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
     LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
 
+    readonly property int launcherWidth: 25
+
     readonly property var m: model
 
     readonly property int pid: model.AppPid !== undefined ? model.AppPid : 0
@@ -36,6 +38,7 @@ MouseArea {
     property int itemIndex: index
     property bool inPopup: false
     property bool isWindow: model.IsWindow === true
+    property bool isLauncher: model.IsLauncher === true;
     property int childCount: model.ChildCount !== undefined ? model.ChildCount : 0
     property int previousChildCount: 0
     property alias labelText: label.text
@@ -89,6 +92,12 @@ MouseArea {
     onIsWindowChanged: {
         if (isWindow) {
             taskInitComponent.createObject(task);
+        }
+    }
+
+    onWidthChanged: {
+        if (isLauncher) {
+            task.width = launcherWidth * PlasmaCore.Units.devicePixelRatio;
         }
     }
 
@@ -324,7 +333,7 @@ MouseArea {
         image: "widgets/tasks"
         isHovered: task.highlighted && plasmoid.configuration.taskHoverEffect
         basePrefix: "Normal"
-        topMargin: 3.0
+        topMargin: 4.0
         bottomMargin: 2.0
         borderSize: 3.0
         //prefix: isHovered ? TaskTools.taskPrefixHovered(basePrefix) : TaskTools.taskPrefix(basePrefix)
@@ -514,6 +523,7 @@ MouseArea {
             bottomMargin: taskFrame.margins.bottom
         }
 
+        color: "white"
         text: model.display
         wrapMode: (maximumLineCount == 1) ? Text.NoWrap : Text.Wrap
         elide: Text.ElideRight
@@ -523,6 +533,7 @@ MouseArea {
     }
 
     states: [
+
         State {
             name: "Launcher"
             when: model.IsLauncher === true && task.highlighted !== true
