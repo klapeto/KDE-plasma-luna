@@ -60,7 +60,7 @@ Item {
         
         property bool pressed: false
 
-        property string buttonText: "start"
+        property string buttonText: "έναρξη"
         
         Layout.minimumWidth: Math.round(parent.height * buttonAspectRatio)
         

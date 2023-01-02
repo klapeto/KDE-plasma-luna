@@ -6,8 +6,8 @@ var panelScreen = panel.screen
 // For an Icons-Only Task Manager on the bottom, *3 is too much, *2 is too little
 // Round down to next highest even number since the Panel size widget only displays
 // even numbers
-panel.height = 64
-// panel.height = 2 * Math.floor(gridUnit * 2.5 / 2)
+//panel.height = 64
+panel.height = 1.6 * Math.floor(gridUnit * 2.5 / 2)
 
 // Restrict horizontal panel to a maximum size of a 21:9 monitor
 const maximumAspectRatio = 21/9;

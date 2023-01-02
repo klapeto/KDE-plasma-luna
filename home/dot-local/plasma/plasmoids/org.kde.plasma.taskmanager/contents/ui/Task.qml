@@ -97,7 +97,7 @@ MouseArea {
 
     onWidthChanged: {
         if (isLauncher) {
-            task.width = launcherWidth * PlasmaCore.Units.devicePixelRatio;
+            task.width = Math.round(launcherWidth * PlasmaCore.Units.devicePixelRatio);
         }
     }
 
