@@ -28,7 +28,8 @@ MouseArea {
     LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
     LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
 
-    readonly property int launcherWidth: 25
+    readonly property int launcherWidth: Math.round(14 * PlasmaCore.Units.devicePixelRatio)
+    readonly property int iconOffset: Math.round(9 * PlasmaCore.Units.devicePixelRatio)
 
     readonly property var m: model
 
@@ -334,7 +335,7 @@ MouseArea {
         isHovered: task.highlighted && plasmoid.configuration.taskHoverEffect
         basePrefix: "Normal"
         topMargin: 4.0
-        bottomMargin: 3.0
+        bottomMargin: 2.0
         borderSize: 3.0
         //prefix: isHovered ? TaskTools.taskPrefixHovered(basePrefix) : TaskTools.taskPrefix(basePrefix)
 
@@ -406,14 +407,14 @@ MouseArea {
 
         anchors {
             left: frame.left
-            leftMargin: adjustMargin(true, frame.width, 10)
+            leftMargin: adjustMargin(true, frame.width, iconOffset)
             top: frame.top
             topMargin: adjustMargin(false, frame.height, frame.margins.top)
         }
 
         width: height
         height: (frame.height - adjustMargin(false, frame.height, frame.margins.top)
-            - adjustMargin(false, frame.height, frame.margins.bottom)) 
+            - adjustMargin(false, frame.height, frame.margins.bottom))
 
         function adjustMargin(vert, size, margin) {
             if (!size) {
@@ -517,9 +518,9 @@ MouseArea {
 
         anchors {
             fill: frame
-            leftMargin: taskFrame.margins.left + iconBox.width + PlasmaCore.Units.smallSpacing + 10
+            leftMargin: taskFrame.margins.left + iconBox.width + PlasmaCore.Units.smallSpacing + iconOffset
             topMargin: taskFrame.margins.top
-            rightMargin: taskFrame.margins.right + (audioStreamIconLoader.shown ? (audioStreamIconLoader.width + PlasmaCore.Units.smallSpacing) : 0)
+            rightMargin: taskFrame.margins.right + (audioStreamIconLoader.shown ? (audioStreamIconLoader.width + PlasmaCore.Units.smallSpacing + iconOffset) : iconOffset * 2)
             bottomMargin: taskFrame.margins.bottom
         }
 

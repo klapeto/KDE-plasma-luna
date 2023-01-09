@@ -52,7 +52,7 @@ Item {
         hoverEnabled: true
         onClicked: plasmoid.expanded = !plasmoid.expanded
 
-        property double buttonAspectRatio: 3.5
+        property double buttonAspectRatio: 4
         
         property double itemsBaseMargin: 4.0
         
@@ -113,36 +113,27 @@ Item {
 
             readonly property double aspectRatio: (vertical ? implicitHeight / implicitWidth
                     : implicitWidth / implicitHeight)
-            
+
             anchors {
-                left: parent.left
-                top: parent.top
-                bottom: parent.bottom
-                topMargin: itemsBaseMargin * targetScale
-                bottomMargin: itemsBaseMargin * targetScale
-                leftMargin: itemsBaseMargin * targetScale
+                right: label.left
                 rightMargin: itemsBaseMargin * targetScale
             }
-            width: 24 * targetScale
+            width: 26 * targetScale
             source: plasmoid.icon
             active: parent.containsMouse || compactDragArea.containsDrag
             smooth: true
             roundToIconSize: false//aspectRatio === 1
         }
         
-
-
         Text {
+            id: label
             anchors {
-                left: icon.right
-                top: parent.top
-                bottom: parent.bottom
-                right: parent.right
-                topMargin: itemsBaseMargin * targetScale
-                bottomMargin: itemsBaseMargin * targetScale
-                //leftMargin: itemsBaseMargin * targetScale
-                rightMargin: 21 * targetScale
+                horizontalCenter: parent.horizontalCenter
+                verticalCenter: parent.verticalCenter
+                horizontalCenterOffset: 8 * targetScale
             }
+
+            //width: parent.width
         
             text: buttonText
             font.italic: true
@@ -152,8 +143,9 @@ Item {
             styleColor: "black"
             fontSizeMode: Text.Fit
             minimumPixelSize: 10
-            font.pixelSize: 42
+            font.pixelSize: 43
             horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
 
             color: "white"
         }
