@@ -11,8 +11,11 @@ X-KDE-PluginInfo-Version=1.0.0
 X-KDE-PluginInfo-Website=
 X-Plasma-API=5.0
 
-
 [Wallpaper]
+defaultWallpaperTheme=Bliss
 defaultFileSuffix=.jpg
 defaultWidth=3840
 defaultHeight=2160
+
+[BlurBehindEffect]
+enabled=false

@@ -52,13 +52,15 @@ Item {
         hoverEnabled: true
         onClicked: plasmoid.expanded = !plasmoid.expanded
 
-        property double buttonAspectRatio: 3.13
+        property double buttonAspectRatio: 3.5
         
         property double itemsBaseMargin: 4.0
         
         property double targetScale: PlasmaCore.Units.devicePixelRatio;
         
         property bool pressed: false
+
+        property string buttonText: "έναρξη"
         
         Layout.minimumWidth: Math.round(parent.height * buttonAspectRatio)
         
@@ -129,18 +131,20 @@ Item {
         }
         
 
+
         Text {
             anchors {
                 left: icon.right
                 top: parent.top
                 bottom: parent.bottom
+                right: parent.right
                 topMargin: itemsBaseMargin * targetScale
                 bottomMargin: itemsBaseMargin * targetScale
-                leftMargin: itemsBaseMargin * targetScale
-                rightMargin: itemsBaseMargin * targetScale
+                //leftMargin: itemsBaseMargin * targetScale
+                rightMargin: 21 * targetScale
             }
         
-            text: "έναρξη"
+            text: buttonText
             font.weight: Font.Bold
             font.italic: true
 
@@ -148,7 +152,9 @@ Item {
             styleColor: "black"
             fontSizeMode: Text.Fit
             minimumPixelSize: 10
-            font.pixelSize: 72 
+            font.pixelSize: 72
+
+            horizontalAlignment: Text.AlignHCenter
                 
             color: "white"
         }
