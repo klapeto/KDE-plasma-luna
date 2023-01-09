@@ -145,17 +145,16 @@ Item {
             }
         
             text: buttonText
-            font.weight: Font.Bold
             font.italic: true
+            font.family: "Franklin Gothic Medium"
 
             style: Text.Raised
             styleColor: "black"
             fontSizeMode: Text.Fit
             minimumPixelSize: 10
-            font.pixelSize: 72
-
+            font.pixelSize: 42
             horizontalAlignment: Text.AlignHCenter
-                
+
             color: "white"
         }
         

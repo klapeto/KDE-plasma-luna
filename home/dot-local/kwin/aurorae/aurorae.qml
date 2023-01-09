@@ -624,7 +624,8 @@ Decoration {
         elide: Text.ElideRight
         height: Math.max(auroraeTheme.titleHeight, auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor)
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
-        font: options.titleFont
+        font.family: "Trebuchet MS"
+        font.pointSize: 11
         style: decoration.client.active ? Text.Raised : Text.Normal // crashes if text contains emoji
         styleColor: "black"
         renderType: Text.NativeRendering

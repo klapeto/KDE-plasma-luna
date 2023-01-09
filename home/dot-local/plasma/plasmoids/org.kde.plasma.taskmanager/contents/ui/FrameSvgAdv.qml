@@ -18,10 +18,10 @@ PlasmaCore.FrameSvgItem {
         anchors {
             fill: parent
 
-            topMargin: topMargin * targetScale
-            bottomMargin: bottomMargin * targetScale
-            leftMargin: leftMargin * targetScale
-            rightMargin: rightMargin * targetScale
+            topMargin: Math.round(topMargin * targetScale)
+            bottomMargin: Math.round(bottomMargin * targetScale)
+            leftMargin: Math.round(leftMargin * targetScale)
+            rightMargin: Math.round(rightMargin * targetScale)
         }
             
         PlasmaCore.FrameSvgItem {

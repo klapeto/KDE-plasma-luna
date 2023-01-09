@@ -334,7 +334,7 @@ MouseArea {
         isHovered: task.highlighted && plasmoid.configuration.taskHoverEffect
         basePrefix: "Normal"
         topMargin: 4.0
-        bottomMargin: 2.0
+        bottomMargin: 3.0
         borderSize: 3.0
         //prefix: isHovered ? TaskTools.taskPrefixHovered(basePrefix) : TaskTools.taskPrefix(basePrefix)
 
@@ -406,7 +406,7 @@ MouseArea {
 
         anchors {
             left: frame.left
-            leftMargin: adjustMargin(true, frame.width, frame.margins.left)
+            leftMargin: adjustMargin(true, frame.width, 10)
             top: frame.top
             topMargin: adjustMargin(false, frame.height, frame.margins.top)
         }
@@ -517,23 +517,23 @@ MouseArea {
 
         anchors {
             fill: frame
-            leftMargin: taskFrame.margins.left + iconBox.width + PlasmaCore.Units.smallSpacing
+            leftMargin: taskFrame.margins.left + iconBox.width + PlasmaCore.Units.smallSpacing + 10
             topMargin: taskFrame.margins.top
             rightMargin: taskFrame.margins.right + (audioStreamIconLoader.shown ? (audioStreamIconLoader.width + PlasmaCore.Units.smallSpacing) : 0)
             bottomMargin: taskFrame.margins.bottom
         }
 
-        color: "white"
+        font.family: "Tahoma"
+        font.pointSize: 10
         text: model.display
         wrapMode: (maximumLineCount == 1) ? Text.NoWrap : Text.Wrap
         elide: Text.ElideRight
         textFormat: Text.PlainText
         verticalAlignment: Text.AlignVCenter
-        maximumLineCount: plasmoid.configuration.maxTextLines || undefined
+        maximumLineCount: 1
     }
 
     states: [
-
         State {
             name: "Launcher"
             when: model.IsLauncher === true && task.highlighted !== true
