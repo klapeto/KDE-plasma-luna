@@ -115,10 +115,12 @@ Item {
                     : implicitWidth / implicitHeight)
 
             anchors {
+                verticalCenter: parent.verticalCenter
                 right: label.left
                 rightMargin: itemsBaseMargin * targetScale
             }
-            width: 26 * targetScale
+            width: 24 * targetScale
+            height: 24 * targetScale
             source: plasmoid.icon
             active: parent.containsMouse || compactDragArea.containsDrag
             smooth: true
@@ -131,19 +133,24 @@ Item {
                 horizontalCenter: parent.horizontalCenter
                 verticalCenter: parent.verticalCenter
                 horizontalCenterOffset: 8 * targetScale
+                verticalCenterOffset: -1 * targetScale
+                top: parent.top
+                bottom: parent.bottom
+                bottomMargin: 5 * targetScale
+                topMargin: 2 * targetScale
             }
-
-            //width: parent.width
         
             text: buttonText
             font.italic: true
             font.family: "Franklin Gothic Medium"
+            font.pixelSize: 24 * targetScale
+            font.weight: Font.Medium
+
+            fontSizeMode: Text.VerticalFit;
 
             style: Text.Raised
             styleColor: "black"
-            fontSizeMode: Text.Fit
             minimumPixelSize: 10
-            font.pixelSize: 43
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
 

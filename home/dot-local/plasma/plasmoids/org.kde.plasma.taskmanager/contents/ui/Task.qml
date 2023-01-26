@@ -28,8 +28,8 @@ MouseArea {
     LayoutMirroring.enabled: (Qt.application.layoutDirection == Qt.RightToLeft)
     LayoutMirroring.childrenInherit: (Qt.application.layoutDirection == Qt.RightToLeft)
 
-    readonly property int launcherWidth: Math.round(14 * PlasmaCore.Units.devicePixelRatio)
-    readonly property int iconOffset: Math.round(9 * PlasmaCore.Units.devicePixelRatio)
+    readonly property int launcherWidth: Math.round(22 * PlasmaCore.Units.devicePixelRatio)
+    readonly property int iconOffset: Math.round(10 * PlasmaCore.Units.devicePixelRatio)
 
     readonly property var m: model
 
@@ -98,7 +98,7 @@ MouseArea {
 
     onWidthChanged: {
         if (isLauncher) {
-            task.width = Math.round(launcherWidth * PlasmaCore.Units.devicePixelRatio);
+            task.width = launcherWidth;
         }
     }
 
@@ -408,13 +408,13 @@ MouseArea {
         anchors {
             left: frame.left
             leftMargin: adjustMargin(true, frame.width, iconOffset)
-            top: frame.top
-            topMargin: adjustMargin(false, frame.height, frame.margins.top)
+            //top: frame.top
+            //topMargin: adjustMargin(false, frame.height, frame.margins.top)
+            verticalCenter: label.verticalCenter
         }
 
         width: height
-        height: (frame.height - adjustMargin(false, frame.height, frame.margins.top)
-            - adjustMargin(false, frame.height, frame.margins.bottom))
+        height: 18 * frame.targetScale
 
         function adjustMargin(vert, size, margin) {
             if (!size) {
@@ -440,6 +440,8 @@ MouseArea {
             active: task.highlighted
             enabled: true
             usesPlasmaTheme: false
+
+            roundToIconSize: false
 
             source: model.decoration
         }
@@ -518,7 +520,7 @@ MouseArea {
 
         anchors {
             fill: frame
-            leftMargin: taskFrame.margins.left + iconBox.width + PlasmaCore.Units.smallSpacing + iconOffset
+            leftMargin: taskFrame.margins.left + iconBox.width + PlasmaCore.Units.smallSpacing + iconOffset + (3 *  frame.targetScale)
             topMargin: taskFrame.margins.top
             rightMargin: taskFrame.margins.right + (audioStreamIconLoader.shown ? (audioStreamIconLoader.width + PlasmaCore.Units.smallSpacing + iconOffset) : iconOffset * 2)
             bottomMargin: taskFrame.margins.bottom
