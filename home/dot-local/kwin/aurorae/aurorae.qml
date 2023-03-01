@@ -617,7 +617,7 @@ Decoration {
     }
     Text {
         id: caption
-        text: "<strong>" + getCleanText(decoration.client.caption) + "</strong>"
+        text: getCleanText(decoration.client.caption)
         textFormat: Text.StyledText
         horizontalAlignment: auroraeTheme.horizontalAlignment
         verticalAlignment: auroraeTheme.verticalAlignment
@@ -626,6 +626,7 @@ Decoration {
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
         font.family: "Trebuchet MS"
         font.pointSize: 11
+        font.weight: Font.Bold
         style: decoration.client.active ? Text.Raised : Text.Normal // crashes if text contains emoji
         styleColor: "black"
         renderType: Text.NativeRendering

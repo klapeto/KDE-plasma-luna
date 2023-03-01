@@ -134,15 +134,15 @@ MouseArea {
             flow: vertical ? GridView.LeftToRight : GridView.TopToBottom
 
             // The icon size to display when not using the auto-scaling setting
-            readonly property int smallIconSize: PlasmaCore.Units.iconSizes.smallMedium
+            readonly property int smallIconSize: Math.min(PlasmaCore.Units.iconSizes.small * PlasmaCore.Units.devicePixelRatio, root.height - (14 * PlasmaCore.Units.devicePixelRatio))
             readonly property bool autoSize: false
 
             readonly property int gridThickness: root.vertical ? root.width : root.height
             // Should change to 2 rows/columns on a 56px panel (in standard DPI)
-            readonly property int rowsOrColumns: autoSize ? 1 : Math.max(1, Math.min(count, Math.floor(gridThickness / (smallIconSize + PlasmaCore.Units.smallSpacing))))
+            readonly property int rowsOrColumns: 1
 
             // Add margins only if the panel is larger than a small icon (to avoid large gaps between tiny icons)
-            readonly property int smallSizeCellLength: smallIconSize + (3)// gridThickness < smallIconSize ? smallIconSize : smallIconSize + PlasmaCore.Units.smallSpacing * 2
+            readonly property int smallSizeCellLength: smallIconSize + 3// gridThickness < smallIconSize ? smallIconSize : smallIconSize + PlasmaCore.Units.smallSpacing * 2
             cellHeight: {
                 if (root.vertical) {
                     return autoSize ? root.width : smallSizeCellLength
