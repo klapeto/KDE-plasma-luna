@@ -2,8 +2,8 @@
 <svg
    inkscape:export-ydpi="96"
    inkscape:export-xdpi="96"
-   inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/tag-add.png"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:export-filename="add-subtitle.png"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="tag-add.svg"
    id="svg19"
    version="1.1"
@@ -19,7 +19,7 @@
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <path
      id="path1153"
-     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#212121;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter1174);color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000"
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter1174);color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000"
      d="M 31.443359,70.62815 C 16.840877,70.62815 5,82.47098 5,97.073462 V 168.1555 c 0,14.60248 11.840876,26.44335 26.443359,26.44335 h 19.732422 l -16.640625,39.625 a 2.750275,2.750275 0 0 0 4.341797,3.13672 L 87.933594,194.59885 H 220.99805 c 14.60248,0 26.44336,-11.84087 26.44336,-26.44335 V 97.073462 c 0,-14.602482 -11.84088,-26.445312 -26.44336,-26.445312 z" />
   <g
      id="g967"
@@ -65,7 +65,7 @@
      inkscape:current-layer="svg19"
      inkscape:window-maximized="1"
      inkscape:window-y="0"
-     inkscape:window-x="3840"
+     inkscape:window-x="0"
      inkscape:cy="132.02677"
      inkscape:cx="197.22011"
      inkscape:zoom="2.4388994"
@@ -171,7 +171,7 @@
   </defs>
   <path
      id="path1328"
-     style="color:#000000;fill:#212121;fill-opacity:1;stroke-width:6.38412;stroke-linecap:round;-inkscape-stroke:none;filter:url(#filter1463)"
+     style="color:#000000;fill:#000000;fill-opacity:1;stroke-width:6.38412;stroke-linecap:round;-inkscape-stroke:none;filter:url(#filter1463)"
      d="M 165.61997,4 V 7.1914062 48.224609 h -44.22461 v 39.550782 h 44.22461 V 132 h 39.55079 V 87.775391 h 44.2246 V 48.224609 h -44.2246 V 4 Z" />
   <path
      d="m 163.8109,3.19206 v 44.223926 h -44.22394 v 33.167963 h 44.22394 v 44.224001 h 33.16796 V 80.583949 h 44.224 V 47.415986 h -44.224 V 3.19206 Z"

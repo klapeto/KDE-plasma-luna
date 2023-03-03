@@ -5,9 +5,9 @@
    viewBox="0 0 256 256"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
-   sodipodi:docname="address-book.svg"
-   inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/address-book-new.png"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="address-book-new.svg"
+   inkscape:export-filename="address-book-new.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -500,19 +500,6 @@
          stdDeviation="4.2595882"
          id="feGaussianBlur403443" />
     </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter1125"
-       x="-0.047999999"
-       y="-0.047999997"
-       width="1.096"
-       height="1.096">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="2.56"
-         id="feGaussianBlur1127" />
-    </filter>
   </defs>
   <sodipodi:namedview
      inkscape:guide-bbox="true"
@@ -522,9 +509,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="182.43355"
-     inkscape:cy="285.67114"
+     inkscape:zoom="8"
+     inkscape:cx="229.25"
+     inkscape:cy="162.25"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -532,7 +519,7 @@
      units="px"
      inkscape:window-width="3840"
      inkscape:window-height="2043"
-     inkscape:window-x="3840"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="true"
@@ -578,7 +565,7 @@
      transform="translate(-12.567709)">
     <path
        id="path403036"
-       style="fill:#212121;fill-opacity:1;stroke:none;stroke-width:5.33px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter403441)"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:5.33px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter403441)"
        d="m 200.70393,61.479705 c -2.19381,-0.058 -4.39411,0.652054 -6.32617,1.99414 L 120.11018,115.06369 29.149241,84.794158 C 18.489247,81.563855 15.920559,93.421284 18.489085,100.78439 l 39.974609,114.5957 c 2.664998,7.63966 10.659301,11.61101 18.654297,13.32422 l 74.621099,15.99023 c 8.24039,1.7658 15.99031,1.06694 21.32031,-2.66406 l 79.94922,-55.9668 c 5.33,-3.731 7.99507,-10.36217 5.33007,-15.98828 L 210.36799,68.803924 c -2.36694,-4.996873 -6.00771,-7.227545 -9.66406,-7.324219 z" />
     <g
        id="g402954"
@@ -740,10 +727,6 @@
          id="path13133-9"
          sodipodi:nodetypes="cc" />
     </g>
-    <path
-       id="rect1005"
-       style="fill:#212121;fill-opacity:1;stroke:none;stroke-width:5.27863;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter1125)"
-       d="m 200.59386,4.4962455 c -5.06514,0 -9.14258,4.077436 -9.14258,9.1425785 v 29.066405 a 27.42857,27.42857 0 0 0 -2.6582,1.060547 l -18.36914,-18.36914 c -3.5816,-3.581597 -9.34809,-3.581597 -12.92969,0 -3.58159,3.581596 -3.58159,9.34809 0,12.929687 l 18.3711,18.371094 a 27.42857,27.42857 0 0 0 -1.06055,2.65625 h -29.06836 c -5.06514,0 -9.14258,4.077435 -9.14258,9.142578 0,5.065143 4.07744,9.142578 9.14258,9.142578 h 29.06836 a 27.42857,27.42857 0 0 0 1.06055,2.65625 l -18.3711,18.371092 c -3.58159,3.581605 -3.58159,9.348105 0,12.929695 3.5816,3.5816 9.34809,3.5816 12.92969,0 l 18.37109,-18.371099 a 27.42857,27.42857 0 0 0 2.65625,1.060547 v 29.068372 c 0,5.06513 4.07744,9.14257 9.14258,9.14257 5.06514,0 9.14258,-4.07744 9.14258,-9.14257 V 94.285308 a 27.42857,27.42857 0 0 0 2.65625,-1.060547 l 18.37109,18.371099 c 3.5816,3.5816 9.34809,3.5816 12.92969,0 3.5816,-3.58159 3.5816,-9.34809 0,-12.929695 L 225.32433,80.297026 a 27.42857,27.42857 0 0 0 1.06055,-2.658203 h 29.0664 c 5.06515,0 9.14258,-4.077435 9.14258,-9.142578 0,-5.065143 -4.07743,-9.142578 -9.14258,-9.142578 h -28.99804 a 27.42857,27.42857 0 0 0 -1.10938,-2.677735 l 18.34961,-18.349609 c 3.5816,-3.581597 3.5816,-9.348091 0,-12.929687 -3.5816,-3.581597 -9.34809,-3.581597 -12.92969,0 L 212.41417,43.746245 A 27.42857,27.42857 0 0 0 209.73644,42.63687 V 13.638824 c 0,-5.0651425 -4.07744,-9.1425785 -9.14258,-9.1425785 z" />
     <g
        transform="matrix(23.03712,0,0,23.03712,210.83226,-60.456412)"
        id="g4993">
