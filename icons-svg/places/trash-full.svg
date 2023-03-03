@@ -5,9 +5,9 @@
    viewBox="0 0 256 256"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="trash-full.svg"
-   inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/trash-full.png"
+   inkscape:export-filename="trash-full.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -232,7 +232,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="4"
-     inkscape:cx="90.374999"
+     inkscape:cx="90.25"
      inkscape:cy="29.5"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -240,8 +240,8 @@
      showgrid="false"
      units="px"
      inkscape:window-width="3840"
-     inkscape:window-height="2045"
-     inkscape:window-x="3840"
+     inkscape:window-height="2043"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="true"
@@ -284,7 +284,7 @@
      transform="translate(-12.567709)">
     <path
        id="path98358"
-       style="color:#000000;fill:#212121;fill-opacity:1;stroke-width:5;-inkscape-stroke:none;filter:url(#filter98527)"
+       style="color:#000000;fill:#000000;fill-opacity:1;stroke-width:5;-inkscape-stroke:none;filter:url(#filter98527)"
        d="M 231.95613,8.8300142 C 224.31467,8.485572 214.94482,6.2607444 203.9366,11.764854 c -4.53449,2.267248 -9.65427,5.000779 -15.0957,7.882813 L 184.22762,6.5148545 89.975658,36.137901 l 0.974609,2.535156 4.585938,11.923828 c -1.676332,-0.48999 -3.351132,-0.974899 -4.998047,-1.414062 -8.374671,-2.233174 -16.361108,-3.734375 -23.882812,-3.734375 -10.929616,0 -19.684558,3.20199 -25.572266,8.83789 -5.887707,5.635901 -8.748475,13.630683 -8.259766,22.523438 3.025148,55.047164 21.768623,110.470634 33.955079,143.669924 0.01107,0.0748 0.01102,0.15207 0.02344,0.22656 1.111974,6.67184 7.704767,12.66552 17.339844,17.44336 9.635078,4.77784 22.606413,8.1465 37.351563,8.14649 29.21691,0 58.57859,-8.58299 80.47656,-19.52149 10.94899,-5.46925 20.02973,-11.51752 26.33985,-17.52148 5.16122,-4.91082 8.69331,-9.85502 9.34179,-14.76368 l 0.25196,-1.05078 c 9.73366,-40.60766 16.71314,-124.300159 14.28125,-165.335935 h -0.004 c 0.006,-2.396538 -0.0385,-9.595392 -3.59766,-15.013672 5e-5,0.0022 -4e-5,0.0056 0,0.0078 -2.21196,-3.6137103 -5.48883,-1.510209 -9.56445,-2.950466 -2.16015,-0.7633627 -4.51534,-1.2015918 -7.0625,-1.3164058 z"
        sodipodi:nodetypes="cscccccssssccssssccccccscc" />
     <g
