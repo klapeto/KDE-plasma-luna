@@ -47,8 +47,8 @@ If anything goes wrong (like crashes) or you simply don't want it anymore do the
 - Icons created in svg should be 256x256
 - Shadow created by the object duplicated, converted to single curve object (merge) and placed behind
 - Shadow for 256x256 is #212121 with 20% blur offset by x: +5, y: +4 from the original object or x: +4, y: +4 from the original
-- Shadow for 32x32 is #000000 or #0d1a33 with 25% blur offset by x: +8, y: +6 or x: +16, y: +16 from the original (30% blur)
-- Shadow for 16x16 is #000000 or #0d1a33 with 30% blur offset by x: +12, y: +10 or x: +30, y: +20 from the original (40% blur)
+- Shadow for 32x32 is #000000 or #0d1a33 with 25% blur offset by x: +8, y: +8 or x: +16, y: +16 from the original (30% blur)
+- Shadow for 16x16 is #000000 or #0d1a33 with 35% blur offset by x: +16, y: +16 or x: +30, y: +20 from the original (40% blur)
 - Stroke size in 256x256 should be 5.00~5.33px unless some icons need more.
 
 # Known Issues

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1920"
+   height="96"
+   viewBox="0 0 1920 95.999998"
+   version="1.1"
+   id="svg886"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="bottom.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview888"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="2.2378227"
+     inkscape:cx="525.73423"
+     inkscape:cy="-20.555695"
+     inkscape:window-width="3840"
+     inkscape:window-height="2043"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     units="px" />
+  <defs
+     id="defs883">
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1341"
+       id="linearGradient1343"
+       x1="-4"
+       y1="1013"
+       x2="7203.6479"
+       y2="1013"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.26458333,0,0,0.26458333,-128.49567,-177.29693)" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1341">
+      <stop
+         style="stop-color:#033199;stop-opacity:1"
+         offset="0"
+         id="stop1337" />
+      <stop
+         style="stop-color:#f4953e;stop-opacity:1"
+         offset="0.30000001"
+         id="stop1394" />
+      <stop
+         style="stop-color:#f4953e;stop-opacity:1"
+         offset="0.37"
+         id="stop2640" />
+      <stop
+         style="stop-color:#033199;stop-opacity:1"
+         offset="1"
+         id="stop1339" />
+    </linearGradient>
+  </defs>
+  <g
+     inkscape:label="Στρώση 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(137.93679,-71.998905)">
+    <path
+       id="rect1083-3"
+       style="fill:#00309c;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+       d="M -137.93679,71.998905 H 1782.0632 V 167.99891 H -137.93679"
+       sodipodi:nodetypes="cccc" />
+    <path
+       id="rect1127"
+       style="fill:none;stroke:url(#linearGradient1343);stroke-width:2;stroke-linecap:butt;stroke-linejoin:round"
+       d="M -137.93679,72.998905 H 1782.0632"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>
