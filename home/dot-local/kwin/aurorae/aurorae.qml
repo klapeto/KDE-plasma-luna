@@ -13,12 +13,12 @@ Decoration {
     Component.onCompleted: {
         borders.left   = Qt.binding(function() { return Math.max(0, auroraeTheme.borderLeft);});
         borders.right  = Qt.binding(function() { return Math.max(0, auroraeTheme.borderRight);});
-        borders.top    = Qt.binding(function() { return Math.max(0, auroraeTheme.borderTop);});
+        borders.top    = Qt.binding(function() { return Math.max(0, Math.round(PlasmaCore.Units.devicePixelRatio * 30));});
         borders.bottom = Qt.binding(function() { return Math.max(0, auroraeTheme.borderBottom);});
         maximizedBorders.left   = Qt.binding(function() { return Math.max(0, auroraeTheme.borderLeftMaximized);});
         maximizedBorders.right  = Qt.binding(function() { return Math.max(0, auroraeTheme.borderRightMaximized);});
         maximizedBorders.bottom = Qt.binding(function() { return Math.max(0, auroraeTheme.borderBottomMaximized);});
-        maximizedBorders.top    = Qt.binding(function() { return Math.max(0, auroraeTheme.borderTopMaximized);});
+        maximizedBorders.top    = Qt.binding(function() { return Math.max(0, Math.round(PlasmaCore.Units.devicePixelRatio * 26));});
         padding.left   = auroraeTheme.paddingLeft;
         padding.right  = auroraeTheme.paddingRight;
         padding.bottom = auroraeTheme.paddingBottom;
@@ -592,17 +592,17 @@ Decoration {
         }
     }
     
-    
-    
-    
     AuroraeButtonGroup {
         id: leftButtonGroup
         buttons: options.titleButtonsLeft
         width: childrenRect.width
+        height: Math.round(16 * PlasmaCore.Units.devicePixelRatio)
         animate: root.animate
         anchors {
             left: root.left
-            leftMargin: decoration.client.maximized ? auroraeTheme.titleEdgeLeftMaximized : (auroraeTheme.titleEdgeLeft + root.padding.left)
+            top: root.top
+            topMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 4) : Math.round(PlasmaCore.Units.devicePixelRatio * 8)
+            leftMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 2) : Math.round(PlasmaCore.Units.devicePixelRatio * 6)
         }
     }
     AuroraeButtonGroup {
@@ -612,7 +612,8 @@ Decoration {
         animate: root.animate
         anchors {
             right: root.right
-            rightMargin: decoration.client.maximized ? auroraeTheme.titleEdgeRightMaximized : (auroraeTheme.titleEdgeRight + root.padding.right)
+            rightMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 2) : Math.round(PlasmaCore.Units.devicePixelRatio * 6)
+            topMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 2) : Math.round(PlasmaCore.Units.devicePixelRatio * 6)
         }
     }
     Text {
@@ -622,7 +623,7 @@ Decoration {
         horizontalAlignment: auroraeTheme.horizontalAlignment
         verticalAlignment: auroraeTheme.verticalAlignment
         elide: Text.ElideRight
-        height: Math.max(auroraeTheme.titleHeight, auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor)
+        height: Math.round(PlasmaCore.Units.devicePixelRatio * 11)
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
         font.family: "Trebuchet MS"
         font.pointSize: 11
@@ -634,8 +635,8 @@ Decoration {
             left: leftButtonGroup.right
             right: rightButtonGroup.left
             top: root.top
-            topMargin: decoration.client.maximized ? auroraeTheme.titleEdgeTopMaximized : (auroraeTheme.titleEdgeTop + root.padding.top)
-            leftMargin: auroraeTheme.titleBorderLeft
+            topMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 8) : Math.round(PlasmaCore.Units.devicePixelRatio * 12)
+            leftMargin: Math.round(4 * PlasmaCore.Units.devicePixelRatio)
             rightMargin: auroraeTheme.titleBorderRight
         }
         Behavior on color {
