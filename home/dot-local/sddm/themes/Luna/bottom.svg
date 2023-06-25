@@ -3,8 +3,8 @@
 
 <svg
    width="1920"
-   height="96"
-   viewBox="0 0 1920 95.999998"
+   height="98"
+   viewBox="0 0 1920 97.999998"
    version="1.1"
    id="svg886"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
@@ -23,21 +23,25 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:document-units="px"
-     showgrid="false"
+     showgrid="true"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="2.2378227"
-     inkscape:cx="525.73423"
-     inkscape:cy="-20.555695"
+     inkscape:zoom="6.2880981"
+     inkscape:cx="101.22297"
+     inkscape:cy="47.788694"
      inkscape:window-width="3840"
-     inkscape:window-height="2043"
-     inkscape:window-x="0"
+     inkscape:window-height="2050"
+     inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
-     units="px" />
+     units="px">
+    <inkscape:grid
+       type="xygrid"
+       id="grid848" />
+  </sodipodi:namedview>
   <defs
      id="defs883">
     <linearGradient
@@ -79,7 +83,7 @@
     <path
        id="rect1083-3"
        style="fill:#00309c;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
-       d="M -137.93679,71.998905 H 1782.0632 V 167.99891 H -137.93679"
+       d="M -137.93679,71.998905 H 1782.0632 V 169.9989 H -137.93679"
        sodipodi:nodetypes="cccc" />
     <path
        id="rect1127"

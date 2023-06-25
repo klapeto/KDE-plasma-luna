@@ -30,8 +30,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 ListView {
     id: view
     readonly property string selectedUser: currentItem ? currentItem.userName : ""
-    readonly property int userItemWidth: Math.round(353 * Screen.devicePixelRatio)
-    readonly property int userItemHeight: Math.round(48 * Screen.devicePixelRatio)
+    readonly property int userItemWidth: 352
+    readonly property int userItemHeight: 70
     readonly property bool constrainText: count > 1
     property int fontSize: PlasmaCore.Theme.defaultFont.pointSize + 2
 

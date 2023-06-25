@@ -344,7 +344,7 @@ Image {
                 right: parent.right
             }
 
-            height: 96
+            height: 98
 
             RowLayout {
                 id: footer
@@ -355,7 +355,6 @@ Image {
                     top: parent.top
                     leftMargin: 40
                     rightMargin: 60
-                    bottomMargin: 20
                 }
 
                 spacing: 10
@@ -367,12 +366,15 @@ Image {
                 }
 
                 ActionButton {
+                    Layout.preferredHeight: 24
+                    Layout.alignment: Qt.AlignTop
+                    Layout.topMargin: 22
                     iconSource: "system-shutdown"
                     text: "Σβήσιμο του υπολογιστή"
-                    fontSize: parseInt(config.fontSize) + 1
+                    fontSize: 20
                     onClicked: sddm.powerOff()
                     enabled: sddm.canPowerOff
-            }
+                }
 
                 PlasmaComponents3.ToolButton {
                     text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Button to show/hide virtual keyboard", "Virtual Keyboard")
@@ -384,6 +386,9 @@ Image {
 
                 SessionButton {
                     id: sessionButton
+                    Layout.alignment: Qt.AlignTop
+                    Layout.topMargin: 22
+
                     font.pointSize: config.fontSize
 
                     onSessionChanged: {
@@ -402,10 +407,13 @@ Image {
                 }
 
                 Text {
+                    Layout.preferredWidth: 276
                     color: "#eff7ff"
                     font.family: "Tahoma"
-                    font.pixelSize: 14
-                    text: "After you logon, you can add or change accounts.\nJust go to Control Panel and click User Accounts."
+                    font.pointSize: 9
+                    wrapMode: Text.WordWrap
+                    text: "Αφού συνδεθείτε, μπορείτε να προσθέσετε ή να αλλάξετε λογαριασμούς.\nΠηγαίνετε στον Πίνακα Ελέγχου και κάντε κλίκ στην επιλογή \"Λογαριασμοί χρηστών\"."
+                    //text: "After you logon, you can add or change accounts.\nJust go to Control Panel and click User Accounts."
                 }
             }
         }

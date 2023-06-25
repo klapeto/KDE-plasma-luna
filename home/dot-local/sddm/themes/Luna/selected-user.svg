@@ -28,12 +28,12 @@
      inkscape:document-units="px"
      showgrid="true"
      units="px"
-     inkscape:zoom="4"
-     inkscape:cx="92"
-     inkscape:cy="126.5"
+     inkscape:zoom="7.8298025"
+     inkscape:cx="107.41012"
+     inkscape:cy="55.109947"
      inkscape:window-width="3840"
-     inkscape:window-height="2043"
-     inkscape:window-x="0"
+     inkscape:window-height="2050"
+     inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
@@ -79,7 +79,7 @@
        inkscape:collect="always"
        xlink:href="#linearGradient1543"
        id="linearGradient1545"
-       x1="649"
+       x1="740"
        y1="440"
        x2="991"
        y2="440"
@@ -102,7 +102,7 @@
     <path
        id="rect1222"
        style="fill:url(#linearGradient1545);fill-opacity:1;stroke:url(#linearGradient46156);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 990,470 H 657 c -5.54,0 -10,-4.46 -10,-10 v -50 c 0,-5.54 4.46,-10 10,-10 h 333"
+       d="M 990,470 H 657 c -7,0 -10,-3 -10,-10 v -50 c 0,-7 3,-10 10,-10 h 333"
        sodipodi:nodetypes="cssssc" />
   </g>
 </svg>

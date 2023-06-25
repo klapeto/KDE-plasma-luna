@@ -22,7 +22,7 @@ Item {
 
     activeFocusOnTab: true
 
-    property int iconSize: PlasmaCore.Units.gridUnit * 2
+    property int iconSize: 24
 
     implicitWidth: (iconSize + PlasmaCore.Units.largeSpacing) + label.contentWidth
     implicitHeight: iconSize + PlasmaCore.Units.smallSpacing + label.implicitHeight
@@ -33,6 +33,19 @@ Item {
             duration: PlasmaCore.Units.longDuration
             easing.type: Easing.InOutQuad
         }
+    }
+
+    Rectangle {
+        anchors {
+            top: icon.top
+            left: icon.left
+            topMargin: 1
+            leftMargin: 1
+        }
+        width: icon.width
+        height: icon.height
+        color: "#162088"
+        radius: 3
     }
 
     PlasmaCore.IconItem {
@@ -51,11 +64,11 @@ Item {
 
     PlasmaComponents3.Label {
         id: label
-        font.pointSize: 16
+        font.pointSize: 14
         anchors {
             verticalCenter: icon.verticalCenter
             left: icon.right
-            leftMargin: 5
+            leftMargin: 8
         }
         font.family: "Tahoma"
         //font.weight: Font.DemiBold

@@ -61,9 +61,9 @@ Item {
     Rectangle {
         id: imageWrapper
         anchors.centerIn: imageSource
-        width: imageSource.width + Math.round(2 * Screen.devicePixelRatio)
-        height: imageSource.height + Math.round(2 * Screen.devicePixelRatio)
-        radius: Math.round(2 * Screen.devicePixelRatio)
+        width: imageSource.width + 4
+        height: imageSource.height + 4
+        radius: 4
 
         color: isCurrent ? "#ffb600" : "#cad2ea"
     }
@@ -74,9 +74,9 @@ Item {
             left: parent.left
             top: parent.top
             bottom: parent.bottom
-            leftMargin: Math.round(7 * Screen.devicePixelRatio)
-            topMargin: Math.round(7 * Screen.devicePixelRatio)
-            bottomMargin: Math.round(7 * Screen.devicePixelRatio)
+            leftMargin: 12
+            topMargin: 11
+            bottomMargin: 11
         }
 
         Behavior on width {
@@ -91,7 +91,7 @@ Item {
         Image {
             id: face
             source: wrapper.avatarPath
-            sourceSize: Qt.size(faceSize * Screen.devicePixelRatio, faceSize * Screen.devicePixelRatio)
+            sourceSize: Qt.size(faceSize, faceSize)
             fillMode: Image.PreserveAspectCrop
             anchors.fill: parent
         }
@@ -110,18 +110,17 @@ Item {
 
         anchors {
             left: imageWrapper.right
-            top: imageWrapper.top
-            leftMargin: 10 * Screen.devicePixelRatio
+            top: parent.top
+            leftMargin: 12
+            topMargin: 5
         }
 
         // Make it bigger than other fonts to match the scale of the avatar better
-        font.pointSize: wrapper.fontSize + 4
+        font.pointSize: 12
         font.family: "Tahoma"
-        font.weight: Font.Medium
         font.letterSpacing: 0
         color: "#eff7ff"
 
-        //text: "Test"
         text: wrapper.name
         wrapMode: Text.WordWrap
         maximumLineCount: wrapper.constrainText ? 3 : 1
@@ -142,13 +141,13 @@ Item {
         id: typePasswordText
         anchors {
             left: imageWrapper.right
-            top: usernameDelegate.bottom
-            topMargin: 5 * Screen.devicePixelRatio
-            leftMargin: 10 * Screen.devicePixelRatio
+            top: parent.top
+            topMargin: 33
+            leftMargin: 12
         }
 
         visible: isCurrent
-        font.pointSize: 10
+        font.pointSize: 8
         font.family: "Tahoma"
         color: "#eff7ff"
         text: "Πληκτρολογήστε τον κωδικό σας"
@@ -158,8 +157,8 @@ Item {
         anchors {
             left: passwordContainer.left
             top: passwordContainer.top
-            topMargin: Screen.devicePixelRatio * 1.2
-            leftMargin: Screen.devicePixelRatio * 1.2
+            topMargin: 2
+            leftMargin: 2
         }
 
         antialiasing: true
@@ -169,7 +168,7 @@ Item {
         height: passwordContainer.height
         width: passwordContainer.width
 
-        radius: Math.round(2 * Screen.devicePixelRatio)
+        radius: 3
 
         gradient: Gradient {
             GradientStop { position: 0.9; color: "#1e4cae" }
@@ -184,11 +183,11 @@ Item {
             left: imageWrapper.right
             right: typePasswordText.right
             top: typePasswordText.bottom
-            topMargin: 5 * Screen.devicePixelRatio
-            leftMargin: 10 * Screen.devicePixelRatio
+            topMargin: 3
+            leftMargin: 9
         }
 
-        radius: Math.round(1.5 * Screen.devicePixelRatio)
+        radius: 3
         color: control.enabled ? "transparent" : "#353637"
         border.color: "transparent"
 
@@ -254,7 +253,7 @@ Item {
         anchors {
             verticalCenter: passwordContainer.verticalCenter
             left: passwordContainer.right
-            leftMargin: 4 * Screen.devicePixelRatio
+            leftMargin: 7
         }
 
         visible: isCurrent
@@ -270,8 +269,8 @@ Item {
         anchors {
             left: loginButton.left
             top: loginButton.top
-            topMargin: Screen.devicePixelRatio * 1.2
-            leftMargin: Screen.devicePixelRatio * 1.2
+            topMargin: 2
+            leftMargin: 2
         }
 
         visible: isCurrent
@@ -279,7 +278,7 @@ Item {
         height: loginButton.height
         width: loginButton.width
 
-        radius: Math.round(2 * Screen.devicePixelRatio)
+        radius: 3
             
         gradient: Gradient {
             GradientStop { position: 0.9; color: "#1e4cae" }
@@ -294,7 +293,7 @@ Item {
             top: passwordContainer.top
             bottom: passwordContainer.bottom
             left: keyboardButton.right
-            leftMargin: 4 * Screen.devicePixelRatio
+            leftMargin: 5
         }
 
         width: height
