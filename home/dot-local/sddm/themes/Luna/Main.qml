@@ -210,65 +210,7 @@ Image {
                 }
             ]
         }
-/*
-        Component {
-            id: userPromptComponent
-            Login {
-                showUsernamePrompt: true
-                notificationMessage: root.notificationMessage
-                loginScreenUiVisible: loginScreenRoot.uiVisible
-                fontSize: parseInt(config.fontSize) + 2
 
-                // using a model rather than a QObject list to avoid QTBUG-75900
-                userListModel: ListModel {
-                    ListElement {
-                        name: ""
-                        iconSource: ""
-                    }
-                    Component.onCompleted: {
-                        // as we can't bind inside ListElement
-                        setProperty(0, "name", i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Type in Username and Password"));
-                    }
-                }
-
-                onLoginRequest: {
-                    root.notificationMessage = ""
-                    sddm.login(username, password, sessionButton.currentIndex)
-                }
-
-                actionItemsVisible: !inputPanel.keyboardActive
-                actionItems: [
-                    ActionButton {
-                        iconSource: "system-suspend"
-                        text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Suspend to RAM", "Sleep")
-                        fontSize: parseInt(config.fontSize) + 1
-                        onClicked: sddm.suspend()
-                        enabled: sddm.canSuspend
-                    },
-                    ActionButton {
-                        iconSource: "system-reboot"
-                        text: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Restart")
-                        fontSize: parseInt(config.fontSize) + 1
-                        onClicked: sddm.reboot()
-                        enabled: sddm.canReboot
-                    },
-                    ActionButton {
-                        iconSource: "system-shutdown"
-                        text: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Shut Down")
-                        fontSize: parseInt(config.fontSize) + 1
-                        onClicked: sddm.powerOff()
-                        enabled: sddm.canPowerOff
-                    },
-                    ActionButton {
-                        iconSource: "system-user-list"
-                        text: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "List Users")
-                        fontSize: parseInt(config.fontSize) + 1
-                        onClicked: mainStack.pop()
-                    }
-                ]
-            }
-        }
-*/
         Image {
             id: header
             source: "top.svg"
@@ -294,7 +236,7 @@ Image {
                 id: logo
                 anchors {
                     right: separator.left
-                    rightMargin: Math.round(20 * Screen.devicePixelRatio)
+                    rightMargin: 20
                     verticalCenter: parent.verticalCenter
                 }
 
@@ -302,20 +244,23 @@ Image {
                 asynchronous: true
                 sourceSize.height: height
                 fillMode: Image.PreserveAspectFit
-                height: Math.round(48 * Screen.devicePixelRatio)
+                height: 81
             }
 
             Text {
                 anchors {
                     right: separator.left
-                    rightMargin: Math.round(20 * Screen.devicePixelRatio)
-                    topMargin: Math.round(28 * Screen.devicePixelRatio)
+                    rightMargin: 43
+                    topMargin: 23
                     top: logo.bottom
                 }
+                width: 327
                 color: "#eff7ff"
                 font.family: "Tahoma"
-                font.pixelSize: 14
-                text: "To begin, click your username"
+                font.pixelSize: 15
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignRight
+                text: "Για να ξεκινήσετε, κάντε κλικ στο δικό σας όνομα χρήστη"
             }
 
             Image {
@@ -338,59 +283,55 @@ Image {
                 anchors {
                     left: separator.right
                     right: parent.right
-                    // top: parent.top
-                    // bottom: parent.bottom
                     leftMargin: Math.round(20 * Screen.devicePixelRatio)
                     verticalCenter: parent.verticalCenter
                 }
                 height: (Math.round(48 * Screen.devicePixelRatio) + 20) * userModel.count //hack
 
-                    id: userListComponent
-                    userListModel: userModel
-                    loginScreenUiVisible: loginScreenRoot.uiVisible
-                    userListCurrentIndex: -1
-                    //lastUserName: userModel.lastUser
-                    showUserList: {
-                        if (!userListModel.hasOwnProperty("count")
-                            || !userListModel.hasOwnProperty("disableAvatarsThreshold")) {
-                            return false
-                        }
-
-                        if (userListModel.count === 0 ) {
-                            return false
-                        }
-
-                        if (userListModel.hasOwnProperty("containsAllUsers") && !userListModel.containsAllUsers) {
-                            return false
-                        }
-
-                        return userListModel.count <= userListModel.disableAvatarsThreshold
+                id: userListComponent
+                userListModel: userModel
+                loginScreenUiVisible: loginScreenRoot.uiVisible
+                userListCurrentIndex: -1
+                //lastUserName: userModel.lastUser
+                showUserList: {
+                    if (!userListModel.hasOwnProperty("count")
+                        || !userListModel.hasOwnProperty("disableAvatarsThreshold")) {
+                        return false
                     }
 
-                    notificationMessage: {
-                        const parts = [];
-                        if (keystateSource.data["Caps Lock"]["Locked"]) {
-                            parts.push(i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Caps Lock is on"));
-                        }
-                        if (root.notificationMessage) {
-                            parts.push(root.notificationMessage);
-                        }
-                        return parts.join(" • ");
+                    if (userListModel.count === 0 ) {
+                        return false
                     }
 
-                    onLoginRequest: {
-                        root.notificationMessage = ""
-                        sddm.login(username, password, sessionButton.currentIndex)
+                    if (userListModel.hasOwnProperty("containsAllUsers") && !userListModel.containsAllUsers) {
+                        return false
                     }
+
+                    return userListModel.count <= userListModel.disableAvatarsThreshold
+                }
+
+                notificationMessage: {
+                    const parts = [];
+                    if (keystateSource.data["Caps Lock"]["Locked"]) {
+                        parts.push(i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Caps Lock is on"));
+                    }
+                    if (root.notificationMessage) {
+                        parts.push(root.notificationMessage);
+                    }
+                    return parts.join(" • ");
+                }
+
+                onLoginRequest: {
+                    root.notificationMessage = ""
+                    sddm.login(username, password, sessionButton.currentIndex)
+                }
             }
 
             Rectangle {
                 height: parent.height
                 Layout.fillWidth: true
             }
-
         }
-
 
         //Footer
         Image {
@@ -406,72 +347,69 @@ Image {
             height: 96
 
             RowLayout {
-            id: footer
-            anchors {
-                bottom: parent.bottom
-                left: parent.left
-                right: parent.right
-                top: parent.top
-                leftMargin: 40
-                rightMargin: 60
-                bottomMargin: 20
+                id: footer
+                anchors {
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    leftMargin: 40
+                    rightMargin: 60
+                    bottomMargin: 20
+                }
+
+                spacing: 10
+
+                Behavior on opacity {
+                    OpacityAnimator {
+                        duration: PlasmaCore.Units.longDuration
+                    }
+                }
+
+                ActionButton {
+                    iconSource: "system-shutdown"
+                    text: "Σβήσιμο του υπολογιστή"
+                    fontSize: parseInt(config.fontSize) + 1
+                    onClicked: sddm.powerOff()
+                    enabled: sddm.canPowerOff
             }
 
-            spacing: 10
+                PlasmaComponents3.ToolButton {
+                    text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Button to show/hide virtual keyboard", "Virtual Keyboard")
+                    font.pointSize: config.fontSize
+                    icon.name: inputPanel.keyboardActive ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
+                    onClicked: inputPanel.showHide()
+                    visible: inputPanel.status === Loader.Ready
+                }
 
-            Behavior on opacity {
-                OpacityAnimator {
-                    duration: PlasmaCore.Units.longDuration
+                SessionButton {
+                    id: sessionButton
+                    font.pointSize: config.fontSize
+
+                    onSessionChanged: {
+                        // Otherwise the password field loses focus and virtual keyboard
+                        // keystrokes get eaten
+                        userListComponent.mainPasswordBox.forceActiveFocus();
+                    }
+                }
+
+                Battery {
+                    fontSize: config.fontSize
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                }
+
+                Text {
+                    color: "#eff7ff"
+                    font.family: "Tahoma"
+                    font.pixelSize: 14
+                    text: "After you logon, you can add or change accounts.\nJust go to Control Panel and click User Accounts."
                 }
             }
-
-            ActionButton {
-                iconSource: "system-shutdown"
-                text: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Shut Down")
-                fontSize: parseInt(config.fontSize) + 1
-                onClicked: sddm.powerOff()
-                enabled: sddm.canPowerOff
-           }
-
-            PlasmaComponents3.ToolButton {
-                text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Button to show/hide virtual keyboard", "Virtual Keyboard")
-                font.pointSize: config.fontSize
-                icon.name: inputPanel.keyboardActive ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
-                onClicked: inputPanel.showHide()
-                visible: inputPanel.status === Loader.Ready
-            }
-
-            SessionButton {
-                id: sessionButton
-                font.pointSize: config.fontSize
-
-                onSessionChanged: {
-                    // Otherwise the password field loses focus and virtual keyboard
-                    // keystrokes get eaten
-                    userListComponent.mainPasswordBox.forceActiveFocus();
-                }
-            }
-
-            Battery {
-                fontSize: config.fontSize
-            }
-
-            Item {
-                Layout.fillWidth: true
-            }
-
-            Text {
-                color: "#eff7ff"
-                font.family: "Tahoma"
-                font.pixelSize: 14
-                text: "After you logon, you can add or change accounts.\nJust go to Control Panel and click User Accounts."
-            }
-
         }
     }
-
-
-        }
 
     Connections {
         target: sddm

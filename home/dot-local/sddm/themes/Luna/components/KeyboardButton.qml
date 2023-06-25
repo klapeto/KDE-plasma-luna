@@ -19,20 +19,22 @@ Rectangle {
 
     visible: menu.count > 1
 
-    height: 12 * Screen.devicePixelRatio
-    width: 12 * Screen.devicePixelRatio
+    height: 11 * Screen.devicePixelRatio
+    width: 11 * Screen.devicePixelRatio
 
     color: "#316ac5"
     //color: "#fff"
 
     Text {
             color: "#fff"
-            font.pointSize: 12
+            font.pointSize: 10
+            font.family: "Tahoma"
             anchors {
-                verticalCenter: parent.verticalCenter
-                horizontalCenter: parent.horizontalCenter
-            } 
-            text: keyboard.layouts[currentIndex].shortName
+                fill: parent
+            }
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: keyboard.layouts[currentIndex].shortName.toUpperCase()
     }
 
     MouseArea {

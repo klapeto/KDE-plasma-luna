@@ -151,54 +151,59 @@ Item {
         font.pointSize: 10
         font.family: "Tahoma"
         color: "#eff7ff"
-        text: "Type your password"
+        text: "Πληκτρολογήστε τον κωδικό σας"
     }
 
     Rectangle {
-            anchors {
-                left: passwordBox.left
-                top: passwordBox.top
-                topMargin: Screen.devicePixelRatio * 1.2
-                leftMargin: Screen.devicePixelRatio * 1.2
-            }
+        anchors {
+            left: passwordContainer.left
+            top: passwordContainer.top
+            topMargin: Screen.devicePixelRatio * 1.2
+            leftMargin: Screen.devicePixelRatio * 1.2
+        }
 
-            antialiasing: true
+        antialiasing: true
 
-            visible: isCurrent
+        visible: isCurrent
 
-            height: passwordBox.height
-            width: passwordBox.width
+        height: passwordContainer.height
+        width: passwordContainer.width
 
-            radius: Math.round(2 * Screen.devicePixelRatio)
+        radius: Math.round(2 * Screen.devicePixelRatio)
 
-            gradient: Gradient {
-                GradientStop { position: 0.9; color: "#1e4cae" }
-                GradientStop { position: 1.0; color: "#2d59b8" }
-            }
+        gradient: Gradient {
+            GradientStop { position: 0.9; color: "#1e4cae" }
+             GradientStop { position: 1.0; color: "#2d59b8" }
+        }
     }
 
-    PlasmaExtras.PasswordField {
+    Rectangle {
+        height: 27
+        id: passwordContainer
+        anchors {
+            left: imageWrapper.right
+            right: typePasswordText.right
+            top: typePasswordText.bottom
+            topMargin: 5 * Screen.devicePixelRatio
+            leftMargin: 10 * Screen.devicePixelRatio
+        }
+
+        radius: Math.round(1.5 * Screen.devicePixelRatio)
+        color: control.enabled ? "transparent" : "#353637"
+        border.color: "transparent"
+
+        visible: isCurrent
+
+        PlasmaExtras.PasswordField {
             id: passwordBox
-            //font.pointSize: fontSize + 1
-            //Layout.fillWidth: true
 
             anchors {
-                left: imageWrapper.right
-                top: typePasswordText.bottom
-                topMargin: 5 * Screen.devicePixelRatio
-                leftMargin: 10 * Screen.devicePixelRatio
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+                leftMargin: 9
             }
 
             color: "black"
-
-            background: Rectangle {
-                implicitWidth: 200
-                implicitHeight: 27
-                radius: Math.round(2 * Screen.devicePixelRatio)
-                color: control.enabled ? "transparent" : "#353637"
-                border.color: "transparent"
-            }
-
 
             placeholderText: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Password")
             focus: isCurrent
@@ -212,7 +217,10 @@ Item {
                 }
             }
 
-            visible: isCurrent
+            background: Rectangle {
+                color: "transparent"
+                border.color: "transparent"
+            }
 
             Keys.onEscapePressed: {
                 mainStack.currentItem.forceActiveFocus();
@@ -239,74 +247,71 @@ Item {
                 }
             }
         }
+    }
 
-         KeyboardButton {
-                id: keyboardButton
+     KeyboardButton {
+        id: keyboardButton
+        anchors {
+            verticalCenter: passwordContainer.verticalCenter
+            left: passwordContainer.right
+            leftMargin: 4 * Screen.devicePixelRatio
+        }
 
-                anchors {
-                    //top: passwordBox.top
-                    //bottom: passwordBox.bottom
-                    verticalCenter: passwordBox.verticalCenter
-                    left: passwordBox.right
-                    leftMargin: 4 * Screen.devicePixelRatio
-                }
+        visible: isCurrent
 
+        onKeyboardLayoutChanged: {
+            // Otherwise the password field loses focus and virtual keyboard
+            // keystrokes get eaten
+            passwordBox.forceActiveFocus();
+        }
+    }
 
-                visible: isCurrent
+    Rectangle {
+        anchors {
+            left: loginButton.left
+            top: loginButton.top
+            topMargin: Screen.devicePixelRatio * 1.2
+            leftMargin: Screen.devicePixelRatio * 1.2
+        }
 
-                onKeyboardLayoutChanged: {
-                    // Otherwise the password field loses focus and virtual keyboard
-                    // keystrokes get eaten
-                    passwordBox.forceActiveFocus();
-                }
-            }
+        visible: isCurrent
 
-        Rectangle {
-            anchors {
-                left: loginButton.left
-                top: loginButton.top
-                topMargin: Screen.devicePixelRatio * 1.2
-                leftMargin: Screen.devicePixelRatio * 1.2
-            }
+        height: loginButton.height
+        width: loginButton.width
 
-            visible: isCurrent
-
-            height: loginButton.height
-            width: loginButton.width
-
-            radius: Math.round(2 * Screen.devicePixelRatio)
+        radius: Math.round(2 * Screen.devicePixelRatio)
             
-            gradient: Gradient {
-                GradientStop { position: 0.9; color: "#1e4cae" }
-                GradientStop { position: 1.0; color: "#2d59b8" }
-            }
+        gradient: Gradient {
+            GradientStop { position: 0.9; color: "#1e4cae" }
+            GradientStop { position: 1.0; color: "#2d59b8" }
+        }
     }
 
     PlasmaComponents3.Button {
-            id: loginButton
+        id: loginButton
 
-            anchors {
-                top: passwordBox.top
-                bottom: passwordBox.bottom
-                left: keyboardButton.right
-                leftMargin: 4 * Screen.devicePixelRatio
-            }
-
-            width: height
-            visible: isCurrent
-
-            Accessible.name: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Log In")
-
-            Image {
-                source: "../enter.svg"
-                anchors.fill: parent
-            }
-            //icon.name: text.length === 0 ? (root.LayoutMirroring.enabled ? "go-previous" : "go-next") : ""
-
-            onClicked: startLogin()
-            Keys.onEnterPressed: clicked()
-            Keys.onReturnPressed: clicked()
+        anchors {
+            top: passwordContainer.top
+            bottom: passwordContainer.bottom
+            left: keyboardButton.right
+            leftMargin: 4 * Screen.devicePixelRatio
         }
+
+        width: height
+        visible: isCurrent
+
+        Accessible.name: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Log In")
+
+        Image {
+            source: "../enter.svg"
+            anchors.fill: parent
+        }
+        //icon.name: text.length === 0 ? (root.LayoutMirroring.enabled ? "go-previous" : "go-next") : ""
+
+        onClicked: startLogin()
+        Keys.onEnterPressed: clicked()
+        Keys.onReturnPressed: clicked()
+    }
 
     function startLogin() {
         const username = userName
