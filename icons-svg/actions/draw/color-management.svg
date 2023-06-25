@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    sodipodi:docname="color-management.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    id="svg8"
    version="1.1"
    viewBox="0 0 256 256"
@@ -28,7 +28,7 @@
          offset="0"
          id="stop33057" />
       <stop
-         style="stop-color:#002b56;stop-opacity:1"
+         style="stop-color:#003c78;stop-opacity:1"
          offset="1"
          id="stop33059" />
     </linearGradient>
@@ -40,7 +40,7 @@
          offset="0"
          id="stop19906" />
       <stop
-         style="stop-color:#003bb2;stop-opacity:1"
+         style="stop-color:#004de5;stop-opacity:1"
          offset="1"
          id="stop19908" />
     </linearGradient>
@@ -52,7 +52,7 @@
          offset="0"
          id="stop12874" />
       <stop
-         style="stop-color:#00b218;stop-opacity:1"
+         style="stop-color:#00cc1c;stop-opacity:1"
          offset="1"
          id="stop12876" />
     </linearGradient>
@@ -64,7 +64,7 @@
          offset="0"
          id="stop1360" />
       <stop
-         style="stop-color:#b21200;stop-opacity:1"
+         style="stop-color:#cc1500;stop-opacity:1"
          offset="1"
          id="stop1362" />
     </linearGradient>
@@ -105,19 +105,20 @@
        y1="90.5"
        x2="125.06771"
        y2="102.92244"
-       gradientUnits="userSpaceOnUse" />
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(0.07272739)" />
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
-       id="filter42897"
-       x="-0.048000001"
-       y="-0.048000001"
+       id="filter1532"
+       x="-0.047999998"
+       y="-0.047999998"
        width="1.096"
        height="1.096">
       <feGaussianBlur
          inkscape:collect="always"
-         stdDeviation="4.1857032"
-         id="feGaussianBlur42899" />
+         stdDeviation="4.2"
+         id="feGaussianBlur1534" />
     </filter>
   </defs>
   <sodipodi:namedview
@@ -132,16 +133,16 @@
      inkscape:window-maximized="1"
      inkscape:window-y="0"
      inkscape:window-x="3840"
-     inkscape:window-height="2043"
+     inkscape:window-height="2050"
      inkscape:window-width="3840"
      units="px"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="135.23417"
-     inkscape:cx="225.56706"
-     inkscape:zoom="5.6568544"
+     inkscape:cy="103.47913"
+     inkscape:cx="75.241303"
+     inkscape:zoom="2.7976655"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -183,9 +184,9 @@
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
     <path
-       id="rect42743"
-       style="fill:#212121;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5.33;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000;filter:url(#filter42897)"
-       d="m 43.424709,27.357 a 2.50025,2.50025 0 0 0 -2.5,2.5 v 204.28516 a 2.50025,2.50025 0 0 0 2.5,2.5 H 247.70987 a 2.50025,2.50025 0 0 0 2.5,-2.5 V 29.857 a 2.50025,2.50025 0 0 0 -2.5,-2.5 z" />
+       id="rect1468"
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5.33;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000;filter:url(#filter1532)"
+       d="m 44.567709,26.857 a 3.0003,3.0003 0 0 0 -3,3 v 204 a 3.0003,3.0003 0 0 0 3,3 H 248.56771 a 3.0003,3.0003 0 0 0 3,-3 v -204 a 3.0003,3.0003 0 0 0 -3,-3 z" />
     <g
        id="g42583"
        transform="translate(0.85718992,5.857158)">
@@ -222,11 +223,11 @@
            x="112.06771"
            y="99.218185" />
         <rect
-           style="fill:none;fill-rule:evenodd;stroke:url(#linearGradient33063);stroke-width:0.318182;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+           style="fill:none;fill-rule:evenodd;stroke:url(#linearGradient33063);stroke-width:0.38181817;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
            id="rect1112"
-           width="13"
-           height="13"
-           x="112.06771"
+           width="12.981818"
+           height="12.981818"
+           x="112.14044"
            y="90.5" />
       </g>
     </g>

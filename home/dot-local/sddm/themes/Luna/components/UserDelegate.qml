@@ -35,6 +35,7 @@ Item {
 
     signal loginRequest(string username, string password)
 
+    opacity: isCurrent ? 1.0 : 0.5 
 
     property real faceSize: 256
 
@@ -130,6 +131,13 @@ Item {
         font.underline: wrapper.activeFocus
     }
 
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+
+        onClicked: wrapper.clicked()
+    }
+
     Text {
         id: typePasswordText
         anchors {
@@ -148,11 +156,13 @@ Item {
 
     Rectangle {
             anchors {
-                left: imageWrapper.right
-                top: typePasswordText.bottom
-                topMargin: 5 * Screen.devicePixelRatio + 2
-                leftMargin: 10 * Screen.devicePixelRatio + 2
+                left: passwordBox.left
+                top: passwordBox.top
+                topMargin: Screen.devicePixelRatio * 1.2
+                leftMargin: Screen.devicePixelRatio * 1.2
             }
+
+            antialiasing: true
 
             visible: isCurrent
 
@@ -160,7 +170,11 @@ Item {
             width: passwordBox.width
 
             radius: Math.round(2 * Screen.devicePixelRatio)
-            color: "#0c3b9c"
+
+            gradient: Gradient {
+                GradientStop { position: 0.9; color: "#1e4cae" }
+                GradientStop { position: 1.0; color: "#2d59b8" }
+            }
     }
 
     PlasmaExtras.PasswordField {
@@ -226,6 +240,74 @@ Item {
             }
         }
 
+         KeyboardButton {
+                id: keyboardButton
+
+                anchors {
+                    //top: passwordBox.top
+                    //bottom: passwordBox.bottom
+                    verticalCenter: passwordBox.verticalCenter
+                    left: passwordBox.right
+                    leftMargin: 4 * Screen.devicePixelRatio
+                }
+
+
+                visible: isCurrent
+
+                onKeyboardLayoutChanged: {
+                    // Otherwise the password field loses focus and virtual keyboard
+                    // keystrokes get eaten
+                    passwordBox.forceActiveFocus();
+                }
+            }
+
+        Rectangle {
+            anchors {
+                left: loginButton.left
+                top: loginButton.top
+                topMargin: Screen.devicePixelRatio * 1.2
+                leftMargin: Screen.devicePixelRatio * 1.2
+            }
+
+            visible: isCurrent
+
+            height: loginButton.height
+            width: loginButton.width
+
+            radius: Math.round(2 * Screen.devicePixelRatio)
+            
+            gradient: Gradient {
+                GradientStop { position: 0.9; color: "#1e4cae" }
+                GradientStop { position: 1.0; color: "#2d59b8" }
+            }
+    }
+
+    PlasmaComponents3.Button {
+            id: loginButton
+
+            anchors {
+                top: passwordBox.top
+                bottom: passwordBox.bottom
+                left: keyboardButton.right
+                leftMargin: 4 * Screen.devicePixelRatio
+            }
+
+            width: height
+            visible: isCurrent
+
+            Accessible.name: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Log In")
+
+            Image {
+                source: "../enter.svg"
+                anchors.fill: parent
+            }
+            //icon.name: text.length === 0 ? (root.LayoutMirroring.enabled ? "go-previous" : "go-next") : ""
+
+            onClicked: startLogin()
+            Keys.onEnterPressed: clicked()
+            Keys.onReturnPressed: clicked()
+        }
+
     function startLogin() {
         const username = userName
         const password = passwordBox.text
@@ -237,16 +319,6 @@ Item {
         // See https://bugreports.qt.io/browse/QTBUG-55460
         //loginButton.forceActiveFocus();
         loginRequest(username, password);
-    }
-
-
-
-
-    MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
-
-        onClicked: wrapper.clicked()
     }
 
     Keys.onSpacePressed: wrapper.clicked()

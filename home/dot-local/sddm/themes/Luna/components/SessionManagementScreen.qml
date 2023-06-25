@@ -71,15 +71,14 @@ FocusScope {
 
         UserList {
             id: userListView
-
             fontSize: root.fontSize
+
             // bubble up the signal
             onUserSelected: root.userSelected()
         }
 
         Rectangle {
             Layout.fillHeight: true
-
         }
     }
     // FIXME: move this component into a layout, rather than abusing

@@ -338,17 +338,18 @@ Image {
                 anchors {
                     left: separator.right
                     right: parent.right
-                    top: parent.top
-                    bottom: parent.bottom
+                    // top: parent.top
+                    // bottom: parent.bottom
                     leftMargin: Math.round(20 * Screen.devicePixelRatio)
                     verticalCenter: parent.verticalCenter
                 }
+                height: (Math.round(48 * Screen.devicePixelRatio) + 20) * userModel.count //hack
 
                     id: userListComponent
                     userListModel: userModel
                     loginScreenUiVisible: loginScreenRoot.uiVisible
-                    userListCurrentIndex: userModel.lastIndex >= 0 ? userModel.lastIndex : 0
-                    lastUserName: userModel.lastUser
+                    userListCurrentIndex: -1
+                    //lastUserName: userModel.lastUser
                     showUserList: {
                         if (!userListModel.hasOwnProperty("count")
                             || !userListModel.hasOwnProperty("disableAvatarsThreshold")) {
@@ -381,7 +382,7 @@ Image {
                         root.notificationMessage = ""
                         sddm.login(username, password, sessionButton.currentIndex)
                     }
-                }
+            }
 
             Rectangle {
                 height: parent.height
@@ -438,16 +439,6 @@ Image {
                 icon.name: inputPanel.keyboardActive ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
                 onClicked: inputPanel.showHide()
                 visible: inputPanel.status === Loader.Ready
-            }
-
-            KeyboardButton {
-                font.pointSize: config.fontSize
-
-                onKeyboardLayoutChanged: {
-                    // Otherwise the password field loses focus and virtual keyboard
-                    // keystrokes get eaten
-                    userListComponent.mainPasswordBox.forceActiveFocus();
-                }
             }
 
             SessionButton {

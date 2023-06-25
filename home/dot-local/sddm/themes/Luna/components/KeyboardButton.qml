@@ -6,26 +6,39 @@
 */
 
 import QtQuick 2.15
+import QtQuick.Window 2.15
 
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 
-PlasmaComponents.ToolButton {
+Rectangle {
     id: root
 
     property int currentIndex: keyboard.currentLayout
     onCurrentIndexChanged: keyboard.currentLayout = currentIndex
 
-    text: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Keyboard Layout: %1", keyboard.layouts[currentIndex].longName)
     visible: menu.count > 1
 
-    checkable: true
-    checked: menu.opened
-    onToggled: {
-        if (checked) {
+    height: 12 * Screen.devicePixelRatio
+    width: 12 * Screen.devicePixelRatio
+
+    color: "#316ac5"
+    //color: "#fff"
+
+    Text {
+            color: "#fff"
+            font.pointSize: 12
+            anchors {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+            } 
+            text: keyboard.layouts[currentIndex].shortName
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
             menu.popup(root, 0, 0)
-        } else {
-            menu.dismiss()
         }
     }
 

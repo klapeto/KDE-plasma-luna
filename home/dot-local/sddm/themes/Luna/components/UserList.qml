@@ -35,8 +35,7 @@ ListView {
     readonly property bool constrainText: count > 1
     property int fontSize: PlasmaCore.Theme.defaultFont.pointSize + 2
 
-    //implicitHeight: userItemHeight
-
+    implicitHeight: (userItemHeight + 20) * model.count
     spacing: 20
 
     activeFocusOnTab: true
