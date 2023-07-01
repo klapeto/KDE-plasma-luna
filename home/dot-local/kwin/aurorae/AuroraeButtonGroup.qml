@@ -15,7 +15,7 @@ Item {
                 Qt.createQmlObject("import QtQuick 2.0; Item { width: auroraeTheme.explicitButtonSpacer * auroraeTheme.buttonSizeFactor; height: auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor }",
                     groupRow, "explicitSpacer" + buttons + i);
             } else if (buttons[i] == DecorationOptions.DecorationButtonMenu) {
-                Qt.createQmlObject("import QtQuick 2.0; MenuButton { width: auroraeTheme.buttonWidthMenu * auroraeTheme.buttonSizeFactor; height: auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor }",
+                Qt.createQmlObject("import QtQuick 2.0; import org.kde.plasma.core 2.0 as PlasmaCore; MenuButton { width: Math.round(16 * PlasmaCore.Units.devicePixelRatio); height: Math.round(16 * PlasmaCore.Units.devicePixelRatio) }",
                     groupRow, "menuButton" + buttons + i);
             } else if (buttons[i] == DecorationOptions.DecorationButtonApplicationMenu) {
                 Qt.createQmlObject("import QtQuick 2.0; AppMenuButton { width: auroraeTheme.buttonWidthAppMenu * auroraeTheme.buttonSizeFactor; height: auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor }",

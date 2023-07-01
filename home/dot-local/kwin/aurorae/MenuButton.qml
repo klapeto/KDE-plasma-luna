@@ -6,14 +6,18 @@
 import QtQuick 2.0
 import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 import org.kde.kwin.decoration 0.1
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 DecorationButton {
     property bool closeOnDoubleClick: decorationSettings.closeOnDoubleClickOnMenu
     id: menuButton
     buttonType: DecorationOptions.DecorationButtonMenu
-    KQuickControlsAddons.QIconItem {
+   KQuickControlsAddons.QIconItem {
         icon: decoration.client.icon
-        anchors.fill: parent
+        smooth: true
+        anchors {
+            fill: parent
+        }
     }
     DecorationOptions {
         id: options

@@ -48,7 +48,7 @@ Decoration {
         id: backgroundSvg
         imagePath: auroraeTheme.decorationPath
     }
-    
+
     
     
     //==============================
@@ -623,7 +623,6 @@ Decoration {
         horizontalAlignment: auroraeTheme.horizontalAlignment
         verticalAlignment: auroraeTheme.verticalAlignment
         elide: Text.ElideRight
-        height: Math.round(PlasmaCore.Units.devicePixelRatio * 11)
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
         font.family: "Trebuchet MS"
         font.pointSize: 11
@@ -634,8 +633,9 @@ Decoration {
         anchors {
             left: leftButtonGroup.right
             right: rightButtonGroup.left
-            top: root.top
-            topMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 8) : Math.round(PlasmaCore.Units.devicePixelRatio * 12)
+            top: leftButtonGroup.top
+            bottom: leftButtonGroup.bottom
+            topMargin: Math.round(PlasmaCore.Units.devicePixelRatio)
             leftMargin: Math.round(4 * PlasmaCore.Units.devicePixelRatio)
             rightMargin: auroraeTheme.titleBorderRight
         }
