@@ -427,7 +427,10 @@ MouseArea {
         anchors {
             left: parent.left
             top: parent.top
-            leftMargin: 8 * PlasmaCore.Units.devicePixelRatio
+            bottom: parent.bottom
+            topMargin: Math.round(3 * PlasmaCore.Units.devicePixelRatio)
+            bottomMargin: Math.round(2 * PlasmaCore.Units.devicePixelRatio)
+            leftMargin: Math.round(8 * PlasmaCore.Units.devicePixelRatio)
         }
 
         onWidthChanged: LayoutManager.layout(taskRepeater)

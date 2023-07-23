@@ -82,6 +82,10 @@ input.findbar-textbox:focus {
 }
 
 #nav-bar {
-    background-color: #fcfcfe !important;
+    /* background-color: #fcfcfe !important; */
     margin-top: 1px;
+}
+
+#firefox-view-button {
+    max-height: 2.9em !important;
 }

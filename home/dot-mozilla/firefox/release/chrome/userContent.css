@@ -127,13 +127,15 @@ input[type=button]:default {
 
 /* Textbox */
 input,
-input[type=text] {
+input[type=text],
+input[type=search] {
     border-radius: 0;
     appearance: none;
     border: 1px solid #7f9db9;
 }
 
 input,
+input[type=search]
 input[type=text]:focus-visible {
     outline: none;
 }
@@ -182,3 +184,19 @@ input[type=number]::-moz-number-spin-down {
 }
 /* Number */
 
+/* PDF
+@-moz-document url(resource://pdf.js/web/viewer.html) {
+   #zoomIn::before {
+    mask-image: revert !important;
+    background-image: url("./zoom-in.svg") !important;
+    background-color: revert !important;
+}
+
+.toolbarButton:hover::before,
+.toolbarButton:focus-visible::before,
+.secondaryToolbarButton:hover::before,
+.secondaryToolbarButton:focus-visible::before {
+    background-color: revert  !important;;
+}
+}
+ */

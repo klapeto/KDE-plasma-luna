@@ -42,12 +42,9 @@
 }
 
 #identity-box[pageproxystate="valid"].verifiedDomain #identity-icon,
-#identity-box[pageproxystate="valid"].mixedActiveBlocked #identity-icon {
-  list-style-image: url("./../images/lock.svg") !important;
-}
-
+#identity-box[pageproxystate="valid"].mixedActiveBlocked #identity-icon,
 #identity-popup[connection^="secure"] .identity-popup-security-connection {
-  background-image: url("./../images/lock.svg") !important;
+  list-style-image: url("./../images/lock.svg") !important;
 }
 
 #urlbar-input-container[pageproxystate="valid"] > #tracking-protection-icon-container > #tracking-protection-icon-box:not([hasException])[active] > #tracking-protection-icon,
@@ -264,7 +261,8 @@ menuitem {
   list-style-image: url("./../images/no-sound.svg") !important;
 }
 
-.page-options-menu > .more-options-button {
+.page-options-menu > .more-options-button,
+.icon.icon-settings {
   background-image: url("./../images/configure.svg") !important;
 }
 
@@ -280,7 +278,7 @@ menuitem {
   list-style-image: url("./../images/view-sidetree.svg") !important;
 }
 
-#add-ons-button {
+#add-ons-button, #unified-extensions-button {
   list-style-image: url("./../images/plugin.svg") !important;
 }
 
@@ -332,7 +330,7 @@ menuitem {
   list-style-image: url("./../images/new-window.svg") !important;
 }
 
-#fullscreen-button {
+#fullscreen-button, #appMenu-fullscreen-button2 {
   list-style-image: url("./../images/full-screen.svg") !important;
 }
 
@@ -413,7 +411,7 @@ menuitem {
   list-style-image: url("./../images/globe-save.svg") !important;
 }
 
-#nav-bar-overflow-button {
+#nav-bar-overflow-button, #alltabs-button {
   list-style-image: url("./../images/expand.svg") !important;
 }
 
@@ -421,7 +419,8 @@ menuitem {
   list-style-image: url("./../images/context-menu.svg") !important;
 }
 
-#downloads-button {
+#downloads-button,
+#downloads-indicator-anchor {
   list-style-image: url("./../images/downloads.svg") !important;
 }
 
@@ -432,6 +431,7 @@ menuitem {
 #downloads-button[progress="true"] {
   list-style-image: url("./../images/download.svg") !important;
 }
+
 
 #_testpilot-containers-browser-action {
   --webextension-toolbar-image: url("./../images/online-accounts.svg") !important;
@@ -491,6 +491,30 @@ menuitem {
   --menuitem-icon-image: url("./../images/configure.svg") !important;
 }
 
+#identity-box[pageproxystate="valid"].localResource #identity-icon {
+  list-style-image: url("./../images/hard-disk.svg") !important;
+}
+
+.urlbarView-row[source="tabs"] > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-favicon, 
+#urlbar-engine-one-off-item-tabs {
+  list-style-image: url("./../images/tab.svg") !important;
+}
+
+.urlbarView-row[source="history"] > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-favicon,
+#urlbar-engine-one-off-item-history {
+  list-style-image: url("./../images/history.svg") !important;
+}
+
+.search-setting-button > .button-box > .button-icon {
+  list-style-image: url("./../images/configure.svg") !important;
+}
+
+.urlbarView-row[source="bookmarks"] > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-favicon, 
+#urlbar-engine-one-off-item-bookmarks {
+
+  list-style-image: url("./../images/favourites.svg") !important;;
+}
+
 #PersonalToolbar .toolbarbutton-1:not([disabled="true"], [checked], [open], :active):hover,
 #tabbrowser-arrowscrollbox:not([scrolledtostart="true"])::part(scrollbutton-up):hover, 
 #tabbrowser-arrowscrollbox:not([scrolledtoend="true"])::part(scrollbutton-down):hover, 
@@ -521,10 +545,10 @@ toolbarbutton:active {
   margin: 0 !important;
 }
 
-#nav-bar {
+/* #nav-bar {
   background: linear-gradient(90deg, #f3f4f7 0%, #eeebd9 100%) !important;
   box-shadow: inset 0px -3px 8px 0px #dedbc5 !important;
-}
+} */
 
 #PersonalToolbar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:active), 
 #tabbrowser-arrowscrollbox:not([scrolledtostart="true"])::part(scrollbutton-up):hover:active, 
@@ -540,4 +564,170 @@ toolbar .toolbarbutton-1:not([disabled="true"]):is([open], [checked], :hover:act
 /* #toolbox-meatball-menu-dock-bottom {
   --menuitem-icon-image: url("./../images/configure.svg") !important;
 } */
+
+:is(panel, menupopup)::part(content) {
+  border-radius: 0 !important;
+  border-color: #aca899 !important;
+  box-shadow: 2px 2px 4px 0px #8e8e8e !important;
+  margin: 0 8px 8px 0 !important;
+}
+
+#PlacesToolbar menuitem, 
+#PlacesToolbar menu, 
+.subview-subheader, 
+panelview .toolbarbutton-1, 
+.subviewbutton, 
+.widget-overflow-list .toolbarbutton-1,
+.urlbarView-row-inner {
+  padding: 4px 4px 4px 16px !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: white;
+  margin: 0 !important;
+}
+
+:is(#PlacesToolbar menuitem, 
+#PlacesToolbar menu, 
+.subview-subheader, 
+panelview .toolbarbutton-1, 
+.subviewbutton, 
+.widget-overflow-list .toolbarbutton-1,
+.urlbarView-row-inner):hover {
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: #316ac5 !important;
+  color: white !important;
+  margin: 0 !important;
+}
+
+#firefox-view-button {
+    max-height: 2.9em !important;
+    list-style-image: url("./../images/msn.svg") !important;
+}
+
+#back-button > label {
+  display: block !important;
+}
+
+#stop-button,
+#reload-button {
+  display: -moz-box !important;
+}
+
+#TabsToolbar-customization-target {
+  height: 3em;
+}
+
+menupopup, panel {
+  --panel-border-radius: 0 !important;
+  --panel-shadow: 5px 5px 5px -3px rgba(144,144,144,1) !important;
+  --panel-shadow-margin: 10px !important;
+}
+
+menu, menuitem, menucaption, .subviewbutton{
+  padding: 2px 9px 2px 9px !important;
+}
+
+toolbarbutton menupopup[placespopup] > :is(menu, menuitem),
+.subview-subheader,
+panelview .toolbarbutton-1,
+.subviewbutton,
+.widget-overflow-list .toolbarbutton-1{
+  min-height: revert !important;
+}
+
+.panel-subview-body {
+  padding: 0 !important;
+}
+
+#appMenu-zoomReduce-button2 {
+  list-style-image: url("./../images/remove.svg") !important;
+}
+
+#appMenu-zoomEnlarge-button2 {
+  list-style-image: url("./../images/add.svg") !important;
+}
+
+#protections-popup-mainView .subviewbutton-nav:not(.notFound)::after,
+.widget-overflow-list .subviewbutton-nav::after,
+.PanelUI-subView .subviewbutton-nav::after{
+  content: url("./../images/menu-expand.svg")  !important;
+}
+
+#downloads-indicator-icon {
+  height: 2.5em !important;
+  width: 2.5em !important;
+}
+
+.browserStack {
+  display: flex !important;
+  flex-flow: column !important;
+}
+
+browser {
+  border: 3px #aca899 ridge !important;
+  border-bottom: 3px #f1efe2 ridge !important;
+  border-right: 3px #f1efe2 ridge !important;
+  flex-grow: 1 !important;
+  box-shadow: 0px 0px 3px 2px #c1c2be !important;
+}
+
+#statuspanel {
+  visibility: revert !important;
+  opacity: 1 !important;
+  max-width: revert !important;
+  padding-top: revert !important;
+  width: 100% !important;
+  height: 24px !important;
+  position: revert !important;
+  z-index: -1 !important;
+  background-color: rgb(236, 233, 216);
+  align-content: center !important;
+  align-items: center !important;
+  display: flex !important;
+  flex-flow: row !important;
+}
+
+#statuspanel-label{
+  border: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+#statuspanel::before {
+  align-content: center !important;
+  align-items: center !important;
+  display: flex !important;
+  flex-flow: row !important;
+  margin-left: 2px;
+  content: url("./../images/ie-file-16.svg") !important;
+  height: 16px;
+}
+
+#statuspanel::after {
+  display: flex !important;
+  flex-flow: row !important;
+  margin-right: 2px;
+  height: 16px;
+  width: 323px;
+  text-align: center;
+  content: url("./../images/separator-24.svg") url("./../images/separator-24.svg") url("./../images/separator-24.svg") url("./../images/separator-24.svg") url("./../images/separator-5.svg") url("./../images/geo.svg") url("./../images/separator-5-inv.svg") 'Internet' !important;
+}
+
+#statuspanel::after > * {
+  margin-right: 4px;
+}
+
+#statuspanel:not([type='defaultStatus']) > label {
+  align-content: center !important;
+  align-items: center !important;
+  display: flex !important;
+  flex-flow: row !important;
+}
+
+#statuspanel[type='defaultStatus'] > label::before {
+  content: 'Ολοκληρώθηκε' !important;
+}
 

@@ -1,5 +1,6 @@
-
-@-moz-document url-prefix(about:) {
+@-moz-document url-prefix(about:),
+url-prefix(chrome://devtools/),
+url-prefix(chrome://) {
 
 #category-general > .category-icon,
 .sync-engine-prefs .checkbox-icon,
@@ -46,7 +47,8 @@
     list-style-image: url("./../images/search.svg") !important;
   }
 
-  .addons-icon {
+  .addons-icon,
+  .sync-engine-addons.sync-engine-image {
     list-style-image: url("./../images/plugin.svg") !important;
   }
   
@@ -126,8 +128,495 @@ checkbox:hover > .checkbox-check[checked] {
   list-style-image: url("./../images/keys.svg") !important;
 }
 
-.page-options-menu > .more-options-button {
+.page-options-menu > .more-options-button,
+.icon.icon-settings {
   background-image: url("./../images/configure.svg") !important;
+}
+
+.delete-button,
+.menuitem-remove-all-logins {
+  background-image: url("./../images/delete-16.svg") !important;
+}
+
+.edit-button {
+  background-image: url("./../images/pencil-16.svg") !important;
+}
+
+.fxaccount-avatar {
+  background-image: url("./../images/msn.svg") !important;
+}
+
+.favicon-wrapper {
+  background-image: url("./../images/geo.svg") !important;
+  background-size: contain !important;
+}
+
+.favicon-wrapper.hide-default-favicon {
+  background-image: none !important;
+}
+
+.menuitem-export {
+  background-image: url("./../images/export-document-16.svg") !important;
+}
+
+.menuitem-preferences {
+  background-image: url("./../images/configure-16.svg") !important;
+}
+
+.menuitem-help {
+  background-image: url("./../images/help-16.svg") !important;
+}
+
+.autoplay-icon {
+  list-style-image: url("./../images/autoplay.svg") !important;
+}
+
+#command-button-pick::before {
+  background-image: url("./../images/select-all.svg") !important;
+  background-size: contain !important;
+}
+
+.toolbox-error::before {
+  background-image: url("./../images/error.svg") !important;
+  background-size: contain !important;
+}
+
+#command-button-responsive::before {
+  background-image: url("./../images/cellphone.svg") !important;
+  background-size: contain !important;
+}
+
+#inspector-eyedropper-toggle::before {
+  background-image: url("./../images/color-picker.svg") !important;
+  background-size: contain !important;
+}
+
+#ruleview-add-rule-button::before,
+#inspector-element-add-button::before,
+.devtools-button.devtools-http-custom-request-icon::before {
+  background-image: url("./../images/add.svg") !important;
+  background-size: contain !important;
+}
+
+#tools-chevron-menu-button::before {
+  background-image: url("./../images/expand-right.svg") !important;
+  background-size: contain !important;
+}
+
+#color-scheme-simulation-light-toggle::before {
+  background-image: url("./../images/brightness-high.svg") !important;
+  background-size: contain !important;
+}
+
+#color-scheme-simulation-dark-toggle::before {
+  background-image: url("./../images/brightness-low.svg") !important;
+  background-size: contain !important;
+}
+
+#print-simulation-toggle::before {
+  background-image: url("./../images/print.svg") !important;
+  background-size: contain !important;
+}
+
+#inspector-splitter-box .sidebar-toggle::before {
+  background-image: url("./../images/view-sidetree.svg") !important;
+  background-size: contain !important;
+}
+
+#command-button-frames::before {
+  background-image: url("./../images/view-sidetree.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-meatball-menu-button::before {
+  background-image: url("./../images/context-menu.svg") !important;
+  background-size: contain !important;
+}
+
+#take-snapshot::before {
+  background-image: url("./../images/camera-photo.svg") !important;
+  background-size: contain !important;
+}
+
+#diff-snapshots::before {
+  background-image: url("./../images/diff.svg") !important;
+  background-size: contain !important;
+}
+
+#import-snapshot::before {
+  background-image: url("./../images/import-document.svg") !important;
+  background-size: contain !important;
+}
+
+.devtools-button.devtools-search-icon::before {
+  background-image: url("./../images/search.svg") !important;
+  background-size: contain !important;
+}
+
+.devtools-button.requests-list-blocking-button::before,
+.status-code-blocked-icon {
+  background-image: url("./../images/cancel.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-close::before,
+.jsterm-editor .webconsole-editor-toolbar .webconsole-editor-toolbar-closeButton::before {
+  background-image: url("./../images/exit.svg") !important;
+  background-size: contain !important;
+}
+
+.devtools-filterinput {
+  background-image: url("./../images/filter.svg") !important;
+  background-size: 16px 16px !important;
+}
+
+.devtools-button::before {
+  display: block !important;
+}
+
+.requests-list-network-summary-button > .summary-info-icon {
+  background: url("./../images/chronometer.svg") no-repeat !important;
+  background-size: contain !important;
+}
+
+.message.warn > .icon {
+  background-image: url("./../images/warning.svg") !important;
+  background-size: contain !important;
+}
+
+.message.error > .icon {
+  background-image: url("./../images/error.svg") !important;
+  background-size: contain !important;
+}
+
+.message.info > .icon {
+  background-image: url("./../images/info.svg") !important;
+  background-size: contain !important;
+}
+
+.jsterm-editor .webconsole-editor-toolbar .webconsole-editor-toolbar-executeButton::before {
+  content: url("./../images/start-16.svg") !important;
+}
+
+.jsterm-editor .webconsole-editor-toolbar .webconsole-editor-toolbar-prettyPrintButton::before {
+  mask-image: none !important;
+  background-color: inherit !important;
+  background-image: url("./../images/code-context.svg") !important;
+  background-size: contain !important;
+}
+
+.jsterm-editor .webconsole-editor-toolbar .webconsole-editor-toolbar-history-prevExpressionButton::before {
+  mask-image: none !important;
+  background-color: inherit !important;
+  background-image: url("./../images/up.svg") !important;
+  background-size: contain !important;
+}
+
+.jsterm-editor .webconsole-editor-toolbar .webconsole-editor-toolbar-history-nextExpressionButton::before{
+  mask-image: none !important;
+  background-color: inherit !important;
+  background-image: url("./../images/down.svg") !important;
+  background-size: contain !important;
+}
+
+.jsterm-editor .webconsole-editor-toolbar .webconsole-editor-toolbar-reverseSearchButton::before {
+  mask-image: none !important;
+  background-color: inherit !important;
+  background-image: url("./../images/search.svg") !important;
+  background-size: contain !important;
+}
+
+.img {
+  mask-image: none !important;
+  background-color: inherit !important;
+  background-size: contain !important;
+}
+
+.img.window {
+  background-image: url("./../images/window.svg") !important;
+}
+
+.img.globe,
+.img.globe-small {
+  background-image: url("./../images/geo.svg") !important;
+}
+
+.img.extension {
+  background-image: url("./../images/plugin.svg") !important;
+}
+
+.img.folder {
+  background-image: url("./../images/folder.svg") !important;
+}
+
+.img.home {
+  background-image: url("./../images/home.svg") !important;
+}
+
+.img.close {
+  background-image: url("./../images/exit.svg") !important;
+}
+
+.img.blackBox {
+  background-image: url("./../images/cancel.svg") !important;
+}
+
+.img.case-match {
+  background-image: url("./../images/check_contraint.svg") !important;
+}
+
+.img.disable-pausing {
+  background-image: url("./../images/disable-pause.svg") !important;
+}
+
+.img.enable-pausing {
+  background-image: url("./../images/enable-pause.svg") !important;
+}
+
+.img.loader{
+  background-image: url("./../images/sync.svg") !important;
+}
+
+.img.info {
+  background-image: url("./../images/info.svg") !important;
+}
+
+.img.next,
+.img.next-circle {
+  background-image: url("./../images/forward.svg") !important;
+}
+
+.img.pane-collapse {
+  background-image: url("./../images/view-right-close.svg") !important;
+}
+
+.img.pane-expand {
+  background-image: url("./../images/view-right-new.svg") !important;
+}
+
+.img.pause {
+  background-image: url("./../images/pause.svg") !important;
+}
+
+.img.plus {
+  background-image: url("./../images/add.svg") !important;
+}
+
+.img.prettyPrint {
+  background-image: url("./../images/code-context.svg") !important;
+}
+
+.img.refresh {
+  background-image: url("./../images/refresh.svg") !important;
+}
+
+.img.regex-match,
+.img.whole-word-match {
+  background-image: url("./../images/check_contraint.svg") !important;
+}
+
+.img.resume {
+  background-image: url("./../images/start.svg") !important;
+}
+
+.img.search {
+  background-image: url("./../images/search.svg") !important;
+}
+
+.img.shortcuts,
+.network-monitor .learn-more-link::before {
+  background-image: url("./../images/help.svg") !important;
+}
+
+.img.tab {
+  background-image: url("./../images/tab.svg") !important;
+}
+
+.img.worker {
+  background-image: url("./../images/tools.svg") !important;
+}
+
+.img.file {
+  background-image: url("./../images/file.svg") !important;
+}
+
+.img.more-tabs {
+  background-image: url("./../images/expand-right.svg") !important;
+}
+
+.img.javascript,
+.img.aframe,
+.img.angular,
+.img.babel,
+.img.backbone,
+.img.choo,
+.img.coffeescript,
+.img.dojo,
+.img.ember,
+.img.express,
+.img.extension,
+.img.immutable,
+.img.jquery,
+.img.lodash,
+.img.marko,
+.img.mobx,
+.img.nextjs,
+.img.node,
+.img.nuxtjs,
+.img.preact,
+.img.pug,
+.img.react,
+.img.redux,
+.img.rxjs,
+.img.sencha-extjs,
+.img.typescript,
+.img.underscore,
+.img.vue,
+.img.vuejs,
+.img.webpack { 
+  background-image: url("./../images/script.svg") !important;
+}
+
+.img.arrow,
+.tree-widget-item::before {
+  transform: none !important;
+  background-image: url("./../controls/tree-plus.svg") !important;
+}
+
+.img.arrow.expanded,
+.tree-widget-item[expanded]::before {
+  background-image: url("./../controls/tree-minus.svg") !important;
+}
+
+.tree-widget-item[empty]::before {
+  background-image: none !important;
+}
+
+.tree-widget-item[type="store"]::after {
+  background-image: url("./../images/hard-disk.svg") !important;
+}
+
+.tree-widget-item[type="url"]::after {
+  background-image: url("./../images/geo.svg") !important;
+}
+
+.devtools-button.devtools-clear-icon::before,
+#clear-snapshots::before,
+.snapshot-list-item .delete::before {
+  background-image: url("./../images/delete.svg") !important;
+  background-size: contain !important;
+}
+
+.devtools-button.netmonitor-settings-menu-button::before,
+.devtools-button.debugger-settings-menu-button::before {
+  background-image: url("./../images/configure.svg") !important;
+  background-size: contain !important;
+}
+
+.snapshot-list-item .delete {
+  padding: 0.2em;
+}
+
+.style-editor-newButton {
+  list-style-image: url("./../images/add.svg") !important;
+}
+
+.style-editor-importButton {
+  list-style-image: url("./../images/import-document.svg") !important;
+}
+
+.devtools-option-toolbarbutton {
+  list-style-image: url("./../images/configure.svg") !important;
+}
+
+.sidebar-toggle::before, .sidebar-toggle.pane-collapsed:dir(rtl)::before {
+  background-image: url("./../images/view-right-close.svg") !important;
+  background-size: contain !important;
+}
+
+.stylesheet-enabled {
+  background-image: url("./../images/view-visible.svg") !important;
+  background-size: contain !important;
+}
+
+.devtools-button.devtools-pause-icon::before {
+  background-image: url("./../images/pause.svg") !important;
+  background-size: contain !important;
+}
+
+.devtools-button.devtools-play-icon::before {
+  background-image: url("./../images/start.svg") !important;
+  background-size: contain !important;
+}
+
+.security-state-secure {
+  background-image: url("./../images/lock.svg") !important;
+  background-size: contain !important;
+}
+
+.webconsole-console-settings-menu-button::before {
+  background-image: url("./../images/configure.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-inspector > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/document-preview.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-webconsole > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/console.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-memory > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/dram.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-styleeditor > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/code-context.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-netmonitor > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/network.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-jsdebugger > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/interface.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-application > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/install.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-performance > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/statistics.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-storage > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/hard-disk.svg") !important;
+  background-size: contain !important;
+}
+
+#toolbox-tab-accessibility > img {
+  object-position: -20px -20px  !important;
+  background-image: url("./../images/accessibility.svg") !important;
+  background-size: contain !important;
 }
 
 /* Radio */
@@ -231,6 +720,113 @@ radio:active > .radio-check[selected] {
 
 input[type="checkbox"].toggle-button:checked::before {
   transform: revert !important;
+}
+
+.breadcrumbs-widget-item:not(:first-child)::before {
+  left: -6px !important;
+}
+
+.breadcrumbs-widget-item-tag {
+  margin-right: 6px !important;
+}
+
+.devtools-tab {
+  padding: 0 !important;
+  margin-right: -1px !important;
+  border: 1px solid #91a7b4 !important;
+  border-bottom: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  background: linear-gradient(0deg, #f0f0ea 0%, #f6f6f3 70%, rgb(255, 255, 255) 100%) !important;
+  box-shadow: inset -2px 0px 2px #eae7e0;
+  box-shadow: none !important;
+}
+
+.devtools-tab:hover {
+  border-top-color: #e68b2c !important;
+  box-shadow: inset 0 2.5px 0 0px #ffc73c, inset -2px 0px 2px #eae7e0 !important;
+}
+
+.devtools-tab.selected {
+  background: #fcfcfe !important;
+  border-top-color: #e68b2c !important;
+  box-shadow: inset 0 2.5px 0 0px #ffc73c !important;
+}
+
+.devtools-tab > .devtools-tab-line {
+display: none;
+}
+
+.title {
+  color: white !important;
+}
+
+
+.wordmark {
+  fill: white !important;
+}
+
+.top-site-outer:hover .title {
+  color: black !important;
+}
+
+.outer-wrapper {
+  /*background-color: #6375d6 !important;*/
+  color: white !important;
+}
+
+
+.top-site-outer .title span {
+  color: black !important;
+}
+
+.top-site-outer .tile {
+  box-shadow: none !important;
+  background-color: transparent !important;
+  padding-top: 0 !important;
+  height: 50px !important;
+}
+
+.top-site-outer .rich-icon {
+  filter: drop-shadow(1px 1px 2px #000) !important;
+  height: 85% !important;
+  width: 85% !important;
+  left: 1px !important;
+  background-color: transparent !important;
+}
+
+.top-site-outer .default-icon {
+  filter: drop-shadow(1px 1px 2px #000) !important;
+  background-color: transparent !important;
+}
+
+.search-wrapper .logo-and-wordmark {
+  filter: drop-shadow(1px 1px 2px #000) !important;
+}
+
+.top-site-outer {
+  width: revert !important;
+  padding: 0 !important;
+  margin: 1em !important;
+}
+
+.top-sites-list:not(.dnd-active) .top-site-outer:is(.active, :focus, :hover) {
+  filter: sepia(100%) saturate(300%) brightness(100%) hue-rotate(180deg) !important;
+  background-color: transparent !important;
+}
+
+.top-site-outer .title:not(.sponsored) .sponsored-label {
+  display: none !important;
+}
+
+html, #root {
+  background: #ece9d8 !important;
+}
+
+.search-wrapper .search-handoff-button,
+.search-wrapper input {
+  background: white url("./../images/search.svg") 16px center no-repeat !important;
+  background-size: 24px 24px !important;
 }
 
 }

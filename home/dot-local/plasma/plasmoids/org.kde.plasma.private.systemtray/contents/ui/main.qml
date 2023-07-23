@@ -130,31 +130,31 @@ MouseArea {
 
             Layout.alignment: Qt.AlignCenter
 
+
             interactive: false //disable features we don't need
             flow: vertical ? GridView.LeftToRight : GridView.TopToBottom
 
             // The icon size to display when not using the auto-scaling setting
-            readonly property int smallIconSize: Math.min(PlasmaCore.Units.iconSizes.small * PlasmaCore.Units.devicePixelRatio, root.height - (14 * PlasmaCore.Units.devicePixelRatio))
-            readonly property bool autoSize: false
+            readonly property int smallIconSize: Math.round(16 * ((PlasmaCore.Units.devicePixelRatio * 1.33) - 0.33))
 
             readonly property int gridThickness: root.vertical ? root.width : root.height
             // Should change to 2 rows/columns on a 56px panel (in standard DPI)
-            readonly property int rowsOrColumns: 1
+            readonly property int rowsOrColumns: Math.max(1, Math.min(count, Math.floor(gridThickness / (smallIconSize + PlasmaCore.Units.smallSpacing))))
 
             // Add margins only if the panel is larger than a small icon (to avoid large gaps between tiny icons)
-            readonly property int smallSizeCellLength: smallIconSize + 3// gridThickness < smallIconSize ? smallIconSize : smallIconSize + PlasmaCore.Units.smallSpacing * 2
+            readonly property int smallSizeCellLength: smallIconSize// gridThickness < smallIconSize ? smallIconSize : smallIconSize + PlasmaCore.Units.smallSpacing * 2
             cellHeight: {
                 if (root.vertical) {
-                    return autoSize ? root.width : smallSizeCellLength
+                    return smallSizeCellLength
                 } else {
-                    return autoSize ? root.height : Math.floor(root.height / rowsOrColumns)
+                    return Math.floor(root.height / rowsOrColumns)
                 }
             }
             cellWidth: {
                 if (root.vertical) {
-                    return autoSize ? root.width : Math.floor(root.width / rowsOrColumns)
+                    return Math.floor(root.width / rowsOrColumns)
                 } else {
-                    return autoSize ? root.height : smallSizeCellLength
+                    return smallSizeCellLength + Math.round(3 * PlasmaCore.Units.devicePixelRatio)
                 }
             }
 
@@ -165,12 +165,7 @@ MouseArea {
             // Used only by AbstractItem, but it's easiest to keep it here since it
             // uses dimensions from this item to calculate the final value
             readonly property int itemSize: {
-                if (autoSize) {
-                    const size = Math.min(implicitWidth / rowsOrColumns, implicitHeight / rowsOrColumns)
-                    return PlasmaCore.Units.roundToIconSize(Math.min(size, PlasmaCore.Units.iconSizes.enormous))
-                } else {
-                    return smallIconSize
-                }
+                return cellHeight - Math.round(14 * PlasmaCore.Units.devicePixelRatio)
             }
 
             model: PlasmaCore.SortFilterModel {

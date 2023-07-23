@@ -49,21 +49,21 @@ Decoration {
         imagePath: auroraeTheme.decorationPath
     }
 
-    
-    
+
+
     //==============================
     // Active
     //==============================
-    
+
     Item {
         id: decorationActiveContainer
         property bool shown: (!decoration.client.maximized || !backgroundSvg.supportsMaximized) && (decoration.client.active || !backgroundSvg.supportsInactive)
         anchors.fill: parent
         opacity: shown ? 1 : 0
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationActiveBarLeft
-    
+
             anchors {
                 left: parent.left
                 top: parent.top
@@ -71,17 +71,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-        
+
             width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
             height: borders.top
-        
+
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBarLeft"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationActiveBarRight
-        
+
             anchors {
                 right: parent.right
                 top: parent.top
@@ -89,17 +89,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-        
+
             width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
             height: borders.top
-            
+
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBarRight"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationActiveBarTop
-        
+
             anchors {
                 left: decorationActiveBarLeft.right
                 right: decorationActiveBarRight.left
@@ -108,17 +108,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             height: borders.top
-            
+
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBarCenter"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationActiveBorderLeft
-        
-            
+
+
             anchors {
                 left: parent.left
                 top: decorationActiveBarLeft.bottom
@@ -126,17 +126,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: borders.left
             height: parent.height - borders.top - borders.bottom
-            
+
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBorderLeft"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationActiveBorderRight
-            
+
             anchors {
                 right: parent.right
                 top: decorationActiveBarLeft.bottom
@@ -144,17 +144,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: borders.right
             height: parent.height - borders.top - borders.bottom
-            
+
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBorderRight"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationActiveBorderBottomRight
-            
+
             anchors {
                 right: parent.right
                 bottom: parent.bottom
@@ -162,17 +162,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: borders.right
             height: borders.bottom
-        
+
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBorderBottomRight"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationActiveBorderBottomLeft
-            
+
             anchors {
                 left: parent.left
                 bottom: parent.bottom
@@ -180,17 +180,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: borders.left
             height: borders.bottom
-        
+
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBorderBottomLeft"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationActiveBorderBottom
-            
+
             anchors {
                 left: decorationActiveBorderBottomLeft.right
                 bottom: parent.bottom
@@ -198,18 +198,18 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: parent.width - borders.right - borders.left
             height: borders.bottom
-        
+
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBorderBottom"
 
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationActiveCenter
-        
+
             anchors {
                 left: decorationActiveBorderLeft.right
                 right: decorationActiveBorderRight.left
@@ -219,35 +219,35 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-        
+
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveWindow"
         }
-    
-        
+
+
         Behavior on opacity {
             enabled: root.animate
             NumberAnimation {
                 duration: auroraeTheme.animationTime
             }
         }
-        
+
     }
 
-    
-    
+
+
     //==============================
     // Inactive
     //==============================
-    
+
     Item {
         id: decorationInactiveContainer
         anchors.fill: parent
         opacity: (!decoration.client.active && backgroundSvg.supportsInactive) ? 1 : 0
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationInactiveBarLeft
-            
+
             anchors {
                 left: parent.left
                 top: parent.top
@@ -255,14 +255,14 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
             height: borders.top
-            
+
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBarLeft"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationInactiveBarRight
             anchors {
@@ -272,17 +272,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
             height: borders.top
-            
+
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBarRight"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationInactiveBarTop
-            
+
             anchors {
                 left: decorationInactiveBarLeft.right
                 right: decorationInactiveBarRight.left
@@ -291,16 +291,16 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             height: borders.top
-            
+
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBarCenter"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationInactiveBorderLeft
-            
+
             anchors {
                 left: parent.left
                 top: decorationInactiveBarLeft.bottom
@@ -308,17 +308,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: borders.left
             height: parent.height - borders.top - borders.bottom
-            
+
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBorderLeft"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationInactiveBorderRight
-        
+
             anchors {
                 right: parent.right
                 top: decorationInactiveBarLeft.bottom
@@ -326,18 +326,18 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: borders.right
             height: parent.height - borders.top - borders.bottom
-            
+
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBorderRight"
         }
-        
-        
+
+
         PlasmaCore.FrameSvgItem {
             id: decorationInactiveBorderBottomRight
-            
+
             anchors {
                 right: parent.right
                 bottom: parent.bottom
@@ -345,17 +345,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: borders.right
             height: borders.bottom
-        
+
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBorderBottomRight"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationInactiveBorderBottomLeft
-            
+
             anchors {
                 left: parent.left
                 bottom: parent.bottom
@@ -363,17 +363,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: borders.left
             height: borders.bottom
-        
+
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBorderBottomLeft"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationInactiveBorderBottom
-            
+
             anchors {
                 left: decorationInactiveBorderBottomLeft.right
                 bottom: parent.bottom
@@ -381,17 +381,17 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             width: parent.width - borders.right - borders.left
             height: borders.bottom
-        
+
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBorderBottom"
         }
-        
+
         PlasmaCore.FrameSvgItem {
             id: decorationInactiveCenter
-            
+
             anchors {
                 left: decorationInactiveBorderLeft.right
                 right: decorationInactiveBorderRight.left
@@ -401,11 +401,11 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-        
+
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveWindow"
         }
-        
+
         Behavior on opacity {
             enabled: root.animate
             NumberAnimation {
@@ -413,17 +413,17 @@ Decoration {
             }
         }
     }
-    
 
-    
+
+
     //==============================
     // Maximized Active
     //==============================
-    
+
     PlasmaCore.FrameSvgItem {
         id: decorationActiveMaximizedBarLeft
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
-        
+
         anchors {
             left: parent.left
             top: parent.top
@@ -431,9 +431,9 @@ Decoration {
             rightMargin: 0
             topMargin: 0
         }
-        
+
         width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
-        
+
         imagePath: backgroundSvg.imagePath
         prefix: "ActiveMaximizedBarLeft"
         height: parent.maximizedBorders.top
@@ -446,11 +446,11 @@ Decoration {
             }
         }
     }
-    
+
     PlasmaCore.FrameSvgItem {
         id: decorationActiveMaximizedBarRight
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
-        
+
         anchors {
             right: parent.right
             top: parent.top
@@ -458,9 +458,9 @@ Decoration {
             rightMargin: 0
             topMargin: 0
         }
-        
+
         width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
-        
+
         imagePath: backgroundSvg.imagePath
         prefix: "ActiveMaximizedBarRight"
         height: parent.maximizedBorders.top
@@ -474,11 +474,11 @@ Decoration {
         }
     }
 
-    
+
     PlasmaCore.FrameSvgItem {
         id: decorationActiveMaximizedBarTop
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
-        
+
         anchors {
             left: decorationActiveMaximizedBarLeft.right
             right: decorationActiveMaximizedBarRight.left
@@ -487,9 +487,9 @@ Decoration {
             rightMargin: 0
             topMargin: 0
         }
-        
+
         width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
-        
+
         imagePath: backgroundSvg.imagePath
         prefix: "ActiveMaximizedBarCenter"
         height: parent.maximizedBorders.top
@@ -502,17 +502,17 @@ Decoration {
             }
         }
     }
-    
-    
+
+
     //==============================
     // Maximized Inactive
     //==============================
 
-    
+
     PlasmaCore.FrameSvgItem {
         id: decorationInactiveMaximizedBarLeft
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
-        
+
         anchors {
             left: parent.left
             top: parent.top
@@ -520,9 +520,9 @@ Decoration {
             rightMargin: 0
             topMargin: 0
         }
-        
+
         width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
-        
+
         imagePath: backgroundSvg.imagePath
         prefix: "InactiveMaximizedBarLeft"
         height: parent.maximizedBorders.top
@@ -535,11 +535,11 @@ Decoration {
             }
         }
     }
-    
+
     PlasmaCore.FrameSvgItem {
         id: decorationInactiveMaximizedBarRight
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
-        
+
         anchors {
             right: parent.right
             top: parent.top
@@ -547,9 +547,9 @@ Decoration {
             rightMargin: 0
             topMargin: 0
         }
-        
+
         width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
-        
+
         imagePath: backgroundSvg.imagePath
         prefix: "InactiveMaximizedBarRight"
         height: parent.maximizedBorders.top
@@ -563,11 +563,11 @@ Decoration {
         }
     }
 
-    
+
     PlasmaCore.FrameSvgItem {
         id: decorationInactiveMaximizedBarTop
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
-        
+
         anchors {
             left: decorationInactiveMaximizedBarLeft.right
             right: decorationInactiveMaximizedBarRight.left
@@ -576,9 +576,9 @@ Decoration {
             rightMargin: 0
             topMargin: 0
         }
-        
+
         width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
-        
+
         imagePath: backgroundSvg.imagePath
         prefix: "InactiveMaximizedBarCenter"
         height: parent.maximizedBorders.top
@@ -591,7 +591,7 @@ Decoration {
             }
         }
     }
-    
+
     AuroraeButtonGroup {
         id: leftButtonGroup
         buttons: options.titleButtonsLeft
@@ -625,11 +625,12 @@ Decoration {
         elide: Text.ElideRight
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
         font.family: "Trebuchet MS"
-        font.pointSize: 11
+        fontSizeMode: Text.VerticalFit
         font.weight: Font.Bold
         style: decoration.client.active ? Text.Raised : Text.Normal // crashes if text contains emoji
         styleColor: "black"
         renderType: Text.NativeRendering
+        font.hintingPreference: Font.PreferVerticalHinting
         anchors {
             left: leftButtonGroup.right
             right: rightButtonGroup.left
@@ -645,7 +646,7 @@ Decoration {
                 duration: auroraeTheme.animationTime
             }
         }
-        
+
         function getCleanText(text){
          return text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');  // Remove emojis to avoid crash
         }

@@ -18,8 +18,8 @@ Image {
             Text {
                 color: "white"
                 font.pointSize: 36
-                font.weight: Font.DemiBold
-                font.family: "Tahoma"
+                font.bold: true
+                font.family: "Microsoft Sans Serif"
                 style: Text.Raised; 
                 styleColor: "black"
                 renderType: Text.NativeRendering

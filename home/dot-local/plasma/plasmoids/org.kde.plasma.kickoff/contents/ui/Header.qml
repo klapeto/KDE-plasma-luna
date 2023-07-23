@@ -79,7 +79,7 @@ PlasmaExtras.PlasmoidHeading {
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         anchors.rightMargin: Math.round(parent.width/1.5) + PlasmaCore.Units.gridUnit
-        PlasmaComponents.RoundButton {
+        PlasmaComponents.Button {
             id: avatarButton
             visible: KQuickAddons.KCMShell.authorize("kcm_users.desktop").length > 0
 
@@ -91,9 +91,9 @@ PlasmaExtras.PlasmoidHeading {
             Accessible.name: nameLabel.text
             Accessible.description: i18n("Go to user settings")
 
-            Kirigami.Avatar {
+            Kirigami.Icon {
                 source: kuser.faceIconUrl
-                name: nameLabel.text
+                //name: nameLabel.text
                 anchors {
                     fill: parent
                     margins: PlasmaCore.Units.smallSpacing
@@ -101,12 +101,12 @@ PlasmaExtras.PlasmoidHeading {
                 // NOTE: for some reason Avatar eats touch events even though it shouldn't
                 // Ideally we'd be using Avatar but it doesn't have proper key nav yet
                 // see https://invent.kde.org/frameworks/kirigami/-/merge_requests/218
-                actions.main: Kirigami.Action {
-                    text: avatarButton.Accessible.description
-                    onTriggered: avatarButton.clicked()
-                }
+               // actions.main: Kirigami.Action {
+               //     text: avatarButton.Accessible.description
+               //     onTriggered: avatarButton.clicked()
+               // }
                 // no keyboard nav
-                activeFocusOnTab: false
+               // activeFocusOnTab: false
                 // ignore accessibility (done by the button)
                 Accessible.ignored: true
             }

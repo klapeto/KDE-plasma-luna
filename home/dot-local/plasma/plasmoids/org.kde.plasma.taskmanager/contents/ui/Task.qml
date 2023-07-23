@@ -21,7 +21,7 @@ MouseArea {
 
     activeFocusOnTab: true
 
-    height: Math.max(theme.mSize(theme.defaultFont).height, PlasmaCore.Units.iconSizes.medium) + LayoutManager.verticalMargins()
+    //height: Math.max(theme.mSize(theme.defaultFont).height, PlasmaCore.Units.iconSizes.medium) + LayoutManager.verticalMargins()
 
     visible: false
 
@@ -98,8 +98,14 @@ MouseArea {
 
     onWidthChanged: {
         if (isLauncher) {
-            task.width = launcherWidth;
+            task.width = Math.round(23 * PlasmaCore.Units.devicePixelRatio);
+        } else {
+            task.width = Math.min(task.width, Math.round(195 * PlasmaCore.Units.devicePixelRatio))
         }
+    }
+
+    onHeightChanged: {
+        //task.height = Math.round(25 * PlasmaCore.Units.devicePixelRatio)
     }
 
     onChildCountChanged: {
@@ -334,8 +340,6 @@ MouseArea {
         image: "widgets/tasks"
         isHovered: task.highlighted && plasmoid.configuration.taskHoverEffect
         basePrefix: "Normal"
-        topMargin: 4.0
-        bottomMargin: 2.0
         borderSize: 3.0
         //prefix: isHovered ? TaskTools.taskPrefixHovered(basePrefix) : TaskTools.taskPrefix(basePrefix)
 
@@ -407,14 +411,19 @@ MouseArea {
 
         anchors {
             left: frame.left
-            leftMargin: adjustMargin(true, frame.width, iconOffset)
-            //top: frame.top
-            //topMargin: adjustMargin(false, frame.height, frame.margins.top)
-            verticalCenter: label.verticalCenter
+            leftMargin: Math.round(10 * frame.targetScale)
+            top: frame.top
+            bottom: frame.bottom
+            topMargin: model.IsActive ? Math.ceil(5 * PlasmaCore.Units.devicePixelRatio) : Math.ceil(4 * PlasmaCore.Units.devicePixelRatio)
+            bottomMargin: model.IsActive ? Math.ceil(4 * PlasmaCore.Units.devicePixelRatio) : Math.ceil(5 * PlasmaCore.Units.devicePixelRatio)
+            //verticalCenter: frame.verticalCenter
+            //verticalCenterOffset: model.IsActive ? Math.round(1 * frame.targetScale) : 0
         }
 
+        //Rectangle {anchors.fill: parent}
+
         width: height
-        height: 18 * frame.targetScale
+        //height: Math.round(16 * frame.targetScale)
 
         function adjustMargin(vert, size, margin) {
             if (!size) {
@@ -435,7 +444,14 @@ MouseArea {
         PlasmaCore.IconItem {
             id: icon
 
-            anchors.fill: parent
+            anchors {
+                fill: parent
+                //top: parent.top
+                //bottom: parent.bottom
+            }
+
+            //width: height
+            //height: Math.round(16 * frame.targetScale)
 
             active: task.highlighted
             enabled: true
@@ -519,15 +535,19 @@ MouseArea {
             && (parent.width - iconBox.height - PlasmaCore.Units.smallSpacing) >= (theme.mSize(theme.defaultFont).width * LayoutManager.minimumMColumns()))
 
         anchors {
-            fill: frame
-            leftMargin: taskFrame.margins.left + iconBox.width + PlasmaCore.Units.smallSpacing + iconOffset + (3 *  frame.targetScale)
-            topMargin: taskFrame.margins.top
-            rightMargin: taskFrame.margins.right + (audioStreamIconLoader.shown ? (audioStreamIconLoader.width + PlasmaCore.Units.smallSpacing + iconOffset) : iconOffset * 2)
-            bottomMargin: taskFrame.margins.bottom
+            verticalCenter: iconBox.verticalCenter
+            left: iconBox.right
+            right: frame.right
+            rightMargin: Math.round(16 * frame.targetScale)
+            leftMargin: Math.round(4 * frame.targetScale)
+            bottomMargin: Math.round(6 * frame.targetScale)
+            verticalCenterOffset: Math.round(-1 * frame.targetScale)
         }
-
+        height: Math.round(16 * frame.targetScale)
+        minimumPointSize: 8
+        font.pointSize: 16
+        fontSizeMode: Text.VerticalFit
         font.family: "Tahoma"
-        font.pointSize: 10
         text: model.display
         wrapMode: (maximumLineCount == 1) ? Text.NoWrap : Text.Wrap
         elide: Text.ElideRight
