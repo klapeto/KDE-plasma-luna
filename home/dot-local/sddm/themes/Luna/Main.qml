@@ -49,44 +49,13 @@ Image {
         id: loginScreenRoot
         anchors.fill: parent
 
-        property bool uiVisible: true
         property bool blockUI: inputPanel.keyboardActive || config.type !== "image"
 
         hoverEnabled: true
         drag.filterChildren: true
-        onPressed: uiVisible = true;
-        onPositionChanged: uiVisible = true;
-        onUiVisibleChanged: {
-            if (blockUI) {
-                fadeoutTimer.running = false;
-            } else if (uiVisible) {
-                fadeoutTimer.restart();
-            }
-        }
-        onBlockUIChanged: {
-            if (blockUI) {
-                fadeoutTimer.running = false;
-                uiVisible = true;
-            } else {
-                fadeoutTimer.restart();
-            }
-        }
 
         Keys.onPressed: {
-            uiVisible = true;
             event.accepted = false;
-        }
-
-        //takes one full minute for the ui to disappear
-        Timer {
-            id: fadeoutTimer
-            running: true
-            interval: 60000
-            onTriggered: {
-                if (!loginScreenRoot.blockUI) {
-                    loginScreenRoot.uiVisible = false;
-                }
-            }
         }
 
         Loader {
@@ -264,7 +233,6 @@ Image {
 
                 id: userListComponent
                 userListModel: userModel
-                loginScreenUiVisible: loginScreenRoot.uiVisible
                 userListCurrentIndex: -1
                 //lastUserName: userModel.lastUser
                 showUserList: {
@@ -343,7 +311,7 @@ Image {
                     Layout.preferredHeight: 24
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: 22
-                    iconSource: "system-shutdown"
+                    iconSource: "components/artwork/shutdown_primary.svg" //"system-shutdown"
                     text: "Σβήσιμο του υπολογιστή"
                     fontSize: 20
                     onClicked: sddm.powerOff()
@@ -351,7 +319,7 @@ Image {
                 }
 
                 PlasmaComponents3.ToolButton {
-                                        Layout.preferredHeight: 24
+                    Layout.preferredHeight: 24
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: 22
                     text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Button to show/hide virtual keyboard", "Virtual Keyboard")

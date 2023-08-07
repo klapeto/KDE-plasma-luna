@@ -48,7 +48,8 @@ Item {
         radius: 3
     }
 
-    PlasmaCore.IconItem {
+    //PlasmaCore.IconItem 
+    Image {
         id: icon
         anchors {
             top: parent.top
@@ -58,8 +59,8 @@ Item {
         width: iconSize
         height: iconSize
 
-        colorGroup: PlasmaCore.ColorScope.colorGroup
-        active: mouseArea.containsMouse || root.activeFocus
+        //colorGroup: PlasmaCore.ColorScope.colorGroup
+        //active: mouseArea.containsMouse || root.activeFocus
     }
 
     PlasmaComponents3.Label {

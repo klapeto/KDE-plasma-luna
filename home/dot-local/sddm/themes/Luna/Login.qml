@@ -13,7 +13,6 @@ SessionManagementScreen {
     property bool showUsernamePrompt: !showUserList
 
     property string lastUserName
-    property bool loginScreenUiVisible: false
 
     //the y position that should be ensured visible when the on screen keyboard is visible
     // property int visibleBoundary: mapFromItem(loginButton, 0, 0).y
