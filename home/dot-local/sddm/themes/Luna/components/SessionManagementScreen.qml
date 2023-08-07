@@ -62,7 +62,7 @@ FocusScope {
 
     default property alias _children: innerLayout.children
 
-    signal userSelected()
+    signal loginRequest(string username, string password)
 
     ColumnLayout {
         Rectangle {
@@ -74,7 +74,7 @@ FocusScope {
             fontSize: root.fontSize
 
             // bubble up the signal
-            onUserSelected: root.userSelected()
+            onLoginRequest: root.loginRequest(username, password)
         }
 
         Rectangle {

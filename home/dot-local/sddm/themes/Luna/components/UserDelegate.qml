@@ -35,7 +35,13 @@ Item {
 
     signal loginRequest(string username, string password)
 
-    opacity: isCurrent ? 1.0 : 0.5 
+    opacity: isCurrent || mouseArea.containsMouse ? 1.0 : 0.5 
+
+    onIsCurrentChanged: {
+        if (!isCurrent) {
+            passwordBox.text= '';
+        }
+    }
 
     property real faceSize: 256
 
@@ -65,7 +71,7 @@ Item {
         height: imageSource.height + 4
         radius: 4
 
-        color: isCurrent ? "#ffb600" : "#cad2ea"
+        color: isCurrent || mouseArea.containsMouse ? "#ffb600" : "#cad2ea"
     }
 
     Item {
@@ -131,10 +137,14 @@ Item {
     }
 
     MouseArea {
+        id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
 
-        onClicked: wrapper.clicked()
+        onClicked: {
+            wrapper.clicked();
+            passwordBox.forceActiveFocus();
+        }
     }
 
     Text {
@@ -172,7 +182,7 @@ Item {
 
         gradient: Gradient {
             GradientStop { position: 0.9; color: "#1e4cae" }
-             GradientStop { position: 1.0; color: "#2d59b8" }
+            GradientStop { position: 1.0; color: "#2d59b8" }
         }
     }
 
@@ -188,7 +198,7 @@ Item {
         }
 
         radius: 3
-        color: control.enabled ? "transparent" : "#353637"
+        //color: passwordContainer.enabled ? "transparent" : "#353637"
         border.color: "transparent"
 
         visible: isCurrent
@@ -205,7 +215,6 @@ Item {
             color: "black"
 
             placeholderText: i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Password")
-            focus: isCurrent
 
             // Disable reveal password action because SDDM does not have the breeze icon set loaded
             rightActions: []

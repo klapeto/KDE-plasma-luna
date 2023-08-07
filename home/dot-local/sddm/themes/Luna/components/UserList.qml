@@ -27,6 +27,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
  *  isTty?: bool,
  * }
  */
+
 ListView {
     id: view
     readonly property string selectedUser: currentItem ? currentItem.userName : ""
@@ -43,17 +44,7 @@ ListView {
     /*
      * Signals that a user was explicitly selected
      */
-    signal userSelected()
-
-    //orientation: ListView.Horizontal
-    //highlightRangeMode: ListView.StrictlyEnforceRange
-
-    //centre align selected item (which implicitly centre aligns the rest
-    //preferredHighlightBegin: width/2 - userItemWidth/2
-    //preferredHighlightEnd: preferredHighlightBegin
-
-    // Disable flicking if we only have on user (like on the lockscreen)
-    //interactive: count > 1
+    signal loginRequest(string username, string password)
 
     delegate: UserDelegate {
         avatarPath: model.icon || ""
@@ -98,9 +89,11 @@ ListView {
 
         isCurrent: ListView.isCurrentItem
 
+        onLoginRequest: {
+            ListView.view.loginRequest(username, password)
+        }
         onClicked: {
             ListView.view.currentIndex = index;
-            ListView.view.userSelected();
         }
     }
 
@@ -108,3 +101,4 @@ ListView {
     Keys.onEnterPressed: view.userSelected()
     Keys.onReturnPressed: view.userSelected()
 }
+

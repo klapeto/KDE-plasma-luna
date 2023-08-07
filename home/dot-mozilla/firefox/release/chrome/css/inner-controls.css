@@ -1,0 +1,17 @@
+.month-year-nav > button.prev:dir(rtl), .month-year-nav > button.next:dir(ltr) {
+    background-image: url("./../images/forward.svg") !important;
+    background-size: 1.6rem !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important
+}
+
+.month-year-nav > button.prev:dir(ltr), .month-year-nav > button.next:dir(rtl) {
+    background-image: url("./../images/back.svg") !important;
+    background-size: 1.6rem !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important 
+}
+
+button.datetime-calendar-button {
+    content: url("./../images/calendar.svg") !important;
+}

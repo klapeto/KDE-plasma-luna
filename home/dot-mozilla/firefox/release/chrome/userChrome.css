@@ -1,2 +1,4 @@
 @import "./css/chrome.css";
-@import "./css/controls.css";
+@import "./css/firefox-controls.css";
+@import "./css/other-content.css";
+@import "./css/inner-controls.css";

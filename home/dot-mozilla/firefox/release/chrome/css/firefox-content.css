@@ -2,6 +2,10 @@
 url-prefix(chrome://devtools/),
 url-prefix(chrome://) {
 
+  * {
+    font-family: "Tahoma", sans !important;
+  }
+
 #category-general > .category-icon,
 .sync-engine-prefs .checkbox-icon,
 .sync-engine-prefs.sync-engine-image {

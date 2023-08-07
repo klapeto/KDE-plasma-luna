@@ -45,17 +45,12 @@ Image {
         connectedSources: "Caps Lock"
     }
 
-    RejectPasswordAnimation {
-        id: rejectPasswordAnimation
-        target: mainStack
-    }
-
     MouseArea {
         id: loginScreenRoot
         anchors.fill: parent
 
         property bool uiVisible: true
-        property bool blockUI: mainStack.depth > 1 || userListComponent.mainPasswordBox.text.length > 0 || inputPanel.keyboardActive || config.type !== "image"
+        property bool blockUI: inputPanel.keyboardActive || config.type !== "image"
 
         hoverEnabled: true
         drag.filterChildren: true
@@ -123,10 +118,6 @@ Image {
                 State {
                     name: "visible"
                     PropertyChanges {
-                        target: mainStack
-                        y: Math.min(0, root.height - inputPanel.height - userListComponent.visibleBoundary)
-                    }
-                    PropertyChanges {
                         target: inputPanel
                         y: root.height - inputPanel.height
                         opacity: 1
@@ -134,10 +125,6 @@ Image {
                 },
                 State {
                     name: "hidden"
-                    PropertyChanges {
-                        target: mainStack
-                        y: 0
-                    }
                     PropertyChanges {
                         target: inputPanel
                         y: root.height - root.height/4
@@ -158,12 +145,6 @@ Image {
                         }
                         ParallelAnimation {
                             NumberAnimation {
-                                target: mainStack
-                                property: "y"
-                                duration: PlasmaCore.Units.longDuration
-                                easing.type: Easing.InOutQuad
-                            }
-                            NumberAnimation {
                                 target: inputPanel
                                 property: "y"
                                 duration: PlasmaCore.Units.longDuration
@@ -182,12 +163,6 @@ Image {
                     to: "hidden"
                     SequentialAnimation {
                         ParallelAnimation {
-                            NumberAnimation {
-                                target: mainStack
-                                property: "y"
-                                duration: PlasmaCore.Units.longDuration
-                                easing.type: Easing.InOutQuad
-                            }
                             NumberAnimation {
                                 target: inputPanel
                                 property: "y"
@@ -277,7 +252,6 @@ Image {
                 height: parent.height
                 width: 1 * Screen.devicePixelRatio
             }
-
 
             Login {
                 anchors {
@@ -377,6 +351,9 @@ Image {
                 }
 
                 PlasmaComponents3.ToolButton {
+                                        Layout.preferredHeight: 24
+                    Layout.alignment: Qt.AlignTop
+                    Layout.topMargin: 22
                     text: i18ndc("plasma_lookandfeel_org.kde.lookandfeel", "Button to show/hide virtual keyboard", "Virtual Keyboard")
                     font.pointSize: config.fontSize
                     icon.name: inputPanel.keyboardActive ? "input-keyboard-virtual-on" : "input-keyboard-virtual-off"
@@ -424,15 +401,12 @@ Image {
         function onLoginFailed() {
             notificationMessage = i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Login Failed")
             footer.enabled = true
-            mainStack.enabled = true
-            userListComponent.userList.opacity = 1
             rejectPasswordAnimation.start()
         }
         function onLoginSucceeded() {
             //note SDDM will kill the greeter at some random point after this
             //there is no certainty any transition will finish, it depends on the time it
             //takes to complete the init
-            mainStack.opacity = 0
             footer.opacity = 0
         }
     }
