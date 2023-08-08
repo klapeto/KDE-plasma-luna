@@ -22,6 +22,7 @@
 */
 import QtQuick 2.6
 import QtQuick.Layouts 1.1
+import QtGraphicalEffects 1.15
 
 import org.kde.plasma.plasmoid 2.0 as PlasmaPlasmoid
 import org.kde.plasma.core 2.0 as PlasmaCore
@@ -52,7 +53,7 @@ Item {
         hoverEnabled: true
         onClicked: plasmoid.expanded = !plasmoid.expanded
 
-        property double buttonAspectRatio: 4
+        property double buttonAspectRatio: 3.88
         
         property double itemsBaseMargin: 4.0
         
@@ -60,7 +61,7 @@ Item {
         
         property bool pressed: false
 
-        property string buttonText: "έναρξη"
+        property string buttonText: plasmoid.configuration.startText
         
         Layout.minimumWidth: Math.round(parent.height * buttonAspectRatio)
         
@@ -107,56 +108,75 @@ Item {
             image: "icons/start-bg"
             basePrefix: "Normal"
         }
-        
-        PlasmaCore.IconItem {
-            id: icon
 
-            readonly property double aspectRatio: (vertical ? implicitHeight / implicitWidth
-                    : implicitWidth / implicitHeight)
+        Item {
 
-            anchors {
-                verticalCenter: parent.verticalCenter
-                right: label.left
-                rightMargin: itemsBaseMargin * targetScale
-            }
-            width: 24 * targetScale
-            height: 24 * targetScale
-            source: plasmoid.icon
-            active: parent.containsMouse || compactDragArea.containsDrag
-            smooth: true
-            roundToIconSize: false//aspectRatio === 1
-        }
-        
-        Text {
-            id: label
+            id: container
+
             anchors {
                 horizontalCenter: parent.horizontalCenter
-                verticalCenter: parent.verticalCenter
-                horizontalCenterOffset: 8 * targetScale
-                verticalCenterOffset: -1 * targetScale
                 top: parent.top
                 bottom: parent.bottom
-                bottomMargin: 5 * targetScale
-                topMargin: 2 * targetScale
+                topMargin: 4 * targetScale
+                bottomMargin: 4 * targetScale
             }
-        
-            text: buttonText
-            font.italic: true
-            font.family: "Franklin Gothic Medium"
-            font.pixelSize: 24 * targetScale
-            font.weight: Font.Medium
 
-            fontSizeMode: Text.VerticalFit;
+            width: icon.width + label.contentWidth + (16 * targetScale)
 
-            style: Text.Raised
-            styleColor: "black"
-            minimumPixelSize: 10
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
+            Image {
+                id: icon
 
-            color: "white"
+                readonly property double aspectRatio: (vertical ? implicitHeight / implicitWidth
+                        : implicitWidth / implicitHeight)
+
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    bottom: parent.bottom
+                    topMargin: 3 * targetScale
+                    bottomMargin: 3 * targetScale
+                }
+                sourceSize.width: height
+                sourceSize.height: height
+                width: height
+                source: "./assets/windows-logo.svg"
+                smooth: true
+            }
+            
+            Text {
+                id: label
+                anchors {
+                    left: icon.right
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                    leftMargin: 6 * targetScale
+                }
+                text: buttonText
+                font.italic: true
+                font.family: "Franklin Gothic Medium"
+                font.pointSize: 72
+                font.weight: Font.Medium
+                
+                fontSizeMode: Text.VerticalFit;
+
+                minimumPixelSize: 10
+                verticalAlignment: Text.AlignVCenter
+
+                color: "white"
+            }
+
         }
-        
+
+        DropShadow {
+            anchors.fill: container
+            horizontalOffset: 1
+            verticalOffset: 1
+            radius: 6
+            samples: 9
+            color: "#ff000000"
+            source: container
+        }
     }
 
     property Item dragSource: null

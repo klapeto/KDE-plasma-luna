@@ -31,61 +31,12 @@ ColumnLayout {
     property alias cfg_switchTabsOnHover: switchTabsOnHoverCheckbox.checked
     property int cfg_favoritesDisplay: plasmoid.configuration.favoritesDisplay
     property alias cfg_gridAllowTwoLines: gridAllowTwoLines.checked
+    property alias cfg_startText: startText.text 
     property alias cfg_alphaSort: alphaSort.checked
     property var cfg_systemFavorites: String(plasmoid.configuration.systemFavorites)
     property int cfg_primaryActions: plasmoid.configuration.primaryActions
 
     Kirigami.FormLayout {
-        Button {
-            id: iconButton
-
-            Kirigami.FormData.label: i18n("Icon:")
-
-            implicitWidth: previewFrame.width + PlasmaCore.Units.smallSpacing * 2
-            implicitHeight: previewFrame.height + PlasmaCore.Units.smallSpacing * 2
-
-            KQuickAddons.IconDialog {
-                id: iconDialog
-                onIconNameChanged: cfg_icon = iconName || "start-here-kde"
-            }
-
-            onPressed: iconMenu.opened ? iconMenu.close() : iconMenu.open()
-
-            PlasmaCore.FrameSvgItem {
-                id: previewFrame
-                anchors.centerIn: parent
-                imagePath: plasmoid.location === PlasmaCore.Types.Vertical || plasmoid.location === PlasmaCore.Types.Horizontal
-                        ? "widgets/panel-background" : "widgets/background"
-                width: PlasmaCore.Units.iconSizes.large + fixedMargins.left + fixedMargins.right
-                height: PlasmaCore.Units.iconSizes.large + fixedMargins.top + fixedMargins.bottom
-
-                PlasmaCore.IconItem {
-                    anchors.centerIn: parent
-                    width: PlasmaCore.Units.iconSizes.large
-                    height: width
-                    source: cfg_icon
-                }
-            }
-
-            Menu {
-                id: iconMenu
-
-                // Appear below the button
-                y: +parent.height
-
-                MenuItem {
-                    text: i18nc("@item:inmenu Open icon chooser dialog", "Choose...")
-                    icon.name: "document-open-folder"
-                    onClicked: iconDialog.open()
-                }
-                MenuItem {
-                    text: i18nc("@item:inmenu Reset icon to default", "Clear Icon")
-                    icon.name: "edit-clear"
-                    onClicked: cfg_icon = "start-here-kde"
-                }
-            }
-        }
-
         Item {
             Kirigami.FormData.isSection: true
         }
@@ -109,6 +60,13 @@ ColumnLayout {
 
         Item {
             Kirigami.FormData.isSection: true
+        }
+
+
+        TextField {
+            id: startText
+            Kirigami.FormData.label: i18n("Start button text:")
+            text: plasmoid.configuration.startText
         }
 
         RadioButton {
