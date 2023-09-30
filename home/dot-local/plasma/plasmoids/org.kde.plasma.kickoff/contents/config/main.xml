@@ -45,9 +45,5 @@
             <label>Whether to sort menu contents alphabetically or use manual/system sort order.</label>
             <default>false</default>
         </entry>
-        <entry name="startText" type="String">
-            <label>The text to display on start button.</label>
-            <default>start</default>
-        </entry>
     </group>
 </kcfg>

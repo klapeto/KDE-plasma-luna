@@ -100,7 +100,7 @@ MouseArea {
         if (isLauncher) {
             task.width = Math.round(23 * PlasmaCore.Units.devicePixelRatio);
         } else {
-            task.width = Math.min(task.width, Math.round(195 * PlasmaCore.Units.devicePixelRatio))
+            task.width = Math.min(task.width, Math.round(160 * PlasmaCore.Units.devicePixelRatio))
         }
     }
 
@@ -416,14 +416,11 @@ MouseArea {
             bottom: frame.bottom
             topMargin: model.IsActive ? Math.ceil(5 * PlasmaCore.Units.devicePixelRatio) : Math.ceil(4 * PlasmaCore.Units.devicePixelRatio)
             bottomMargin: model.IsActive ? Math.ceil(4 * PlasmaCore.Units.devicePixelRatio) : Math.ceil(5 * PlasmaCore.Units.devicePixelRatio)
-            //verticalCenter: frame.verticalCenter
-            //verticalCenterOffset: model.IsActive ? Math.round(1 * frame.targetScale) : 0
         }
 
         //Rectangle {anchors.fill: parent}
 
         width: height
-        //height: Math.round(16 * frame.targetScale)
 
         function adjustMargin(vert, size, margin) {
             if (!size) {
@@ -439,19 +436,12 @@ MouseArea {
             return margin + (3.0 * frame.targetScale);
         }
 
-        //width: inPopup ? PlasmaCore.Units.iconSizes.small : Math.min(height, parent.width - LayoutManager.horizontalMargins())
-
         PlasmaCore.IconItem {
             id: icon
 
             anchors {
                 fill: parent
-                //top: parent.top
-                //bottom: parent.bottom
             }
-
-            //width: height
-            //height: Math.round(16 * frame.targetScale)
 
             active: task.highlighted
             enabled: true
@@ -535,24 +525,30 @@ MouseArea {
             && (parent.width - iconBox.height - PlasmaCore.Units.smallSpacing) >= (theme.mSize(theme.defaultFont).width * LayoutManager.minimumMColumns()))
 
         anchors {
-            verticalCenter: iconBox.verticalCenter
             left: iconBox.right
             right: frame.right
             rightMargin: Math.round(16 * frame.targetScale)
             leftMargin: Math.round(4 * frame.targetScale)
-            bottomMargin: Math.round(6 * frame.targetScale)
-            verticalCenterOffset: Math.round(-1 * frame.targetScale)
+            top: iconBox.top
+            bottom: iconBox.bottom
+            topMargin: Math.round(1 * frame.targetScale)
+            bottomMargin: Math.round(2 * frame.targetScale)
+            //verticalCenter: iconBox.verticalCenter
         }
-        height: Math.round(16 * frame.targetScale)
+        //Rectangle {anchors.fill: parent}
+        //height: Math.ceil(13 * frame.targetScale)
         minimumPointSize: 8
-        font.pointSize: 16
+        font.pointSize: 72
         fontSizeMode: Text.VerticalFit
         font.family: "Tahoma"
+        color: "white"
         text: model.display
-        wrapMode: (maximumLineCount == 1) ? Text.NoWrap : Text.Wrap
+        font.hintingPreference: Font.PreferDefaultHinting
+        wrapMode: Text.NoWrap
         elide: Text.ElideRight
         textFormat: Text.PlainText
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
         maximumLineCount: 1
     }
 

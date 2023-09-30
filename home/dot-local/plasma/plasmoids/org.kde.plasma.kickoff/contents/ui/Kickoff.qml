@@ -53,7 +53,7 @@ Item {
         hoverEnabled: true
         onClicked: plasmoid.expanded = !plasmoid.expanded
 
-        property double buttonAspectRatio: 3.88
+        property double buttonAspectRatio: 4
         
         property double itemsBaseMargin: 4.0
         
@@ -61,7 +61,7 @@ Item {
         
         property bool pressed: false
 
-        property string buttonText: plasmoid.configuration.startText
+        property string buttonText: "έναρξη"
         
         Layout.minimumWidth: Math.round(parent.height * buttonAspectRatio)
         
@@ -108,7 +108,7 @@ Item {
             image: "icons/start-bg"
             basePrefix: "Normal"
         }
-
+        
         Item {
 
             id: container
@@ -117,11 +117,11 @@ Item {
                 horizontalCenter: parent.horizontalCenter
                 top: parent.top
                 bottom: parent.bottom
-                topMargin: 4 * targetScale
-                bottomMargin: 4 * targetScale
+                topMargin: Math.round(2 * targetScale)
+                bottomMargin: Math.round(3 * targetScale)
             }
 
-            width: icon.width + label.contentWidth + (16 * targetScale)
+            width: icon.width + label.contentWidth + Math.round(20 * targetScale)
 
             Image {
                 id: icon
@@ -133,8 +133,8 @@ Item {
                     left: parent.left
                     top: parent.top
                     bottom: parent.bottom
-                    topMargin: 3 * targetScale
-                    bottomMargin: 3 * targetScale
+                    topMargin: Math.round(3 * targetScale)
+                    bottomMargin: Math.round(3 * targetScale)
                 }
                 sourceSize.width: height
                 sourceSize.height: height
@@ -142,7 +142,7 @@ Item {
                 source: "./assets/windows-logo.svg"
                 smooth: true
             }
-            
+
             Text {
                 id: label
                 anchors {
@@ -150,33 +150,44 @@ Item {
                     right: parent.right
                     top: parent.top
                     bottom: parent.bottom
-                    leftMargin: 6 * targetScale
+                    topMargin: Math.round(1 * targetScale)
+                    bottomMargin: Math.round(1 * targetScale)
+                    leftMargin: Math.round(6 * targetScale)
                 }
                 text: buttonText
                 font.italic: true
                 font.family: "Franklin Gothic Medium"
                 font.pointSize: 72
-                font.weight: Font.Medium
-                
+                font.letterSpacing: -0.5
                 fontSizeMode: Text.VerticalFit;
-
+                //font.hintingPreference: Text.PreferFullHinting
                 minimumPixelSize: 10
                 verticalAlignment: Text.AlignVCenter
 
                 color: "white"
             }
 
-        }
+            DropShadow {
+                anchors.fill: icon
+                horizontalOffset: 1
+                verticalOffset: 2
+                radius: Math.ceil(2 + targetScale)
+                samples: 9
+                color: "#80000000"
+                source: icon
+            }
 
-        DropShadow {
-            anchors.fill: container
-            horizontalOffset: 1
-            verticalOffset: 1
-            radius: 6
-            samples: 9
-            color: "#ff000000"
-            source: container
+            DropShadow {
+                anchors.fill: label
+                horizontalOffset: 1
+                verticalOffset: 1
+                radius: Math.ceil(3 + targetScale)
+                samples: 9
+                color: "#ff000000"
+                source: label
+            }
         }
+        
     }
 
     property Item dragSource: null

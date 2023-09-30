@@ -153,6 +153,8 @@ PlasmaCore.ToolTipArea {
 
             visible: abstractItem.inHiddenLayout
 
+            color: "white"
+
             verticalAlignment: Text.AlignTop
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight

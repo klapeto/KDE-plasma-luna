@@ -130,42 +130,49 @@ MouseArea {
 
             Layout.alignment: Qt.AlignCenter
 
-
             interactive: false //disable features we don't need
             flow: vertical ? GridView.LeftToRight : GridView.TopToBottom
 
             // The icon size to display when not using the auto-scaling setting
-            readonly property int smallIconSize: Math.round(16 * ((PlasmaCore.Units.devicePixelRatio * 1.33) - 0.33))
+            readonly property int smallIconSize: PlasmaCore.Units.iconSizes.smallMedium
+
+            // Automatically use autoSize setting when in tablet mode, if it's
+            // not already being used
+            readonly property bool autoSize: true
 
             readonly property int gridThickness: root.vertical ? root.width : root.height
             // Should change to 2 rows/columns on a 56px panel (in standard DPI)
-            readonly property int rowsOrColumns: Math.max(1, Math.min(count, Math.floor(gridThickness / (smallIconSize + PlasmaCore.Units.smallSpacing))))
+            readonly property int rowsOrColumns: autoSize ? 1 : Math.max(1, Math.min(count, Math.floor(gridThickness / (smallIconSize + PlasmaCore.Units.smallSpacing))))
 
             // Add margins only if the panel is larger than a small icon (to avoid large gaps between tiny icons)
-            readonly property int smallSizeCellLength: smallIconSize// gridThickness < smallIconSize ? smallIconSize : smallIconSize + PlasmaCore.Units.smallSpacing * 2
+            readonly property int cellSpacing: Math.round(3 * PlasmaCore.Units.devicePixelRatio)//PlasmaCore.Units.smallSpacing * (Kirigami.Settings.tabletMode ? 6 : Plasmoid.configuration.iconSpacing)
+            readonly property int smallSizeCellLength: gridThickness < smallIconSize ? smallIconSize : smallIconSize + cellSpacing
+
             cellHeight: {
                 if (root.vertical) {
-                    return smallSizeCellLength
+                    return autoSize ? itemSize + (gridThickness < itemSize ? 0 : cellSpacing) : smallSizeCellLength
                 } else {
-                    return Math.floor(root.height / rowsOrColumns)
+                    return autoSize ? root.height : Math.floor(root.height / rowsOrColumns)
                 }
             }
             cellWidth: {
                 if (root.vertical) {
-                    return Math.floor(root.width / rowsOrColumns)
+                    return autoSize ? root.width : Math.floor(root.width / rowsOrColumns)
                 } else {
-                    return smallSizeCellLength + Math.round(3 * PlasmaCore.Units.devicePixelRatio)
+                    return autoSize ? itemSize + (gridThickness < itemSize ? 0 : cellSpacing) : smallSizeCellLength
                 }
             }
 
-            //depending on the form factor, we are calculating only one dimention, second is always the same as root/parent
+            //depending on the form factor, we are calculating only one dimension, second is always the same as root/parent
             implicitHeight: root.vertical ? cellHeight * Math.ceil(count / rowsOrColumns) : root.height
             implicitWidth: !root.vertical ? cellWidth * Math.ceil(count / rowsOrColumns) : root.width
 
-            // Used only by AbstractItem, but it's easiest to keep it here since it
-            // uses dimensions from this item to calculate the final value
             readonly property int itemSize: {
-                return cellHeight - Math.round(14 * PlasmaCore.Units.devicePixelRatio)
+                if (autoSize) {
+                    return PlasmaCore.Units.roundToIconSize(Math.min(Math.min(root.width, root.height - 14 * PlasmaCore.Units.devicePixelRatio) / rowsOrColumns, PlasmaCore.Units.iconSizes.enormous))
+                } else {
+                    return smallIconSize
+                }
             }
 
             model: PlasmaCore.SortFilterModel {
