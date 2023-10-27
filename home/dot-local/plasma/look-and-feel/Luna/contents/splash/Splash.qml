@@ -17,12 +17,11 @@ Image {
             }
             Text {
                 color: "white"
-                font.pointSize: 36
-                font.bold: true
-                font.family: "Microsoft Sans Serif"
-                style: Text.Raised; 
-                styleColor: "black"
-                renderType: Text.NativeRendering
+                font.pointSize: 40
+                font.family: "Tahoma"
+                font.weight: Font.Bold
+                font.italic: true
+                //renderType: Text.QtRendering
                 anchors.verticalCenter: parent.verticalCenter
                 text: i18ndc("winxp_welcome_message", "welcome message", "welcome")
             }

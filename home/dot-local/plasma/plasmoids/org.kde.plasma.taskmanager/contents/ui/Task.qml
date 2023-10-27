@@ -531,15 +531,15 @@ MouseArea {
             leftMargin: Math.round(4 * frame.targetScale)
             top: iconBox.top
             bottom: iconBox.bottom
-            topMargin: Math.round(1 * frame.targetScale)
-            bottomMargin: Math.round(2 * frame.targetScale)
+            topMargin: Math.round(0 * frame.targetScale)
+            bottomMargin: Math.round(0 * frame.targetScale)
             //verticalCenter: iconBox.verticalCenter
         }
-        //Rectangle {anchors.fill: parent}
+        //Rectangle {anchors.fill: parent; color: "#20ffffff"}
         //height: Math.ceil(13 * frame.targetScale)
         minimumPointSize: 8
-        font.pointSize: 72
-        fontSizeMode: Text.VerticalFit
+        font.pointSize: frame.targetScale > 1.25 ? 9 : 8
+        //fontSizeMode: Text.VerticalFit
         font.family: "Tahoma"
         color: "white"
         text: model.display
@@ -547,6 +547,7 @@ MouseArea {
         wrapMode: Text.NoWrap
         elide: Text.ElideRight
         textFormat: Text.PlainText
+        horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         renderType: Text.NativeRendering
         maximumLineCount: 1

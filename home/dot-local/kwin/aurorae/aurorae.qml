@@ -622,23 +622,22 @@ Decoration {
         id: caption
         text: getCleanText(decoration.client.caption)
         textFormat: Text.StyledText
-        horizontalAlignment: auroraeTheme.horizontalAlignment
-        verticalAlignment: auroraeTheme.verticalAlignment
+        horizontalAlignment: Text.AlignLeft
+        verticalAlignment: Text.AlignBottom
         elide: Text.ElideRight
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
         font.family: "Trebuchet MS"
-        font.pointSize: 10.2 + ((PlasmaCore.Units.devicePixelRatio - 1.0) / 10.0) //magic calculation to make size consistent across scallings
-        lineHeight: Math.floor(18 * PlasmaCore.Units.devicePixelRatio)
-        lineHeightMode: Text.FixedHeight
-        fontSizeMode: Text.VerticalFit
+        font.pointSize: 10.2 //+ ((PlasmaCore.Units.devicePixelRatio - 1.0) / 10.0) //magic calculation to make size consistent across scallings
         font.weight: Font.Bold
         renderType: Text.NativeRendering
         font.hintingPreference: Font.PreferFullHinting
         anchors {
             left: leftButtonGroup.right
             right: rightButtonGroup.left
+            verticalCenter: leftButtonGroup.verticalCenter
+            bottom: leftButtonGroup.bottom
+            bottomMargin: Math.round(-2.5 * PlasmaCore.Units.devicePixelRatio)
             top: root.top
-            topMargin: decoration.client.maximized ? Math.round(4 * PlasmaCore.Units.devicePixelRatio) : Math.round(8 * PlasmaCore.Units.devicePixelRatio)
             leftMargin: Math.round(4 * PlasmaCore.Units.devicePixelRatio)
             rightMargin: auroraeTheme.titleBorderRight
         }
