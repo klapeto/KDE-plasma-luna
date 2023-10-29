@@ -43,13 +43,63 @@ If anything goes wrong (like crashes) or you simply don't want it anymore do the
 10. Uninstall Kvantum if you don't need it
 
 # SVG Icon contribution guide lines
-- Use originals 16x16 where possible
-- Icons created in svg should be 256x256
-- Shadow created by the object duplicated, converted to single curve object (merge) and placed behind
-- Shadow for 256x256 is #000000 with 20% blur offset by x: +4, y: +4 from the original object
-- Shadow for 32x32 is #000000 or #0d1a33 with 25% blur offset by x: +8, y: +8 or x: +16, y: +16 from the original (30% blur)
-- Shadow for 16x16 is #000000 or #0d1a33 with 35% blur offset by x: +12, y: +12 or x: +30, y: +20 from the original (40% blur)
-- Stroke size in 256x256 should be 5.00px unless some icons need more.
+- shadows are applied with Krita layer styles:
+ - Colour: either #0d1a33 or #000000
+ - Angle 135
+- 16x16
+ - Content: 14x14
+ - Shadow:
+  - Distance: 2px
+  - Opacity: 90%
+  - Size: 2px
+- 22x22
+ - Content: 21x21
+ - Shadow:
+  - Distance: 2px
+  - Opacity: 90%
+  - Size: 2px
+- 32x32
+ - Content: 30x30
+ - Shadow:
+  - Distance: 2px
+  - Opacity: 90%
+  - Size: 2px
+- 48x48
+ - Content: 46x46
+ - Shadow:
+  - Opacity: 90%
+  - Distance: 2px
+  - Size: 2px
+- 64x64
+ - Content: 61x61
+ - Shadow:
+  - Opacity: 90%
+  - Distance: 2px
+  - Size: 3px
+- 96x96
+ - Content: 93x93
+ - Shadow:
+  - Opacity: 90%
+  - Distance: 2px
+  - Size: 3px
+- 128x128
+ - Content: 122x122
+ - Shadow:
+  - Opacity: 90%
+  - Distance: 3px
+  - Size: 4px
+- 256x256
+ - Content: 246x246
+ - Shadow:
+  - Opacity: 90%
+  - Distance: 5px
+  - Size: 8px
+- 512x512
+ - Content: 496x496
+ - Shadow:
+  - Opacity: 90%
+  - Distance: 12px
+  - Size: 16px
 
 # Known Issues
  - Emojis are removed from window titles. It causes crashes to Kwin. This a known QT [bug](https://bugreports.qt.io/browse/QTBUG-82311)
