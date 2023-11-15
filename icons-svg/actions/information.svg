@@ -182,19 +182,6 @@
          stdDeviation="1.2078025"
          id="feGaussianBlur1231" />
     </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter131782"
-       x="-0.048420349"
-       y="-0.047586891"
-       width="1.0968407"
-       height="1.0951738">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.7976258"
-         id="feGaussianBlur131784" />
-    </filter>
   </defs>
   <sodipodi:namedview
      inkscape:snap-global="true"
@@ -208,16 +195,16 @@
      inkscape:window-maximized="1"
      inkscape:window-y="0"
      inkscape:window-x="3840"
-     inkscape:window-height="2055"
+     inkscape:window-height="2056"
      inkscape:window-width="3840"
      units="px"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="-505.47348"
-     inkscape:cx="-333.25464"
-     inkscape:zoom="0.89421111"
+     inkscape:cy="58.640305"
+     inkscape:cx="235.53249"
+     inkscape:zoom="4.1183278"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -256,10 +243,6 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
-    <path
-       id="path83747"
-       style="fill:#1f345f;fill-opacity:1;stroke:none;stroke-width:5.31078;stroke-linecap:round;stroke-linejoin:round;filter:url(#filter131782)"
-       d="M 144.22787,10 C 105.52482,10 75.09111,21.177204 54.325521,39.472656 33.559933,57.768109 22.567709,83.159815 22.567709,111.01562 c 0,48.56481 38.052415,89.97878 105.783201,99.25391 3.37535,4.93388 9.4408,14.31557 17.19532,23.08399 8.11789,9.17928 17.89939,17.72553 28.80664,18.60156 a 2.6557605,2.6557605 0 0 0 2.85546,-2.92578 l -4.54882,-43.26758 c 50.21853,-12.14589 87.70703,-48.24372 87.70703,-94.3418 0,-30.970389 -11.19706,-56.517297 -31.40821,-74.136717 C 208.74719,19.663783 179.70051,10 144.22787,10 Z" />
     <g
        id="g83696">
       <path

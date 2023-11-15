@@ -5,7 +5,7 @@
    viewBox="0 0 256 256"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="Search.svg"
    inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/Search.png"
    inkscape:export-xdpi="96"
@@ -151,19 +151,6 @@
        y2="4.5"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(6.348019)" />
-    <filter
-       height="1.0963705"
-       y="-0.048185248"
-       width="1.0956323"
-       x="-0.04781617"
-       id="filter1078"
-       style="color-interpolation-filters:sRGB"
-       inkscape:collect="always">
-      <feGaussianBlur
-         id="feGaussianBlur1080"
-         stdDeviation="4.8015404"
-         inkscape:collect="always" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -172,16 +159,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.50000001"
-     inkscape:cx="-1474"
-     inkscape:cy="33.999999"
+     inkscape:zoom="3.0515082"
+     inkscape:cx="135.67062"
+     inkscape:cy="119.77684"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
      inkscape:window-width="3840"
-     inkscape:window-height="2045"
+     inkscape:window-height="2056"
      inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -228,10 +215,6 @@
        id="g1400"
        transform="translate(12.567709)"
        style="opacity:1" />
-    <path
-       d="m 179.73358,4 c -43.506,6e-7 -78.83221,35.326217 -78.83221,78.832206 1e-5,10.817374 2.18774,21.128054 6.13836,30.516934 -0.47037,7.20079 -0.60399,20.39921 0.15946,26.52075 -4.16299,-0.37463 -9.029033,-0.5685 -12.976037,0.88378 l -3.321819,-3.59848 -73.333625,73.33363 1.950055,1.95005 c -1.487014,5.11125 -3.200757,18.47739 3.481282,25.21047 7.442001,7.49885 19.043122,5.90461 25.262349,3.53316 l 1.900104,1.90011 73.333631,-70.61892 -1.6004,-1.73296 c 1.59431,-3.57364 1.6004,-10.01466 1.6004,-14.56298 9.25473,1.85236 20.27821,1.36067 29.51789,0.83574 8.34697,3.01192 17.3412,4.66284 26.72056,4.66284 42.58903,0 77.25178,-33.87778 78.69772,-76.117494 h 0.13641 v -2.71663 -2.714709 H 258.4313 C 256.98602,37.87718 222.32305,4.0000006 179.73358,4 Z"
-       style="fill:#212121;fill-opacity:1;stroke:none;stroke-width:5.43218px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter1078)"
-       id="path984" />
     <g
        transform="matrix(5.432179,0,0,5.432179,-58.30505,-5.3659591)"
        id="g1329">

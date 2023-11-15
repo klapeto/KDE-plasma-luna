@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   viewBox="0 0 256 256"
+   id="svg68"
+   sodipodi:docname="sound-m.16.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="audio-volume-medium.png"
+   inkscape:export-xdpi="6"
+   inkscape:export-ydpi="6"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview70"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="3.0195312"
+     inkscape:cx="127.83441"
+     inkscape:cy="128"
+     inkscape:window-width="3840"
+     inkscape:window-height="2056"
+     inkscape:window-x="3840"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg68" />
+  <defs
+     id="defs32">
+    <linearGradient
+       id="gradient4-3-5"
+       x1="-819.2"
+       x2="819.2"
+       gradientTransform="matrix(.014272 -.041077 -.027849 -.009747 -113.31 112.58)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#99c"
+         offset="0"
+         id="stop2" />
+      <stop
+         stop-color="#b5b5da"
+         offset=".20392"
+         id="stop4" />
+      <stop
+         stop-color="#fff"
+         offset=".48235"
+         id="stop6" />
+      <stop
+         stop-color="#99999c"
+         offset="1"
+         id="stop8" />
+    </linearGradient>
+    <linearGradient
+       id="gradient5-5-6"
+       x1="-819.2"
+       x2="819.2"
+       gradientTransform="matrix(.054653 .054653 .063007 -.063007 -59.703 137.3)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#333"
+         offset="0"
+         id="stop11" />
+      <stop
+         stop-color="#666"
+         offset=".36863"
+         id="stop13" />
+      <stop
+         stop-color="#ccc"
+         offset=".72157"
+         id="stop15" />
+      <stop
+         stop-color="#ccc"
+         offset="1"
+         id="stop17" />
+    </linearGradient>
+    <radialGradient
+       id="gradient6-2-5"
+       cx="0"
+       cy="0"
+       r="819.2"
+       gradientTransform="matrix(.075887 0 0 .075887 -86.681 113.45)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#ddd"
+         offset="0"
+         id="stop20" />
+      <stop
+         stop-color="#666"
+         offset=".51373"
+         id="stop22" />
+      <stop
+         stop-color="#99f"
+         offset="1"
+         id="stop24" />
+    </radialGradient>
+    <linearGradient
+       id="linearGradient185327"
+       x1="-104.58"
+       x2="-31.202"
+       y1="107.85"
+       y2="162.23"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#3e3e3e"
+         offset="0"
+         id="stop27" />
+      <stop
+         stop-color="#999"
+         stop-opacity=".99741"
+         offset="1"
+         id="stop29" />
+    </linearGradient>
+  </defs>
+  <g
+     transform="translate(-12.568)"
+     id="g66">
+    <g
+       transform="matrix(5.396 0 0 5.396 238.57 -30.231)"
+       id="g64">
+      <g
+         transform="matrix(.23136 0 0 .23136 -6.7935 -7.8876)"
+         id="g52">
+        <path
+           d="m-142.73 106.14c-3.0169 9.2828-3.5391 17.869-1.5665 25.76 1.9726 8.0064 6.0338 13.228 12.184 15.665l23.845 8.1805 23.149-67.533c-7.072-3.9463-23.845-8.1805-23.845-8.1805-6.2659-1.7405-12.648-0.11604-19.146 4.8735-6.498 5.1056-11.371 12.184-14.62 21.234"
+           fill="url(#gradient4-3-5)"
+           fill-rule="evenodd"
+           id="path34" />
+        <path
+           d="m-142.73 106.14c3.249-9.0508 8.1225-16.129 14.62-21.234 6.498-4.9895 12.88-6.614 19.146-4.8735l23.845 8.1805-23.149 67.533-23.845-8.1805c-6.1499-2.4367-10.211-7.6583-12.184-15.665-1.9726-7.8904-1.4504-16.477 1.5665-25.76z"
+           fill="none"
+           stroke="#336"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           stroke-width="4.3513"
+           id="path36" />
+        <path
+           d="m-103.04 94.653q-10.095 7.6583-14.795 21.583-4.8735 13.924-1.5665 26.108 3.307 12.358 12.706 15.491 9.3989 3.133 19.494-4.3513 10.095-7.6583 14.795-21.583 4.8735-14.098 1.5665-26.108-3.307-12.358-12.706-15.491-9.2248-3.133-19.494 4.3513"
+           fill="#666"
+           fill-rule="evenodd"
+           id="path38" />
+        <path
+           d="m-103.04 94.653q10.269-7.4843 19.494-4.3513 9.3989 3.133 12.706 15.491 3.307 12.01-1.5665 26.108-4.6994 13.924-14.795 21.583-10.095 7.4843-19.494 4.3513-9.3989-3.133-12.706-15.491-3.307-12.184 1.5665-26.108 4.6994-13.924 14.795-21.583z"
+           fill="none"
+           stroke="#333"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           stroke-width="4.3513"
+           id="path40" />
+        <path
+           d="m-116.1 117.8q-10.095 29.763-0.87027 56.393 9.0508 26.63 32.548 34.463 23.671 8.0064 47.342-7.3102 23.671-15.143 33.94-44.732 10.095-29.415 0.87027-56.219-9.3989-26.63-32.722-34.811-23.497-8.0064-47.168 7.3102-23.671 15.143-33.94 44.906"
+           fill="url(#gradient5-5-6)"
+           fill-rule="evenodd"
+           id="path42" />
+        <path
+           d="m-116.1 117.8q10.269-29.763 33.94-44.906 23.671-15.317 47.168-7.3102 23.323 8.1805 32.722 34.811 9.2248 26.804-0.87027 56.219-10.269 29.589-33.94 44.732-23.671 15.317-47.342 7.3102-23.497-7.8324-32.548-34.463-9.2248-26.63 0.87027-56.393z"
+           fill="none"
+           stroke="#333"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           stroke-width="4.3513"
+           id="path44" />
+        <path
+           d="m-100.95 123.02q-5.0476 14.795-0.69622 28.023 4.5254 13.402 15.839 17.231 11.488 3.8292 23.149-3.8292 11.662-7.8324 16.709-22.627 5.0475-14.62 0.69621-28.023-4.3513-13.228-15.665-17.057-11.488-4.0032-23.323 3.8292-11.488 7.6583-16.709 22.453"
+           fill="url(#gradient6-2-5)"
+           fill-rule="evenodd"
+           id="path46" />
+        <path
+           d="m-100.95 123.02q5.2216-14.795 16.709-22.453 11.836-7.8324 23.323-3.8292 11.313 3.8292 15.665 17.057 4.3513 13.402-0.69621 28.023-5.0475 14.795-16.709 22.627-11.662 7.6584-23.149 3.8292-11.313-3.8292-15.839-17.231-4.3513-13.228 0.69622-28.023z"
+           fill="none"
+           stroke="#333"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           stroke-width="4.3513"
+           id="path48" />
+        <path
+           d="m-71.772 192.99c30.892 0 54.484-34.941 53.853-69.554-0.45545-24.991-15.097-50.543-40.165-50.543-28.174 0-57.224 44.065-57.333 60.421-0.24032 36.006 11.586 59.677 43.645 59.677z"
+           fill="none"
+           stroke="url(#linearGradient185327)"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           stroke-width="4.3513"
+           id="path50" />
+      </g>
+      <path
+         d="m-4.1758 26.239s-0.099563 0.65132-0.099563 0.92746c0 5.0083-2.5148 9.164-5.709 12.084-3.1942 2.92-7.0905 4.5586-9.5762 4.5586-0.27614 0-1.0098 0.15317-1.0098 0.15317 0 0.27614 0.74458 1.0736 1.0207 1.0736 2.9055 0 6.9661-1.9521 10.317-5.0151 3.1002-2.8341 6.0238-7.3444 6.0238-12.808 0-0.27614-0.69058-0.97419-0.96672-0.97419z"
+         color="#000000"
+         fill="#6f6fcb"
+         stroke="#6f6fcb"
+         stroke-linecap="round"
+         style="-inkscape-stroke:none"
+         id="path54" />
+      <g
+         stroke-linecap="round"
+         id="g62">
+        <path
+           d="m-4.4296 26.607c0 10.351-10.394 17.142-15.785 17.142"
+           fill="none"
+           stroke="#bfbff9"
+           stroke-width="2.2239"
+           id="path58" />
+      </g>
+    </g>
+  </g>
+</svg>
