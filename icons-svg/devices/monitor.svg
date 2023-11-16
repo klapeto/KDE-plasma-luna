@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   sodipodi:docname="Monitor.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="monitor.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    version="1.1"
    id="svg2"
    width="256"
@@ -33,7 +33,7 @@
      inkscape:window-maximized="1"
      inkscape:window-y="0"
      inkscape:window-x="3840"
-     inkscape:cy="280.2492"
+     inkscape:cy="280.04874"
      inkscape:cx="-295.88542"
      inkscape:zoom="2.4942087"
      fit-margin-bottom="0"
@@ -42,7 +42,7 @@
      fit-margin-top="0"
      showgrid="false"
      id="namedview227"
-     inkscape:window-height="2045"
+     inkscape:window-height="2056"
      inkscape:window-width="3840"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0"
@@ -226,26 +226,9 @@
          stop-color="#ffffff"
          offset="1.0" />
     </linearGradient>
-    <filter
-       height="1.0569348"
-       y="-0.028467394"
-       width="1.0887224"
-       x="-0.044361206"
-       id="filter1147"
-       style="color-interpolation-filters:sRGB"
-       inkscape:collect="always">
-      <feGaussianBlur
-         id="feGaussianBlur1149"
-         stdDeviation="2.9389453"
-         inkscape:collect="always" />
-    </filter>
   </defs>
-  <path
-     d="m 186.68137,2.9997505 c -0.73083,-0.00537 -1.52691,0.1209648 -2.38672,0.3789063 L 55.667698,26.077876 c -7.489859,1.52857 -10.16535,5.57963 -8.025391,12.152344 1.317634,3.660108 11.218191,49.583811 29.222656,135.41602 -1.674079,0.82375 -3.318591,1.68798 -4.917968,2.61133 -14.979714,8.40698 -22.46875,18.64719 -22.46875,30.72266 0,12.0755 7.489036,22.3933 22.46875,30.95312 14.826863,8.55986 32.864595,12.83984 54.111325,12.83984 21.09388,0 39.12966,-4.27998 54.10938,-12.83984 14.82686,-8.55982 22.24023,-18.87762 22.24023,-30.95312 0,-12.07547 -7.41337,-22.31568 -22.24023,-30.72266 -2.21273,-1.26442 -4.49957,-2.42431 -6.8457,-3.50195 -0.66815,-8.10902 -1.55217,-15.81945 -2.65039,-23.13282 l 30.81835,-13.25976 c 3.3628,-1.52854 4.81599,-4.51057 4.35743,-8.94336 L 192.54856,10.486079 C 191.8034,5.5183125 189.84832,3.0230375 186.68137,2.9997505 Z"
-     style="fill:#212121;fill-opacity:1;stroke-width:4.58563;filter:url(#filter1147)"
-     id="path1079" />
   <g
-     transform="matrix(5.2717787,0,0,5.2717787,468.6703,-636.83694)"
+     transform="matrix(5.234042,0,0,5.234042,470.76889,-632.2783)"
      id="g1063">
     <path
        style="fill:url(#gradient5-6);stroke-width:0.869844"
