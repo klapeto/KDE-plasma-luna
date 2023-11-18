@@ -8,7 +8,7 @@
    viewBox="0 0 256 256"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="history.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -140,19 +140,6 @@
          offset="1"
          style="stop-color:#9fa5ab;stop-opacity:1" />
     </linearGradient>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter1025"
-       x="-0.045179784"
-       width="1.0903596"
-       y="-0.051195745"
-       height="1.1023915">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.5568714"
-         id="feGaussianBlur1027" />
-    </filter>
   </defs>
   <sodipodi:namedview
      showguides="false"
@@ -162,16 +149,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.3515625"
-     inkscape:cx="-73.568106"
-     inkscape:cy="110.13953"
+     inkscape:zoom="3.1680375"
+     inkscape:cx="16.098294"
+     inkscape:cy="110.32066"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
      inkscape:window-width="3840"
-     inkscape:window-height="2045"
+     inkscape:window-height="2056"
      inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -213,10 +200,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-12.567709)">
-    <path
-       id="path986"
-       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#212121;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:5.33;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.6;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter1025);color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000"
-       d="M 152.82123,25.189 C 94.078022,25.189003 46.365408,72.694882 46.018489,131.35697 H 20.23138 a 2.6652615,2.6652615 0 0 0 -2.035157,4.38672 l 42.357422,50.05859 c 18.533413,31.69695 52.925225,53.00781 92.267585,53.00782 58.87493,0 106.66426,-47.72084 106.79882,-106.56446 a 2.665,2.665 0 0 0 0.0117,-0.24609 2.665,2.665 0 0 0 -0.0117,-0.22266 C 259.49825,72.92241 211.70405,25.189 152.82123,25.189 Z" />
     <g
        id="g899"
        transform="matrix(19.785626,0,0,19.785626,-242.11633,1.860581)">
