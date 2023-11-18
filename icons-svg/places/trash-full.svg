@@ -205,19 +205,6 @@
        x2="-83.961685"
        y2="25.279911"
        gradientUnits="userSpaceOnUse" />
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter98527"
-       x="-0.05044412"
-       y="-0.046261943"
-       width="1.1008882"
-       height="1.0925239">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.6219779"
-         id="feGaussianBlur98529" />
-    </filter>
   </defs>
   <sodipodi:namedview
      showguides="false"
@@ -233,15 +220,15 @@
      inkscape:pageshadow="2"
      inkscape:zoom="4"
      inkscape:cx="90.25"
-     inkscape:cy="29.5"
+     inkscape:cy="86.875"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
      inkscape:window-width="3840"
-     inkscape:window-height="2043"
-     inkscape:window-x="0"
+     inkscape:window-height="2056"
+     inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="true"
@@ -282,11 +269,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-12.567709)">
-    <path
-       id="path98358"
-       style="color:#000000;fill:#000000;fill-opacity:1;stroke-width:5;-inkscape-stroke:none;filter:url(#filter98527)"
-       d="M 231.95613,8.8300142 C 224.31467,8.485572 214.94482,6.2607444 203.9366,11.764854 c -4.53449,2.267248 -9.65427,5.000779 -15.0957,7.882813 L 184.22762,6.5148545 89.975658,36.137901 l 0.974609,2.535156 4.585938,11.923828 c -1.676332,-0.48999 -3.351132,-0.974899 -4.998047,-1.414062 -8.374671,-2.233174 -16.361108,-3.734375 -23.882812,-3.734375 -10.929616,0 -19.684558,3.20199 -25.572266,8.83789 -5.887707,5.635901 -8.748475,13.630683 -8.259766,22.523438 3.025148,55.047164 21.768623,110.470634 33.955079,143.669924 0.01107,0.0748 0.01102,0.15207 0.02344,0.22656 1.111974,6.67184 7.704767,12.66552 17.339844,17.44336 9.635078,4.77784 22.606413,8.1465 37.351563,8.14649 29.21691,0 58.57859,-8.58299 80.47656,-19.52149 10.94899,-5.46925 20.02973,-11.51752 26.33985,-17.52148 5.16122,-4.91082 8.69331,-9.85502 9.34179,-14.76368 l 0.25196,-1.05078 c 9.73366,-40.60766 16.71314,-124.300159 14.28125,-165.335935 h -0.004 c 0.006,-2.396538 -0.0385,-9.595392 -3.59766,-15.013672 5e-5,0.0022 -4e-5,0.0056 0,0.0078 -2.21196,-3.6137103 -5.48883,-1.510209 -9.56445,-2.950466 -2.16015,-0.7633627 -4.51534,-1.2015918 -7.0625,-1.3164058 z"
-       sodipodi:nodetypes="cscccccssssccssssccccccscc" />
     <g
        id="g98264">
       <path

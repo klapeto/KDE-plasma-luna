@@ -8,7 +8,7 @@
    viewBox="0 0 256 256"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    sodipodi:docname="folder-closed.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -68,19 +68,6 @@
        id="linearGradient1707"
        xlink:href="#linearGradient1636"
        inkscape:collect="always" />
-    <filter
-       height="1.0954978"
-       y="-0.047748879"
-       width="1.0965075"
-       x="-0.048253773"
-       id="filter930"
-       style="color-interpolation-filters:sRGB"
-       inkscape:collect="always">
-      <feGaussianBlur
-         id="feGaussianBlur932"
-         stdDeviation="3.7667299"
-         inkscape:collect="always" />
-    </filter>
   </defs>
   <sodipodi:namedview
      showguides="false"
@@ -90,16 +77,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.8314029"
-     inkscape:cx="-328.36065"
-     inkscape:cy="89.006185"
+     inkscape:zoom="1.0675527"
+     inkscape:cx="-340.03004"
+     inkscape:cy="453.84175"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
      inkscape:window-width="3840"
-     inkscape:window-height="2045"
+     inkscape:window-height="2056"
      inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -148,12 +135,7 @@
       <g
          id="g923"
          transform="matrix(0.26458333,0,0,0.26458333,12.567709,0)"
-         style="opacity:1">
-        <path
-           id="path925"
-           style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#212121;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:5.33;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter930);color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
-           d="m 100.11155,39.561045 a 2.6652634,2.6652665 0 0 0 -0.265622,0.01172 l -53.300719,5.330078 a 2.6652634,2.6652665 0 0 0 -2.064451,1.357422 L 31.156554,70.244639 a 2.6652634,2.6652665 0 0 0 -0.33203,1.43164 l 6.996085,135.259771 -0.871092,19.16601 a 2.6652634,2.6652665 0 0 0 3.265621,2.7168 l 0.580077,-0.13477 a 2.6652634,2.6652665 0 0 0 1.320311,0.0137 L 68.470964,222.22708 200.1173,191.51029 a 2.6652634,2.6652665 0 0 0 2.02734,-2.17969 l -0.01,0.0781 0.36132,-0.0898 a 2.6652634,2.6652665 0 0 0 2.01171,-2.27344 L 218.14853,71.967295 a 2.6652634,2.6652665 0 0 0 -1.45508,-2.697266 L 206.0333,63.939951 a 2.6652634,2.6652665 0 0 0 -1.65429,-0.242187 l -2.87109,0.505859 -0.12695,-6.044922 a 2.6652634,2.6652665 0 0 0 -0.7793,-1.828125 l -5.33008,-5.330078 a 2.6652634,2.6652665 0 0 0 -2.24803,-0.755859 L 117.29122,60.691904 102.24436,40.625498 a 2.6652634,2.6652665 0 0 0 -2.13281,-1.064453 z" />
-      </g>
+         style="opacity:1" />
       <g
          id="g890">
         <path
