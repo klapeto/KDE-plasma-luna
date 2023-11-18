@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   inkscape:export-ydpi="18"
-   inkscape:export-xdpi="18"
+   inkscape:export-ydpi="36"
+   inkscape:export-xdpi="36"
    inkscape:export-filename="camera.png"
    sodipodi:docname="camera-photo.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
@@ -147,19 +147,6 @@
          stop-color="#003399"
          id="stop193-9" />
     </linearGradient>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter13806"
-       x="-0.045901395"
-       y="-0.050299689"
-       width="1.0918028"
-       height="1.1005994">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.6283991"
-         id="feGaussianBlur13808" />
-    </filter>
   </defs>
   <sodipodi:namedview
      inkscape:snap-global="false"
@@ -173,16 +160,16 @@
      inkscape:window-maximized="1"
      inkscape:window-y="0"
      inkscape:window-x="3840"
-     inkscape:window-height="2055"
+     inkscape:window-height="2056"
      inkscape:window-width="3840"
      units="px"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="178.14116"
-     inkscape:cx="161.03961"
-     inkscape:zoom="2.1050722"
+     inkscape:cy="130.91069"
+     inkscape:cx="126.65978"
+     inkscape:zoom="5.7634713"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -220,13 +207,10 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
-    <path
-       id="path13665"
-       style="fill:#0d1a33;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:3.99669;filter:url(#filter13806)"
-       d="M 191.22412,21.58 39.149897,47.757734 C 24.095698,50.422195 16.567866,60.481303 16.567866,77.933516 L 18.167475,197.2343 c 0.532892,10.5246 3.861977,17.18668 9.990235,19.98437 l 37.769531,21.78125 c 8.591705,4.955 18.419173,3.83 26.976563,1 L 245.1792,189.64054 c 7.1607,-2.36811 12.29637,-8.9426 12.38867,-20.18359 l 1,-121.699216 c 0.0631,-8.307792 -6.87381,-13.855389 -14.38867,-15.386718 z" />
     <g
        id="g2232"
-       transform="matrix(3.9966899,0,0,3.9966899,12.567709,17.580457)">
+       transform="matrix(4.0627509,0,0,4.0627509,12.567709,20)"
+       style="opacity:1">
       <path
          style="fill:#333333;fill-rule:evenodd;stroke:none"
          inkscape:connector-curvature="0"

@@ -79,9 +79,9 @@ If anything goes wrong (like crashes) or you simply don't want it anymore do the
 - 96x96
  - Content: 93x93
  - Shadow:
-  - Opacity: 90%
-  - Distance: 2px
-  - Size: 3px
+  - Opacity: 80%
+  - Distance: 3px
+  - Size: 4px
 - 128x128
  - Content: 122x122
  - Shadow:
