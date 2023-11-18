@@ -8,8 +8,8 @@
    viewBox="0 0 16 16"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
-   sodipodi:docname="folder-closed 16.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="folder-closed.16.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -131,19 +131,6 @@
        x2="7.067709"
        y2="8.5"
        gradientUnits="userSpaceOnUse" />
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter126551"
-       x="-0.13229999"
-       y="-0.16537501"
-       width="1.2646"
-       height="1.33075">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.82687505"
-         id="feGaussianBlur126553" />
-    </filter>
   </defs>
   <sodipodi:namedview
      showguides="false"
@@ -153,16 +140,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6568543"
-     inkscape:cx="-110.57382"
-     inkscape:cy="5.2149125"
+     inkscape:zoom="22.813801"
+     inkscape:cx="-6.2681357"
+     inkscape:cy="-16.81"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
      inkscape:window-width="3840"
-     inkscape:window-height="2043"
+     inkscape:window-height="2056"
      inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -205,10 +192,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-12.567709)">
-    <path
-       id="path118662"
-       style="mix-blend-mode:normal;fill:#212121;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-linecap:round;stroke-linejoin:round;stop-color:#000000;filter:url(#filter126551)"
-       d="m 15.867711,2.8 c -0.229166,0 -0.364332,0.081476 -0.492188,0.1601562 -0.127855,0.07868 -0.244067,0.1733288 -0.363281,0.2792969 -0.238428,0.2119362 -0.482464,0.4715891 -0.708984,0.7304688 -0.45304,0.5177594 -0.835938,1.0292968 -0.835938,1.0292969 A 0.50005,0.50005 0 0 0 13.367711,5.3 v 8 c 0,0.822351 0.677649,1.5 1.5,1.5 h 11 1 c 0.822351,0 1.5,-0.677649 1.5,-1.5 v -6 a 0.50005,0.50005 0 0 0 -0.5,-0.5 h -1.5 V 5.3 a 0.50005,0.50005 0 0 0 -0.5,-0.5 H 21.047399 C 20.938244,4.6509538 20.753649,4.3910923 20.40482,3.9777344 20.186001,3.7184354 19.950425,3.4564565 19.71732,3.2433594 19.600768,3.1368108 19.48694,3.0418149 19.359899,2.9621094 19.232857,2.8824038 19.096877,2.8 18.867711,2.8 Z" />
     <g
        id="g118660"
        transform="translate(18)">

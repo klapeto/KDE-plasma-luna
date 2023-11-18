@@ -3,8 +3,8 @@
    inkscape:export-ydpi="96"
    inkscape:export-xdpi="96"
    inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/Folder-open.png"
-   sodipodi:docname="Folder-open.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="folder-open.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    id="svg8"
    version="1.1"
    viewBox="0 0 256 256"
@@ -68,19 +68,6 @@
        y1="9.2108154"
        x2="-8.9786987"
        y2="4.7845073" />
-    <filter
-       height="1.1034874"
-       y="-0.051743714"
-       width="1.0895229"
-       x="-0.044761462"
-       id="filter935"
-       style="color-interpolation-filters:sRGB"
-       inkscape:collect="always">
-      <feGaussianBlur
-         id="feGaussianBlur937"
-         stdDeviation="4.0794138"
-         inkscape:collect="always" />
-    </filter>
   </defs>
   <sodipodi:namedview
      inkscape:snap-global="false"
@@ -94,14 +81,14 @@
      inkscape:window-maximized="1"
      inkscape:window-y="0"
      inkscape:window-x="3840"
-     inkscape:window-height="2045"
+     inkscape:window-height="2056"
      inkscape:window-width="3840"
      units="px"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="199.01659"
+     inkscape:cy="198.80397"
      inkscape:cx="7.6544844"
      inkscape:zoom="2.3515627"
      inkscape:pageshadow="2"
@@ -143,11 +130,6 @@
      inkscape:label="Layer 1">
     <g
        id="g950">
-      <path
-         sodipodi:nodetypes="ccccccccccccccccccccccccccc"
-         id="path910"
-         d="m 103.04819,35.617842 c -0.066,10e-4 -0.13203,0.0045 -0.1978,0.01039 l -53.299812,5.329981 c -0.872866,0.08602 -1.647531,0.595987 -2.071609,1.363742 L 34.154015,66.306872 c -0.242036,0.434983 -0.357431,0.929012 -0.333126,1.426186 L 41.815858,222.3025 c 0.08731,1.67575 1.682874,2.85484 3.310418,2.44638 L 205.02571,184.77403 c 0.27279,-0.0697 0.53279,-0.18208 0.77035,-0.33313 l -0.54134,0.14572 c 0.37374,-0.0975 0.72187,-0.27513 1.02019,-0.52053 0.032,-0.0304 0.0633,-0.0617 0.0937,-0.0937 0.42528,-0.47634 0.66541,-1.08959 0.67665,-1.72808 v 0.77035 l 45.24237,-95.804273 c 0.35152,-0.739237 0.34384,-1.599007 -0.0208,-2.331863 l -5.32996,-10.659965 c -0.51961,-1.033608 -1.64671,-1.613968 -2.78991,-1.436595 l -39.25656,6.04828 -0.51008,-24.609521 c -0.0138,-0.688671 -0.29352,-1.345289 -0.78076,-1.83218 l -5.32998,-5.329981 c -0.58915,-0.591511 -1.42143,-0.872785 -2.24863,-0.759938 L 120.28734,56.750382 105.24472,36.679674 c -0.51769,-0.687949 -1.33583,-1.083445 -2.19653,-1.061832 z"
-         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#212121;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:5.32997;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter935);color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000" />
       <g
          id="g2098-0"
          transform="matrix(20.144809,0,0,20.144809,60.993857,143.37608)">
