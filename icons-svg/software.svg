@@ -8,7 +8,7 @@
    viewBox="0 0 48 48"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
    sodipodi:docname="software.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -52,7 +52,7 @@
        inkscape:collect="always"
        id="linearGradient300281">
       <stop
-         style="stop-color:#57b6ff;stop-opacity:1"
+         style="stop-color:#0099ff;stop-opacity:1"
          offset="0"
          id="stop300277" />
       <stop
@@ -64,7 +64,7 @@
        inkscape:collect="always"
        id="linearGradient206700">
       <stop
-         style="stop-color:#ff9f39;stop-opacity:1"
+         style="stop-color:#ff9933;stop-opacity:1"
          offset="0"
          id="stop206696" />
       <stop
@@ -76,11 +76,11 @@
        inkscape:collect="always"
        id="linearGradient162493">
       <stop
-         style="stop-color:#079d04;stop-opacity:1"
+         style="stop-color:#009900;stop-opacity:1"
          offset="0"
          id="stop162489" />
       <stop
-         style="stop-color:#8ff85f;stop-opacity:1"
+         style="stop-color:#99ff66;stop-opacity:1"
          offset="1"
          id="stop162491" />
     </linearGradient>
@@ -88,7 +88,7 @@
        inkscape:collect="always"
        id="linearGradient149205">
       <stop
-         style="stop-color:#006bd1;stop-opacity:1"
+         style="stop-color:#0066cc;stop-opacity:1"
          offset="0"
          id="stop149201" />
       <stop
@@ -136,11 +136,11 @@
        inkscape:collect="always"
        id="linearGradient74734">
       <stop
-         style="stop-color:#95cbff;stop-opacity:1"
+         style="stop-color:#99ccff;stop-opacity:1"
          offset="0"
          id="stop74730" />
       <stop
-         style="stop-color:#c4ccff;stop-opacity:1"
+         style="stop-color:#ccccff;stop-opacity:1"
          offset="1"
          id="stop74732" />
     </linearGradient>
@@ -172,7 +172,7 @@
        inkscape:collect="always"
        id="linearGradient17516">
       <stop
-         style="stop-color:#d3d3ff;stop-opacity:1"
+         style="stop-color:#ccccff;stop-opacity:1"
          offset="0"
          id="stop17512" />
       <stop
@@ -306,10 +306,10 @@
        inkscape:collect="always"
        xlink:href="#linearGradient300281"
        id="linearGradient300283"
-       x1="-163.05608"
-       y1="17.42087"
-       x2="-161.71426"
-       y2="16.292824"
+       x1="-163.46786"
+       y1="18.050903"
+       x2="-161.42992"
+       y2="16.331539"
        gradientUnits="userSpaceOnUse"
        gradientTransform="translate(20,-1.5)" />
     <linearGradient
@@ -320,7 +320,7 @@
          offset="0"
          id="stop55880" />
       <stop
-         style="stop-color:#ffceff;stop-opacity:1"
+         style="stop-color:#ffccff;stop-opacity:1"
          offset="0.5"
          id="stop55937" />
       <stop
@@ -366,9 +366,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="32.18862"
-     inkscape:cx="31.362016"
-     inkscape:cy="22.911824"
+     inkscape:zoom="22.490869"
+     inkscape:cx="18.652014"
+     inkscape:cy="32.968935"
      inkscape:document-units="px"
      inkscape:current-layer="g611093"
      inkscape:document-rotation="0"
@@ -390,19 +390,27 @@
      inkscape:snap-intersection-paths="true"
      inkscape:snap-grids="true"
      inkscape:pagecheckerboard="0"
-     inkscape:object-paths="true">
+     inkscape:object-paths="true"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid1504"
        originx="0"
-       originy="0" />
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px"
+       visible="false" />
     <inkscape:grid
        type="xygrid"
        id="grid1507"
        spacingx="0.5"
        spacingy="0.5"
        originx="0"
-       originy="0" />
+       originy="0"
+       units="px"
+       visible="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -424,7 +432,7 @@
        id="g611093">
       <g
          id="g1649"
-         transform="translate(161.24992,-9.2500066)">
+         transform="matrix(0.97872371,0,0,0.97872371,158.08651,-9.0532008)">
         <g
            id="g611061">
           <path
