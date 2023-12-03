@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="256"
-   height="256"
-   viewBox="0 0 256 256"
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
    sodipodi:docname="visual-studio.svg"
    inkscape:export-filename="visual-studio.png"
    inkscape:export-xdpi="96"
@@ -275,19 +275,6 @@
        x2="-98.432289"
        y2="-5.5"
        gradientUnits="userSpaceOnUse" />
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter1281"
-       x="-0.038461274"
-       y="-0.063830517"
-       width="1.0769225"
-       height="1.127661">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="3.8840627"
-         id="feGaussianBlur1283" />
-    </filter>
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient1412"
@@ -306,16 +293,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.0000001"
-     inkscape:cx="-27.999999"
-     inkscape:cy="108.125"
+     inkscape:zoom="19.460369"
+     inkscape:cx="7.2968812"
+     inkscape:cy="36.20178"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
      inkscape:window-width="3840"
-     inkscape:window-height="2050"
+     inkscape:window-height="2056"
      inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -328,19 +315,27 @@
      inkscape:bbox-paths="false"
      inkscape:snap-global="true"
      showguides="true"
-     inkscape:pagecheckerboard="0">
+     inkscape:pagecheckerboard="0"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid1504"
        originx="0"
-       originy="0" />
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px"
+       visible="false" />
     <inkscape:grid
        type="xygrid"
        id="grid1507"
        spacingx="0.5"
        spacingy="0.5"
        originx="0"
-       originy="0" />
+       originy="0"
+       units="px"
+       visible="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -358,13 +353,9 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-12.567709)">
-    <path
-       id="path1142"
-       style="color:#000000;fill:#000000;fill-opacity:1;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none;filter:url(#filter1281)"
-       d="m 70.180991,57.490033 a 2,2 0 0 0 -0.164063,0.06836 2,2 0 0 0 -1.251953,0.517578 L 18.153647,108.6873 a 2.0002,2.0002 0 0 0 -0.585938,1.41406 v 40.81641 a 2.0002,2.0002 0 0 0 0.07031,0.23437 2.0002,2.0002 0 0 0 0.175781,0.58594 2.0002,2.0002 0 0 0 0.234375,0.4043 2.0002,2.0002 0 0 0 0.117187,0.20117 L 69.5931,202.95488 a 2,2 0 0 0 1.240234,0.50781 2,2 0 0 0 0.16211,0.0664 h 38.367186 a 2.0002,2.0002 0 0 0 1.41602,-0.58594 l 28.56249,-28.5625 29.02735,28.57422 a 2.0002,2.0002 0 0 0 1.40234,0.57422 h 37.55078 a 2,2 0 0 0 0.15625,-0.0645 2,2 0 0 0 1.24805,-0.50976 l 50.61133,-49.79492 a 2.0002,2.0002 0 0 0 0.59765,-1.42578 v -40 a 2.0002,2.0002 0 0 0 -0.008,-0.0273 2.0002,2.0002 0 0 0 -0.31836,-1.0625 2.0002,2.0002 0 0 0 -0.0137,-0.0176 2.0002,2.0002 0 0 0 -0.22461,-0.2832 L 208.75911,58.097455 a 2,2 0 0 0 -0.0156,-0.0098 2,2 0 0 0 -0.55469,-0.384766 2,2 0 0 0 -0.16992,-0.07031 2,2 0 0 0 -0.61133,-0.130859 2,2 0 0 0 -0.0527,-0.01172 2,2 0 0 0 -0.0137,0.002 2,2 0 0 0 -0.0195,-0.002 H 171.4037 a 2.0002,2.0002 0 0 0 -1.41992,0.591797 L 140.25911,88.048627 110.79036,58.08769 a 2.0002,2.0002 0 0 0 -1.42773,-0.597657 z m 0.04687,48.851567 26.25,25.84179 -25.449218,25.65625 -26.261719,-27.71875 z m 137.134769,0.0176 26.56836,25.09179 -26.55078,24.83789 -24.76563,-25.18164 z" />
     <g
        id="g280252"
-       transform="matrix(1.6326456,0,0,1.6326456,204.17032,128.08957)"
+       transform="matrix(0.30986863,0,0,0.30986863,48.932812,24.158694)"
        style="stroke-width:2.45001;stroke-miterlimit:4;stroke-dasharray:none">
       <path
          style="fill:url(#linearGradient45897);fill-opacity:1;stroke:url(#linearGradient98873);stroke-width:2.45001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
