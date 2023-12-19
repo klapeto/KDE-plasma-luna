@@ -2,14 +2,14 @@
 <svg
    inkscape:export-ydpi="96"
    inkscape:export-xdpi="96"
-   inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/global-network.png"
+   inkscape:export-filename="global-network.png"
    sodipodi:docname="browser.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
    id="svg8"
    version="1.1"
-   viewBox="0 0 256 256"
-   height="256"
-   width="256"
+   viewBox="0 0 48 48"
+   height="48"
+   width="48"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -32,7 +32,7 @@
          offset="0.72244167"
          id="stop4134" />
       <stop
-         style="stop-color:#16a2ff;stop-opacity:1"
+         style="stop-color:#0099ff;stop-opacity:1"
          offset="1"
          id="stop4002" />
     </linearGradient>
@@ -141,19 +141,6 @@
        y2="-0.41013169"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(5.3299483,0,0,5.3299483,76.409448,5.6495377)" />
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter35309"
-       x="-0.049117076"
-       y="-0.046932602"
-       width="1.0982342"
-       height="1.0938652">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.7393271"
-         id="feGaussianBlur35311" />
-    </filter>
   </defs>
   <sodipodi:namedview
      inkscape:snap-global="true"
@@ -166,17 +153,17 @@
      inkscape:snap-bbox="true"
      inkscape:window-maximized="1"
      inkscape:window-y="0"
-     inkscape:window-x="3840"
-     inkscape:window-height="2045"
+     inkscape:window-x="0"
+     inkscape:window-height="2058"
      inkscape:window-width="3840"
      units="px"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="565.68543"
-     inkscape:cx="-953.17994"
-     inkscape:zoom="0.35355339"
+     inkscape:cy="16.020388"
+     inkscape:cx="7.5793008"
+     inkscape:zoom="22.627417"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -188,19 +175,27 @@
      inkscape:snap-others="true"
      inkscape:snap-grids="true"
      showguides="false"
-     inkscape:pagecheckerboard="0">
+     inkscape:pagecheckerboard="0"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        originy="0"
        originx="0"
        id="grid1504"
-       type="xygrid" />
+       type="xygrid"
+       spacingy="1"
+       spacingx="1"
+       units="px"
+       visible="false" />
     <inkscape:grid
        originy="0"
        originx="0"
        spacingy="0.5"
        spacingx="0.5"
        id="grid1507"
-       type="xygrid" />
+       type="xygrid"
+       units="px"
+       visible="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -218,13 +213,9 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
-    <path
-       id="path35122"
-       style="fill:#212121;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.37976;filter:url(#filter35309)"
-       d="m 225.7083,4.015786 c -14.50442,-0.3590965 -32.4819,5.4266983 -51.6582,15.474609 -9.78548,-2.793463 -20.1274,-4.210937 -31.04101,-4.210937 -30.37066,0 -56.328248,10.670175 -77.875006,32.011719 -21.341541,21.341545 -32.013672,47.197702 -32.013672,77.568363 0,11.51032 1.566542,22.38907 4.673828,32.64453 -8.88792,18.37087 -14.144531,36.52365 -14.144531,53.24414 0,48.98285 58.66604,39.96732 78.984371,17.28515 -36.862234,15.09158 -58.645187,10.34576 -62.503902,-9.625 -1.761721,-9.11778 1.498313,-22.11614 8.291016,-37.17773 4.555248,7.47567 10.122479,14.54348 16.71289,21.19726 21.546758,21.34154 47.504346,32.01172 77.875006,32.01172 30.16546,0 56.02162,-10.67018 77.56836,-32.01172 21.34156,-21.54676 32.01367,-47.40291 32.01367,-77.56835 0,-30.370661 -10.67211,-56.226818 -32.01367,-77.568363 -10.00456,-9.90928 -20.94982,-17.486707 -32.8125,-22.794922 20.35769,-11.151908 38.25087,-14.8465607 48.52343,-8.628906 16.23657,9.827472 11.05282,30.213916 7.5918,45.443359 12.40244,-18.18071 19.85769,-46.38726 -6.04688,-55.2617189 -3.68685,-1.2630531 -7.74792,-1.9248367 -12.125,-2.0332031 z" />
     <g
        id="g35120"
-       transform="translate(0,0.04375847)">
+       transform="matrix(0.18980376,0,0,0.18980376,11.027753,0.00830553)">
       <g
          transform="matrix(0.88857163,0,0,0.88857163,16.954011,11.23522)"
          id="g1127">
