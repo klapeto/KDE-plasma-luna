@@ -1,16 +1,32 @@
-fileName = 'apps/internet-web-browser'
-basePath = '/home/klapeto/KDE-plasma-luna/home/dot-local/icons/Luna/'
+import subprocess
+import os
+
+outFileName = 'apps/ktorrent'
+svgFileName = 'apps/torrents'
+svgBasePath = '/home/klapeto/KDE-plasma-luna/icons-svg/'
+outBasePath = '/home/klapeto/KDE-plasma-luna/home/dot-local/icons/Luna/'
 styleBasePath = '/home/klapeto/KDE-plasma-luna/shadow-styles/'
 
-sizes = [16,22,24,32,48,64,96,128,256,512]
+sizes = [512,256,128,96,64,48,32,24,22,16]
+
+lastSvgFile = ''
 
 for x in sizes:
-    filePath = basePath + str(x) + 'x' + str(x) + '/' + fileName + '.png'
+    outFilePath = outBasePath + str(x) + 'x' + str(x) + '/' + outFileName + '.png'
+    svgFilePath = svgBasePath + svgFileName + '.' + str(x) + '.svg'
+    if not os.path.exists(svgFilePath):
+        if lastSvgFile != '' and os.path.exists(lastSvgFile):
+            svgFilePath = lastSvgFile
+        else:
+            svgFilePath = svgBasePath + svgFileName + '.svg'
+    lastSvgFile = svgFilePath
+    print(lastSvgFile)
+    subprocess.run(["inkscape", "-w", str(x), "-h", str(x), "-o", outFilePath, svgFilePath], capture_output=True)
     stylePath = styleBasePath + 'shadow.' + str(x) + '.asl'
     styleFile = open(stylePath);
     style = styleFile.read();
     styleFile.close()
-    currentDoc = Krita.instance().openDocument(filePath)
+    currentDoc = Krita.instance().openDocument(outFilePath)
     currentLayer = currentDoc.nodeByName('Background')
     currentLayer.setLayerStyleFromAsl(style)
     currentDoc.setBatchmode(True)

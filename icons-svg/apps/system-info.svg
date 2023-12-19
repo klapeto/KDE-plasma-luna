@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="256"
-   height="256"
-   viewBox="0 0 256 256"
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
    version="1.1"
    id="svg8"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
    sodipodi:docname="system-info.svg"
    inkscape:export-filename="system-info.png"
    inkscape:export-xdpi="96"
@@ -188,7 +188,7 @@
       <stop
          id="stop1163"
          offset="0"
-         style="stop-color:#aaf3ff;stop-opacity:1;" />
+         style="stop-color:#b4e2ff;stop-opacity:1" />
       <stop
          id="stop1165"
          offset="1"
@@ -230,19 +230,6 @@
        id="linearGradient1169"
        xlink:href="#linearGradient1167"
        inkscape:collect="always" />
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter4344"
-       x="-0.047941698"
-       y="-0.048058442"
-       width="1.0958834"
-       height="1.0961169">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.8940321"
-         id="feGaussianBlur4346" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -251,17 +238,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.6708646"
-     inkscape:cx="93.237556"
-     inkscape:cy="126.2079"
+     inkscape:zoom="13.2112"
+     inkscape:cx="-2.1572605"
+     inkscape:cy="28.12008"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      units="px"
      inkscape:window-width="3840"
-     inkscape:window-height="2050"
-     inkscape:window-x="3840"
+     inkscape:window-height="2058"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="true"
@@ -272,19 +259,27 @@
      fit-margin-bottom="0"
      inkscape:bbox-paths="false"
      inkscape:snap-global="true"
-     inkscape:pagecheckerboard="0">
+     inkscape:pagecheckerboard="0"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid1504"
        originx="0"
-       originy="0" />
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px"
+       visible="false" />
     <inkscape:grid
        type="xygrid"
        id="grid1507"
        spacingx="0.5"
        spacingy="0.5"
        originx="0"
-       originy="0" />
+       originy="0"
+       units="px"
+       visible="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -302,13 +297,9 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-12.567709)">
-    <path
-       id="path4167"
-       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5.68874;filter:url(#filter4344)"
-       d="m 161.22896,4.0329316 c -0.51258,0.050369 -1.05222,0.1582971 -1.62109,0.3242187 L 26.490672,28.249728 c -7.584989,1.706622 -10.333919,5.783229 -8.248047,12.230469 1.327373,3.413245 11.944873,47.312306 31.855469,131.695313 l 0.0059,0.0273 -5.125,2.53126 c -15.169978,8.53311 -22.755859,18.6788 -22.755859,30.43554 0,11.94635 7.585881,22.09206 22.755859,30.43555 15.359602,8.53312 33.754052,12.79883 55.181646,12.79883 21.4276,0 39.72455,-4.26571 54.89453,-12.79883 15.16998,-8.34349 22.75586,-18.4892 22.75586,-30.43555 0,-4.18453 -0.9786,-8.16135 -2.90039,-11.9375 a 75.40136,75.40136 0 0 0 12.25586,1.09961 75.40136,75.40136 0 0 0 75.40039,-75.40234 75.40136,75.40136 0 0 0 -75.40039,-75.400395 75.40136,75.40136 0 0 0 -15.38477,1.779297 L 167.85595,11.468438 C 167.02634,6.1589464 164.81706,3.6803081 161.229,4.0328916 Z" />
     <g
        id="g3951"
-       transform="matrix(5.2000939,0,0,5.2000939,-52.785558,0)">
+       transform="matrix(0.97634416,0,0,0.97634416,0.29729964,0)">
       <g
          transform="translate(48)"
          id="g1412">
