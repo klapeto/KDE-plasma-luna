@@ -6,9 +6,9 @@
    <node value="1" key="enab" type="Boolean"/>
    <node value="Mltp" key="Md  " typeId="BlnM" type="Enum"/>
    <node name="" key="Clr " classId="RGBC" type="Descriptor">
-    <node value="13" key="Rd  " type="Double"/>
-    <node value="26" key="Grn " type="Double"/>
-    <node value="51" key="Bl  " type="Double"/>
+    <node value="0" key="Rd  " type="Double"/>
+    <node value="0" key="Grn " type="Double"/>
+    <node value="0" key="Bl  " type="Double"/>
    </node>
    <node value="90" key="Opct" unit="#Prc" type="UnitFloat"/>
    <node value="1" key="uglg" type="Boolean"/>

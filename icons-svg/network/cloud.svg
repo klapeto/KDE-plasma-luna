@@ -4,12 +4,12 @@
    inkscape:export-xdpi="96"
    inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/cloud.png"
    sodipodi:docname="cloud.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
    id="svg8"
    version="1.1"
-   viewBox="0 0 256 256"
-   height="256"
-   width="256"
+   viewBox="0 0 48 48"
+   height="48"
+   width="48"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -28,7 +28,7 @@
          offset="0"
          id="stop95905" />
       <stop
-         style="stop-color:#b5b6b6;stop-opacity:1"
+         style="stop-color:#8c8c8c;stop-opacity:1;"
          offset="1"
          id="stop95907" />
     </linearGradient>
@@ -412,7 +412,7 @@
        cy="170.82607"
        fx="-132.21642"
        fy="170.82607"
-       r="9.4543055"
+       r="9.4543056"
        gradientTransform="matrix(-0.03684655,0.34203388,-0.82495504,-0.08887057,3.8356972,230.45155)"
        gradientUnits="userSpaceOnUse" />
     <radialGradient
@@ -425,7 +425,7 @@
        cy="170.57724"
        fx="-147.12257"
        fy="170.57724"
-       r="9.4543055" />
+       r="9.4543056" />
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient82462"
@@ -436,28 +436,28 @@
        cy="152.64612"
        fx="-146.41907"
        fy="152.64612"
-       r="9.4543055" />
+       r="9.4543056" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient95909"
        id="linearGradient95911"
-       x1="-137.55861"
-       y1="168.5463"
+       x1="-138.14404"
+       y1="168.90457"
        x2="-125.18527"
        y2="173.68549"
        gradientUnits="userSpaceOnUse" />
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
-       id="filter3088"
-       x="-0.040186989"
-       y="-0.059584129"
-       width="1.080374"
-       height="1.1191683">
+       id="filter1"
+       x="-0.14475684"
+       y="-0.22066098"
+       width="1.2888126"
+       height="1.441037">
       <feGaussianBlur
          inkscape:collect="always"
-         stdDeviation="4.0522115"
-         id="feGaussianBlur3090" />
+         stdDeviation="0.9602756"
+         id="feGaussianBlur1" />
     </filter>
   </defs>
   <sodipodi:namedview
@@ -471,17 +471,17 @@
      inkscape:snap-bbox="true"
      inkscape:window-maximized="1"
      inkscape:window-y="0"
-     inkscape:window-x="3840"
-     inkscape:window-height="2043"
+     inkscape:window-x="0"
+     inkscape:window-height="2058"
      inkscape:window-width="3840"
      units="px"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="137.5"
-     inkscape:cx="158.375"
-     inkscape:zoom="4.0000001"
+     inkscape:cy="46.781249"
+     inkscape:cx="55.093749"
+     inkscape:zoom="16"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -489,19 +489,27 @@
      pagecolor="#ffffff"
      id="base"
      inkscape:pagecheckerboard="0"
-     width="256px">
+     width="256px"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        originy="0"
        originx="0"
        id="grid1504"
-       type="xygrid" />
+       type="xygrid"
+       spacingy="1"
+       spacingx="1"
+       units="px"
+       visible="false" />
     <inkscape:grid
        originy="0"
        originx="0"
        spacingy="0.5"
        spacingx="0.5"
        id="grid1507"
-       type="xygrid" />
+       type="xygrid"
+       units="px"
+       visible="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -519,13 +527,9 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
-    <path
-       id="path2942"
-       style="fill:#212121;fill-opacity:1;stroke:none;stroke-width:10.707;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter3088)"
-       d="m 131.31922,50.397973 c -1.29141,-0.02359 -2.58146,0.0052 -3.86719,0.08594 -28.943753,1.818129 -55.675335,29.539285 -51.95898,58.484377 -27.226084,4.82806 -51.49842,23.2893 -56.945312,45.62695 -2.910817,11.93723 0.552613,25.0658 11.865234,35.25 11.312622,10.1842 29.874316,17.92114 57.921875,22.23438 14.220573,2.18688 36.580363,2.76506 59.388673,-3.32227 22.27681,-5.94547 45.03916,-18.57383 59.65429,-42.39258 23.63935,-8.59082 38.59616,-18.51487 46.36719,-29.34961 7.9781,-11.12345 7.45044,-23.94249 0.30469,-33.03711 -7.14576,-9.094613 -19.62937,-14.997173 -34.9707,-17.222653 -13.30506,-1.93009 -28.93396,-0.763552 -45.39454,4.027344 0.10677,-2.127632 0.0625,-4.271138 -0.21289,-6.423828 -1.15676,-9.042698 -6.17892,-17.930442 -15.65625,-24.894531 -8.3386,-6.127346 -17.4562,-8.901282 -26.49609,-9.066406 z" />
     <g
        id="g95436"
-       transform="matrix(12.246757,0,0,12.246757,1697.2161,-1936.1456)"
+       transform="matrix(2.3278959,0,0,2.3278959,332.79137,-368.35825)"
        style="stroke-width:0.874271;stroke-miterlimit:4;stroke-dasharray:none">
       <path
          style="opacity:1;fill:#edeef3;fill-opacity:1;stroke:none;stroke-width:0.874271;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -548,7 +552,7 @@
          id="path82243"
          sodipodi:nodetypes="ccsczc" />
       <path
-         style="opacity:1;fill:none;fill-opacity:1;stroke:url(#linearGradient95911);stroke-width:0.874271;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:url(#linearGradient95911);stroke-width:0.874271;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter1)"
          d="m -125.28069,165.77459 c 6.03442,-2.16722 10.82283,2.43596 2.93248,5.22343 -2.23951,3.83676 -7.15982,3.99436 -9.36553,3.65516 -8.96028,-1.37794 -5.07644,-7.16663 -0.61105,-7.63299 -0.79802,-2.93462 3.17975,-6.08667 5.95903,-4.04441 2.77928,2.04226 -0.29239,5.54751 -1.77264,6.02917"
          id="path1293"
          sodipodi:nodetypes="ccsczc" />

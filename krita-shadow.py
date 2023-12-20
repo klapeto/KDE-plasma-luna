@@ -1,8 +1,11 @@
 import subprocess
 import os
 
-outFileName = 'apps/ktorrent'
-svgFileName = 'apps/torrents'
+outFileName = 'places/folder'
+svgFileName = 'places/folder-closed'
+
+altShadow = False
+
 svgBasePath = '/home/klapeto/KDE-plasma-luna/icons-svg/'
 outBasePath = '/home/klapeto/KDE-plasma-luna/home/dot-local/icons/Luna/'
 styleBasePath = '/home/klapeto/KDE-plasma-luna/shadow-styles/'
@@ -22,7 +25,7 @@ for x in sizes:
     lastSvgFile = svgFilePath
     print(lastSvgFile)
     subprocess.run(["inkscape", "-w", str(x), "-h", str(x), "-o", outFilePath, svgFilePath], capture_output=True)
-    stylePath = styleBasePath + 'shadow.' + str(x) + '.asl'
+    stylePath = styleBasePath + 'shadow' + ('-alt' if altShadow else '') + '.' + str(x) + '.asl'
     styleFile = open(stylePath);
     style = styleFile.read();
     styleFile.close()
