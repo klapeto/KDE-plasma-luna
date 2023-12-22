@@ -4,12 +4,12 @@
    inkscape:export-xdpi="96"
    inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/disk.png"
    sodipodi:docname="disk.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
    id="svg8"
    version="1.1"
-   viewBox="0 0 256 256"
-   height="256"
-   width="256"
+   viewBox="0 0 48 48"
+   height="48"
+   width="48"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -28,7 +28,7 @@
          offset="0"
          id="stop55880" />
       <stop
-         style="stop-color:#ffceff;stop-opacity:1"
+         style="stop-color:#ffccff;stop-opacity:1"
          offset="0.5"
          id="stop55937" />
       <stop
@@ -71,19 +71,6 @@
        x2="-108.07941"
        y2="98.650002"
        gradientUnits="userSpaceOnUse" />
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter86164"
-       x="-0.048000002"
-       y="-0.048000002"
-       width="1.096"
-       height="1.096">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.8"
-         id="feGaussianBlur86166" />
-    </filter>
   </defs>
   <sodipodi:namedview
      inkscape:snap-global="true"
@@ -96,17 +83,17 @@
      inkscape:snap-bbox="true"
      inkscape:window-maximized="1"
      inkscape:window-y="0"
-     inkscape:window-x="3840"
-     inkscape:window-height="2045"
+     inkscape:window-x="0"
+     inkscape:window-height="2058"
      inkscape:window-width="3840"
      units="px"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="1132"
-     inkscape:cx="-1174"
-     inkscape:zoom="0.5"
+     inkscape:cy="58.55728"
+     inkscape:cx="-10.032077"
+     inkscape:zoom="11.313708"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -114,19 +101,27 @@
      pagecolor="#ffffff"
      id="base"
      inkscape:pagecheckerboard="0"
-     showguides="false">
+     showguides="false"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        originy="0"
        originx="0"
        id="grid1504"
-       type="xygrid" />
+       type="xygrid"
+       spacingy="1"
+       spacingx="1"
+       units="px"
+       visible="false" />
     <inkscape:grid
        originy="0"
        originx="0"
        spacingy="0.5"
        spacingx="0.5"
        id="grid1507"
-       type="xygrid" />
+       type="xygrid"
+       units="px"
+       visible="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -144,13 +139,9 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
-    <path
-       id="path85984"
-       style="fill:#212121;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5.35705;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000;filter:url(#filter86164)"
-       d="M 137.56771,4 C 71.340666,3.9988148 17.566546,57.77296 17.567709,124 c -0.0011,66.22703 53.77296,120.00116 120.000001,120 66.22703,0.001 120.00116,-53.77297 120,-120 0.001,-66.22704 -53.77295,-120.0011852 -120,-120 z m 0.0352,105.96875 c 6.88731,0.003 13.71058,7.13005 13.70898,14.13672 -0.004,6.94778 -6.89437,13.69725 -13.89844,13.70117 -6.97845,0.001 -13.54222,-6.75263 -13.54492,-13.80859 -2.4e-4,-7.00396 6.81439,-14.0309 13.73438,-14.0293 z" />
     <g
        id="g84489"
-       transform="matrix(5.3570496,0,0,5.3570496,752.81709,-408.47503)">
+       transform="matrix(1.0044468,0,0,1.0044468,151.36446,-76.589066)">
       <path
          id="circle2983"
          style="opacity:1;fill:url(#linearGradient3027);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
@@ -168,7 +159,7 @@
          transform="translate(12.567709)" />
       <path
          id="path959"
-         style="opacity:1;fill:none;fill-rule:evenodd;stroke:#666666;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+         style="opacity:1;fill:none;fill-rule:evenodd;stroke:#666666;stroke-width:1.50032834;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
          d="m -128.34961,77 c -11.95727,-2.14e-4 -21.6506,9.693122 -21.65039,21.650391 -2.1e-4,11.957269 9.69312,21.650599 21.65039,21.650389 11.95727,2.1e-4 21.6506,-9.69312 21.65039,-21.650389 C -106.69901,86.693122 -116.39234,76.999786 -128.34961,77 Z m 0.007,18.281289 c 1.75226,6.71e-4 3.30905,1.636638 3.30865,3.388903 -6.7e-4,1.751498 -1.59285,3.306748 -3.34435,3.307418 -1.75227,4.1e-4 -3.27781,-1.57495 -3.27848,-3.327219 -4e-4,-1.753026 1.56115,-3.369508 3.31418,-3.369102 z"
          transform="translate(12.567709)"
          sodipodi:nodetypes="cccccccccc" />

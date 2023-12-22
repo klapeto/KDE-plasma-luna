@@ -1,10 +1,11 @@
 import subprocess
 import os
 
-outFileName = 'places/folder'
-svgFileName = 'places/folder-closed'
+outFileName = 'actions/align-vertical-top'
+svgFileName = 'actions/alignment/align-vertical-top'
 
-altShadow = False
+altShadow = True
+noShadow = True
 
 svgBasePath = '/home/klapeto/KDE-plasma-luna/icons-svg/'
 outBasePath = '/home/klapeto/KDE-plasma-luna/home/dot-local/icons/Luna/'
@@ -31,7 +32,8 @@ for x in sizes:
     styleFile.close()
     currentDoc = Krita.instance().openDocument(outFilePath)
     currentLayer = currentDoc.nodeByName('Background')
-    currentLayer.setLayerStyleFromAsl(style)
+    if not noShadow:
+        currentLayer.setLayerStyleFromAsl(style)
     currentDoc.setBatchmode(True)
     currentDoc.save()
     currentDoc.close()
