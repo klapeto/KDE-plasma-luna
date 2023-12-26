@@ -3,12 +3,12 @@
    inkscape:export-ydpi="96"
    inkscape:export-xdpi="96"
    inkscape:export-filename="application-exit.png"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
    sodipodi:docname="exit.svg"
    id="svg19"
    version="1.1"
-   width="256"
-   height="256"
+   width="48"
+   height="48"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -32,12 +32,12 @@
      inkscape:window-maximized="1"
      inkscape:window-y="0"
      inkscape:window-x="0"
-     inkscape:cy="200.09025"
-     inkscape:cx="-15.170777"
-     inkscape:zoom="2.4388994"
+     inkscape:cy="30.674697"
+     inkscape:cx="12.121246"
+     inkscape:zoom="19.511195"
      showgrid="false"
      id="namedview21"
-     inkscape:window-height="2043"
+     inkscape:window-height="2058"
      inkscape:window-width="3840"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0"
@@ -47,23 +47,31 @@
      borderopacity="1"
      bordercolor="#666666"
      pagecolor="#ffffff"
-     inkscape:pagecheckerboard="0">
+     inkscape:pagecheckerboard="0"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
-       id="grid832" />
+       id="grid832"
+       originx="0"
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px"
+       visible="false" />
     <inkscape:grid
        type="xygrid"
        id="grid834"
        spacingx="0.5"
-       spacingy="0.5" />
+       spacingy="0.5"
+       originx="0"
+       originy="0"
+       units="px"
+       visible="false" />
   </sodipodi:namedview>
-  <path
-     d="M 33.358417,4 C 25.582372,4 18.50556,6.9127544 13.378188,12.378188 7.9127544,17.50556 5,24.582372 5,32.358417 V 216.1658 c 0,7.49206 2.9622185,14.3769 8.372448,19.45217 5.127742,5.46871 12.207523,8.38201 19.985969,8.38201 H 217.1658 c 7.469,0 14.33971,-2.71088 19.46939,-7.84056 5.40838,-5.40838 8.36479,-12.42737 8.36479,-19.99362 V 32.358417 c 0,-7.757689 -2.6593,-14.812365 -7.84056,-19.993622 C 231.75105,6.9564174 224.73205,4 217.1658,4 Z"
-     style="fill:#0d1a33;fill-opacity:1;stroke-width:10.5033;filter:url(#filter878)"
-     id="path848" />
   <g
      id="g8"
-     transform="matrix(10.503282,0,0,10.503282,128.14004,128.6652)">
+     transform="matrix(2.0131291,0,0,2.0131291,24.560175,24.660827)">
     <path
        style="fill:url(#gradient0)"
        id="path2"
@@ -111,18 +119,5 @@
          stop-color="#ab2200"
          offset="1.0" />
     </radialGradient>
-    <filter
-       height="1.096"
-       y="-0.048000001"
-       width="1.096"
-       x="-0.048000001"
-       id="filter878"
-       style="color-interpolation-filters:sRGB"
-       inkscape:collect="always">
-      <feGaussianBlur
-         id="feGaussianBlur880"
-         stdDeviation="4.7999996"
-         inkscape:collect="always" />
-    </filter>
   </defs>
 </svg>
