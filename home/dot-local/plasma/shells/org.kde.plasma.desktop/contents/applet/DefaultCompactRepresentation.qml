@@ -11,6 +11,8 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 PlasmaCore.IconItem {
     id: icon
 
+    roundToIconSize: true
+
     readonly property bool inPanel: (plasmoid.location === PlasmaCore.Types.TopEdge
         || plasmoid.location === PlasmaCore.Types.RightEdge
         || plasmoid.location === PlasmaCore.Types.BottomEdge

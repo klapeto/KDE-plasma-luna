@@ -70,6 +70,20 @@ AbstractItem {
         }
     }
 
+    function changeIcons(item) {
+        if (!item) {
+            return
+        }
+
+        if (item.roundToIconSize || item instanceof PlasmaCore.IconItem) {
+            item.roundToIconSize = false
+        }
+        for (var i = 0; i < item.children.length; i++) {
+            const child = item.children[i]
+            changeIcons(child)
+        }
+    }
+
     //some heuristics to find MouseArea
     function findMouseArea(item) {
         if (!item) {
@@ -106,6 +120,8 @@ AbstractItem {
             applet.parent = plasmoidContainer.iconContainer
             applet.anchors.fill = applet.parent
             applet.visible = true
+
+            changeIcons(applet.compactRepresentationItem)
 
             preloadFullRepresentationItem(applet.fullRepresentationItem)
         }

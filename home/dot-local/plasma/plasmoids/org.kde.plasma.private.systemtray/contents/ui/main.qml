@@ -124,7 +124,7 @@ MouseArea {
             }
             visible: root.hiddenLayout.itemCount > 0
         }
-        
+
         GridView {
             id: tasksGrid
 
@@ -136,23 +136,25 @@ MouseArea {
             // The icon size to display when not using the auto-scaling setting
             readonly property int smallIconSize: PlasmaCore.Units.iconSizes.smallMedium
 
+            readonly property int totalHeightReduction: Math.round(14 * PlasmaCore.Units.devicePixelRatio)
+
             // Automatically use autoSize setting when in tablet mode, if it's
             // not already being used
-            readonly property bool autoSize: true
+            readonly property bool autoSize: Plasmoid.configuration.scaleIconsToFit || Kirigami.Settings.tabletMode
 
             readonly property int gridThickness: root.vertical ? root.width : root.height
             // Should change to 2 rows/columns on a 56px panel (in standard DPI)
             readonly property int rowsOrColumns: autoSize ? 1 : Math.max(1, Math.min(count, Math.floor(gridThickness / (smallIconSize + PlasmaCore.Units.smallSpacing))))
 
             // Add margins only if the panel is larger than a small icon (to avoid large gaps between tiny icons)
-            readonly property int cellSpacing: Math.round(3 * PlasmaCore.Units.devicePixelRatio)//PlasmaCore.Units.smallSpacing * (Kirigami.Settings.tabletMode ? 6 : Plasmoid.configuration.iconSpacing)
+            readonly property int cellSpacing: Math.round(3 * PlasmaCore.Units.devicePixelRatio)
             readonly property int smallSizeCellLength: gridThickness < smallIconSize ? smallIconSize : smallIconSize + cellSpacing
 
             cellHeight: {
                 if (root.vertical) {
                     return autoSize ? itemSize + (gridThickness < itemSize ? 0 : cellSpacing) : smallSizeCellLength
                 } else {
-                    return autoSize ? root.height : Math.floor(root.height / rowsOrColumns)
+                    return autoSize ? root.height - totalHeightReduction : Math.floor(root.height / rowsOrColumns)
                 }
             }
             cellWidth: {
@@ -164,17 +166,16 @@ MouseArea {
             }
 
             //depending on the form factor, we are calculating only one dimension, second is always the same as root/parent
-            implicitHeight: root.vertical ? cellHeight * Math.ceil(count / rowsOrColumns) : root.height
+            implicitHeight: root.vertical ? cellHeight * Math.ceil(count / rowsOrColumns) : root.height  - totalHeightReduction
             implicitWidth: !root.vertical ? cellWidth * Math.ceil(count / rowsOrColumns) : root.width
 
             readonly property int itemSize: {
                 if (autoSize) {
-                    return PlasmaCore.Units.roundToIconSize(Math.min(Math.min(root.width, root.height - 14 * PlasmaCore.Units.devicePixelRatio) / rowsOrColumns, PlasmaCore.Units.iconSizes.enormous))
+                    return cellHeight
                 } else {
                     return smallIconSize
                 }
             }
-
             model: PlasmaCore.SortFilterModel {
                 sourceModel: plasmoid.nativeInterface.systemTrayModel
                 filterRole: "effectiveStatus"
