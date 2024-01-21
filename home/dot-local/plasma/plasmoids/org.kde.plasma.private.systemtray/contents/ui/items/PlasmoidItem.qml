@@ -80,6 +80,7 @@ AbstractItem {
         }
         for (var i = 0; i < item.children.length; i++) {
             const child = item.children[i]
+
             changeIcons(child)
         }
     }
@@ -115,14 +116,19 @@ AbstractItem {
         }
     }
 
+    Timer {
+        id: timer
+        interval: 0; running: false; repeat: false
+        onTriggered: changeIcons(applet.compactRepresentationItem)
+    }
+
     onAppletChanged: {
         if (applet) {
             applet.parent = plasmoidContainer.iconContainer
             applet.anchors.fill = applet.parent
             applet.visible = true
 
-            changeIcons(applet.compactRepresentationItem)
-
+            timer.start();
             preloadFullRepresentationItem(applet.fullRepresentationItem)
         }
     }
@@ -144,6 +150,10 @@ AbstractItem {
 
         function onFullRepresentationItemChanged(fullRepresentationItem) {
             preloadFullRepresentationItem(fullRepresentationItem)
+        }
+
+        function onCompactRepresentationItemChanged(compactRepresentation) {
+            //changeIcons(compactRepresentation)
         }
     }
 

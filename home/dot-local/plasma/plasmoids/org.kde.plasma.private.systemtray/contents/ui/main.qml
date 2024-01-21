@@ -166,7 +166,7 @@ MouseArea {
             }
 
             //depending on the form factor, we are calculating only one dimension, second is always the same as root/parent
-            implicitHeight: root.vertical ? cellHeight * Math.ceil(count / rowsOrColumns) : root.height  - totalHeightReduction
+            implicitHeight: root.vertical ? cellHeight * Math.ceil(count / rowsOrColumns) : root.height - totalHeightReduction
             implicitWidth: !root.vertical ? cellWidth * Math.ceil(count / rowsOrColumns) : root.width
 
             readonly property int itemSize: {
