@@ -1,15 +1,15 @@
 import subprocess
 import os
 
-outFileName = 'actions/align-vertical-top'
-svgFileName = 'actions/alignment/align-vertical-top'
+outFileName = 'status/network-bluetooth'
+svgFileName = 'icons-svg/status/network-bluetooth'
 
 altShadow = True
 noShadow = True
 
-svgBasePath = '/home/klapeto/KDE-plasma-luna/icons-svg/'
-outBasePath = '/home/klapeto/KDE-plasma-luna/home/dot-local/icons/Luna/'
-styleBasePath = '/home/klapeto/KDE-plasma-luna/shadow-styles/'
+svgBasePath = '/media/klapeto/Αρχεία/Code/KDE-Plasma-Luna/icons-svg/'
+outBasePath = '/media/klapeto/Αρχεία/Code/KDE-Plasma-Luna/home/dot-local/icons/Luna/'
+styleBasePath = '/media/klapeto/Αρχεία/Code/KDE-Plasma-Luna/shadow-styles/'
 
 sizes = [512,256,128,96,64,48,32,24,22,16]
 
