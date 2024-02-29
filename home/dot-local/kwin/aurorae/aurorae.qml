@@ -4,28 +4,38 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 import QtQuick 2.0
-import org.kde.kwin.decoration 0.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.kwin.decoration
+import org.kde.plasma.core as PlasmaCore
+import org.kde.ksvg 1.0 as KSvg
+import org.kde.kirigami as Kirigami
 
-import QtGraphicalEffects 1.15
+import Qt5Compat.GraphicalEffects
+//import QtGraphicalEffects 1.15
 
 Decoration {
     id: root
     property bool animate: false
+    property int titleBarCornerWidth: calculateSize(29)
     Component.onCompleted: {
         borders.left   = Qt.binding(function() { return Math.max(0, auroraeTheme.borderLeft);});
         borders.right  = Qt.binding(function() { return Math.max(0, auroraeTheme.borderRight);});
-        borders.top    = Qt.binding(function() { return Math.max(0, Math.round(PlasmaCore.Units.devicePixelRatio * 30));});
+        borders.top    = Qt.binding(function() { return Math.max(0, auroraeTheme.borderTop);});
         borders.bottom = Qt.binding(function() { return Math.max(0, auroraeTheme.borderBottom);});
         maximizedBorders.left   = Qt.binding(function() { return Math.max(0, auroraeTheme.borderLeftMaximized);});
         maximizedBorders.right  = Qt.binding(function() { return Math.max(0, auroraeTheme.borderRightMaximized);});
         maximizedBorders.bottom = Qt.binding(function() { return Math.max(0, auroraeTheme.borderBottomMaximized);});
-        maximizedBorders.top    = Qt.binding(function() { return Math.max(0, Math.round(PlasmaCore.Units.devicePixelRatio * 26));});
+        maximizedBorders.top    = Qt.binding(function() { return Math.max(0, auroraeTheme.borderTopMaximized);});
         padding.left   = auroraeTheme.paddingLeft;
         padding.right  = auroraeTheme.paddingRight;
         padding.bottom = auroraeTheme.paddingBottom;
         padding.top    = auroraeTheme.paddingTop;
         root.animate = true;
+    }
+    function calculateSize(pixels) {
+        return Math.round((Kirigami.Units.gridUnit / 16.0) * pixels);
+    }
+    function calculateSizeFloor(pixels) {
+        return Math.floor((Kirigami.Units.gridUnit / 16.0) * pixels);
     }
     DecorationOptions {
         id: options
@@ -41,7 +51,7 @@ Decoration {
             decoration.installTitleItem(titleRect);
         }
     }
-    PlasmaCore.FrameSvg {
+    KSvg.FrameSvg {
         property bool supportsInactive: true //hasElementPrefix("decoration-inactive")
         property bool supportsMaximized: true //hasElementPrefix("decoration-maximized")
         property bool supportsMaximizedInactive: true //hasElementPrefix("decoration-maximized-inactive")
@@ -56,6 +66,17 @@ Decoration {
     //==============================
     // Active
     //==============================
+
+    Item {
+        id: titleBarPlaceholder
+
+        anchors {
+           top: root.top
+           left: root.left
+           right: root.right
+        }
+        height: titleBarCornerWidth
+    }
     
     Item {
         id: decorationActiveContainer
@@ -63,7 +84,7 @@ Decoration {
         anchors.fill: parent
         opacity: shown ? 1 : 0
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationActiveBarLeft
     
             anchors {
@@ -74,32 +95,33 @@ Decoration {
                 topMargin: 0
             }
         
-            width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
-            height: borders.top
+            width: titleBarCornerWidth
+            height: titleBarCornerWidth
         
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBarLeft"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationActiveBarRight
         
             anchors {
                 right: parent.right
                 top: parent.top
+                bottom: decorationActiveBarTop.bottom
                 leftMargin: 0
                 rightMargin: 0
                 topMargin: 0
             }
         
-            width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
+            width: titleBarCornerWidth
             height: borders.top
             
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBarRight"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationActiveBarTop
         
             anchors {
@@ -117,7 +139,7 @@ Decoration {
             prefix: "ActiveBarCenter"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationActiveBorderLeft
         
             
@@ -136,7 +158,7 @@ Decoration {
             prefix: "ActiveBorderLeft"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationActiveBorderRight
             
             anchors {
@@ -154,7 +176,7 @@ Decoration {
             prefix: "ActiveBorderRight"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationActiveBorderBottomRight
             
             anchors {
@@ -172,7 +194,7 @@ Decoration {
             prefix: "ActiveBorderBottomRight"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationActiveBorderBottomLeft
             
             anchors {
@@ -190,7 +212,7 @@ Decoration {
             prefix: "ActiveBorderBottomLeft"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationActiveBorderBottom
             
             anchors {
@@ -209,7 +231,7 @@ Decoration {
 
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationActiveCenter
         
             anchors {
@@ -225,7 +247,6 @@ Decoration {
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveWindow"
         }
-    
         
         Behavior on opacity {
             enabled: root.animate
@@ -247,7 +268,7 @@ Decoration {
         anchors.fill: parent
         opacity: (!decoration.client.active && backgroundSvg.supportsInactive) ? 1 : 0
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationInactiveBarLeft
             
             anchors {
@@ -258,14 +279,14 @@ Decoration {
                 topMargin: 0
             }
             
-            width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
+            width: titleBarCornerWidth
             height: borders.top
             
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBarLeft"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationInactiveBarRight
             anchors {
                 right: parent.right
@@ -275,14 +296,14 @@ Decoration {
                 topMargin: 0
             }
             
-            width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
+            width: titleBarCornerWidth
             height: borders.top
             
             imagePath: backgroundSvg.imagePath
             prefix: "InactiveBarRight"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationInactiveBarTop
             
             anchors {
@@ -300,7 +321,7 @@ Decoration {
             prefix: "InactiveBarCenter"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationInactiveBorderLeft
             
             anchors {
@@ -318,9 +339,9 @@ Decoration {
             prefix: "InactiveBorderLeft"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationInactiveBorderRight
-        
+
             anchors {
                 right: parent.right
                 top: decorationInactiveBarLeft.bottom
@@ -337,7 +358,7 @@ Decoration {
         }
         
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationInactiveBorderBottomRight
             
             anchors {
@@ -355,7 +376,7 @@ Decoration {
             prefix: "InactiveBorderBottomRight"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationInactiveBorderBottomLeft
             
             anchors {
@@ -373,7 +394,7 @@ Decoration {
             prefix: "InactiveBorderBottomLeft"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationInactiveBorderBottom
             
             anchors {
@@ -391,7 +412,7 @@ Decoration {
             prefix: "InactiveBorderBottom"
         }
         
-        PlasmaCore.FrameSvgItem {
+        KSvg.FrameSvgItem {
             id: decorationInactiveCenter
             
             anchors {
@@ -422,7 +443,7 @@ Decoration {
     // Maximized Active
     //==============================
     
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: decorationActiveMaximizedBarLeft
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
         
@@ -434,13 +455,13 @@ Decoration {
             topMargin: 0
         }
         
-        width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
+        width: titleBarCornerWidth
         
         imagePath: backgroundSvg.imagePath
         prefix: "ActiveMaximizedBarLeft"
         height: parent.maximizedBorders.top
         opacity: shown ? 1 : 0
-        enabledBorders: PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: KSvg.FrameSvg.NoBorder
         Behavior on opacity {
             enabled: root.animate
             NumberAnimation {
@@ -449,7 +470,7 @@ Decoration {
         }
     }
     
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: decorationActiveMaximizedBarRight
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
         
@@ -461,13 +482,13 @@ Decoration {
             topMargin: 0
         }
         
-        width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
+        width: titleBarCornerWidth
         
         imagePath: backgroundSvg.imagePath
         prefix: "ActiveMaximizedBarRight"
         height: parent.maximizedBorders.top
         opacity: shown ? 1 : 0
-        enabledBorders: PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: KSvg.FrameSvg.NoBorder
         Behavior on opacity {
             enabled: root.animate
             NumberAnimation {
@@ -477,7 +498,7 @@ Decoration {
     }
 
     
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: decorationActiveMaximizedBarTop
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
         
@@ -490,13 +511,13 @@ Decoration {
             topMargin: 0
         }
         
-        width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
+        width: titleBarCornerWidth
         
         imagePath: backgroundSvg.imagePath
         prefix: "ActiveMaximizedBarCenter"
         height: parent.maximizedBorders.top
         opacity: shown ? 1 : 0
-        enabledBorders: PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: KSvg.FrameSvg.NoBorder
         Behavior on opacity {
             enabled: root.animate
             NumberAnimation {
@@ -511,7 +532,7 @@ Decoration {
     //==============================
 
     
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: decorationInactiveMaximizedBarLeft
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
         
@@ -523,13 +544,13 @@ Decoration {
             topMargin: 0
         }
         
-        width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
+        width: titleBarCornerWidth
         
         imagePath: backgroundSvg.imagePath
         prefix: "InactiveMaximizedBarLeft"
         height: parent.maximizedBorders.top
         opacity: (!decoration.client.active && decoration.client.maximized && backgroundSvg.supportsMaximizedInactive) ? 1 : 0
-        enabledBorders: PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: KSvg.FrameSvg.NoBorder
         Behavior on opacity {
             enabled: root.animate
             NumberAnimation {
@@ -538,7 +559,7 @@ Decoration {
         }
     }
     
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: decorationInactiveMaximizedBarRight
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
         
@@ -550,13 +571,13 @@ Decoration {
             topMargin: 0
         }
         
-        width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
+        width: titleBarCornerWidth
         
         imagePath: backgroundSvg.imagePath
         prefix: "InactiveMaximizedBarRight"
         height: parent.maximizedBorders.top
         opacity: (!decoration.client.active && decoration.client.maximized && backgroundSvg.supportsMaximizedInactive) ? 1 : 0
-        enabledBorders: PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: KSvg.FrameSvg.NoBorder
         Behavior on opacity {
             enabled: root.animate
             NumberAnimation {
@@ -566,7 +587,7 @@ Decoration {
     }
 
     
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: decorationInactiveMaximizedBarTop
         property bool shown: decoration.client.maximized && backgroundSvg.supportsMaximized && (decoration.client.active || !backgroundSvg.supportsMaximizedInactive)
         
@@ -579,13 +600,13 @@ Decoration {
             topMargin: 0
         }
         
-        width: Math.round(29 * PlasmaCore.Units.devicePixelRatio)
+        width: titleBarCornerWidth
         
         imagePath: backgroundSvg.imagePath
         prefix: "InactiveMaximizedBarCenter"
         height: parent.maximizedBorders.top
         opacity: (!decoration.client.active && decoration.client.maximized && backgroundSvg.supportsMaximizedInactive) ? 1 : 0
-        enabledBorders: PlasmaCore.FrameSvg.NoBorder
+        enabledBorders: KSvg.FrameSvg.NoBorder
         Behavior on opacity {
             enabled: root.animate
             NumberAnimation {
@@ -597,25 +618,28 @@ Decoration {
     AuroraeButtonGroup {
         id: leftButtonGroup
         buttons: options.titleButtonsLeft
-        width: childrenRect.width
-        height: Math.round(16 * PlasmaCore.Units.devicePixelRatio)
         animate: root.animate
         anchors {
             left: root.left
             top: root.top
-            topMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 4) : Math.round(PlasmaCore.Units.devicePixelRatio * 8)
-            leftMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 2) : Math.round(PlasmaCore.Units.devicePixelRatio * 6)
+            bottom: titleBarPlaceholder.bottom
+            topMargin: decoration.client.maximized ? calculateSize(6) : calculateSize(8)
+            leftMargin: decoration.client.maximized ? calculateSize(2) : calculateSize(6)
+            bottomMargin: decoration.client.maximized ? calculateSize(8) : calculateSize(6)
         }
     }
     AuroraeButtonGroup {
         id: rightButtonGroup
         buttons: options.titleButtonsRight
-        width: childrenRect.width
         animate: root.animate
+
         anchors {
             right: root.right
-            rightMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 2) : Math.round(PlasmaCore.Units.devicePixelRatio * 6)
-            topMargin: decoration.client.maximized ? Math.round(PlasmaCore.Units.devicePixelRatio * 2) : Math.round(PlasmaCore.Units.devicePixelRatio * 6)
+            top: root.top
+            bottom: titleBarPlaceholder.bottom
+            rightMargin: decoration.client.maximized ? calculateSize(2) : calculateSize(6)
+            topMargin: decoration.client.maximized ? calculateSize(4) : calculateSize(5)
+            bottomMargin: decoration.client.maximized ? calculateSize(4) : calculateSize(3)
         }
     }
     Text {
@@ -627,18 +651,23 @@ Decoration {
         elide: Text.ElideRight
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
         font.family: "Trebuchet MS"
-        font.pointSize: 10.2 //+ ((PlasmaCore.Units.devicePixelRatio - 1.0) / 10.0) //magic calculation to make size consistent across scallings
+        font.pointSize: 10.2 //+ ((1 - 1.0) / 10.0) //magic calculation to make size consistent across scallings
         font.weight: Font.Bold
         renderType: Text.NativeRendering
+        //style: decoration.client.active ? Text.Raised : Text.Normal;
         font.hintingPreference: Font.PreferFullHinting
+        //Rectangle {anchors.fill:parent}
+        lineHeight: 1.0
         anchors {
             left: leftButtonGroup.right
             right: rightButtonGroup.left
-            verticalCenter: leftButtonGroup.verticalCenter
+            //verticalCenter: titleBarPlaceholder.verticalCenter
             bottom: leftButtonGroup.bottom
-            bottomMargin: Math.round(-2.5 * PlasmaCore.Units.devicePixelRatio)
-            top: root.top
-            leftMargin: Math.round(4 * PlasmaCore.Units.devicePixelRatio)
+            bottomMargin: calculateSize(-2.0)
+            //bottomMargin: calculateSize(5)
+            //top: leftButtonGroup.top
+            top: leftButtonGroup.top
+            leftMargin: calculateSize(4)
             rightMargin: auroraeTheme.titleBorderRight
         }
         Behavior on color {
@@ -664,7 +693,8 @@ Decoration {
         source: caption
     }
 
-    PlasmaCore.FrameSvgItem {
+
+    KSvg.FrameSvgItem {
         id: innerBorder
         anchors {
             fill: parent
@@ -688,7 +718,7 @@ Decoration {
             }
         }
     }
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: innerBorderInactive
         anchors {
             fill: parent

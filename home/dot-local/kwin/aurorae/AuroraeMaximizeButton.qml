@@ -3,13 +3,16 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
-import QtQuick 2.0
-import org.kde.kwin.decoration 0.1
+import QtQuick
+import org.kde.kwin.decoration
 
 Item {
     id: button
-    width: auroraeTheme.buttonWidthMaximizeRestore * auroraeTheme.buttonSizeFactor
-    height: auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor
+    width: height
+    anchors {
+        top: parent.top
+        bottom: parent.bottom
+    }
     property bool hovered: false
     property bool pressed: false
     property bool toggled: false

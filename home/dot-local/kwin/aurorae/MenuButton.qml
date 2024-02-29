@@ -3,21 +3,24 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
-import QtQuick 2.0
-import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
-import org.kde.kwin.decoration 0.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick
+import org.kde.kwin.decoration
+import org.kde.kirigami 2.20 as Kirigami
 
 DecorationButton {
     property bool closeOnDoubleClick: decorationSettings.closeOnDoubleClickOnMenu
     id: menuButton
     buttonType: DecorationOptions.DecorationButtonMenu
-   KQuickControlsAddons.QIconItem {
-        icon: decoration.client.icon
-        smooth: true
-        anchors {
-            fill: parent
-        }
+
+    anchors {
+        top: parent.top
+        bottom: parent.bottom
+    }
+    width: height
+    Kirigami.Icon {
+        anchors.fill: parent
+        source: decoration.client.icon
+        roundToIconSize: false
     }
     DecorationOptions {
         id: options

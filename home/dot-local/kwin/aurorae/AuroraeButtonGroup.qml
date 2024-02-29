@@ -3,9 +3,8 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
-import QtQuick 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.kwin.decoration 0.1
+import QtQuick
+import org.kde.kwin.decoration
 
 Item {
     function createButtons() {
@@ -15,7 +14,7 @@ Item {
                 Qt.createQmlObject("import QtQuick 2.0; Item { width: auroraeTheme.explicitButtonSpacer * auroraeTheme.buttonSizeFactor; height: auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor }",
                     groupRow, "explicitSpacer" + buttons + i);
             } else if (buttons[i] == DecorationOptions.DecorationButtonMenu) {
-                Qt.createQmlObject("import QtQuick 2.0; import org.kde.plasma.core 2.0 as PlasmaCore; MenuButton { width: Math.round(16 * PlasmaCore.Units.devicePixelRatio); height: Math.round(16 * PlasmaCore.Units.devicePixelRatio) }",
+                Qt.createQmlObject("import QtQuick 2.0; MenuButton {  }",
                     groupRow, "menuButton" + buttons + i);
             } else if (buttons[i] == DecorationOptions.DecorationButtonApplicationMenu) {
                 Qt.createQmlObject("import QtQuick 2.0; AppMenuButton { width: auroraeTheme.buttonWidthAppMenu * auroraeTheme.buttonSizeFactor; height: auroraeTheme.buttonHeight * auroraeTheme.buttonSizeFactor }",
@@ -34,16 +33,16 @@ Item {
 
     Row {
         id: groupRow
+        anchors {
+            fill: parent
+        }
         spacing: auroraeTheme.buttonSpacing * auroraeTheme.buttonSizeFactor
     }
+    width: groupRow.implicitWidth
     onButtonsChanged: {
         for (var i = 0; i < groupRow.children.length; i++) {
             groupRow.children[i].destroy();
         }
         createButtons();
-    }
-    anchors {
-        top: root.top
-        topMargin: (decoration.client.maximized ? auroraeTheme.titleEdgeTopMaximized : auroraeTheme.titleEdgeTop + root.padding.top) + auroraeTheme.buttonMarginTop
     }
 }
