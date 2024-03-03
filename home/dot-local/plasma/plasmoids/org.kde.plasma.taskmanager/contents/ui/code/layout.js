@@ -1,37 +1,29 @@
-/***************************************************************************
- *   Copyright (C) 2012-2013 by Eike Hein <hein@kde.org>                   *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
- ***************************************************************************/
+/*
+    SPDX-FileCopyrightText: 2012-2013 Eike Hein <hein@kde.org>
 
-var iconSizes = ["small", "smallMedium", "medium", "large", "huge", "enormous"];
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
+
+.import org.kde.kirigami 2.20 as Kirigami
+
+const iconMargin = Math.round(Kirigami.Units.smallSpacing / 4);
+const labelMargin = Kirigami.Units.smallSpacing;
 
 function horizontalMargins() {
-    return taskFrame.margins.left + taskFrame.margins.right;
+    const spacingAdjustment = (tasks.plasmoid.pluginName === "org.kde.plasma.icontasks") ? (Kirigami.Settings.tabletMode ? 3 : tasks.plasmoid.configuration.iconSpacing) : 1
+    return (taskFrame.margins.left + taskFrame.margins.right) * (tasks.vertical ? 1 : spacingAdjustment);
 }
 
 function verticalMargins() {
-    return taskFrame.margins.top + taskFrame.margins.bottom;
+    const spacingAdjustment = (tasks.plasmoid.pluginName === "org.kde.plasma.icontasks") ? (Kirigami.Settings.tabletMode ? 3 : tasks.plasmoid.configuration.iconSpacing) : 1
+    return (taskFrame.margins.top + taskFrame.margins.bottom) * (tasks.vertical ? spacingAdjustment : 1);
 }
 
 function adjustMargin(height, margin) {
     var available = height - verticalMargins();
 
-    if (available < PlasmaCore.Units.iconSizes.small) {
-        return Math.floor((margin * (PlasmaCore.Units.iconSizes.small / available)) / 3);
+    if (available < Kirigami.Units.iconSizes.small) {
+        return Math.floor((margin * (Kirigami.Units.iconSizes.small / available)) / 3);
     }
 
     return margin;
@@ -52,14 +44,14 @@ function logicalTaskCount() {
 }
 
 function maxStripes() {
-    var length = tasks.vertical ? taskList.width : taskList.height;
+    var length = tasks.vertical ? tasks.width : tasks.height;
     var minimum = tasks.vertical ? preferredMinWidth() : preferredMinHeight();
 
-    return Math.min(plasmoid.configuration.maxStripes, Math.max(1, Math.floor(length / minimum)));
+    return Math.min(tasks.plasmoid.configuration.maxStripes, Math.max(1, Math.floor(length / minimum)));
 }
 
 function tasksPerStripe() {
-    if (plasmoid.configuration.forceStripes) {
+    if (tasks.plasmoid.configuration.forceStripes) {
         return Math.ceil(logicalTaskCount() / maxStripes());
     } else {
         var length = tasks.vertical ? taskList.height : taskList.width;
@@ -70,7 +62,7 @@ function tasksPerStripe() {
 }
 
 function calculateStripes() {
-    var stripes = plasmoid.configuration.forceStripes ? plasmoid.configuration.maxStripes : Math.min(plasmoid.configuration.maxStripes, Math.ceil(logicalTaskCount() / tasksPerStripe()));
+    var stripes = tasks.plasmoid.configuration.forceStripes ? tasks.plasmoid.configuration.maxStripes : Math.min(tasks.plasmoid.configuration.maxStripes, Math.ceil(logicalTaskCount() / tasksPerStripe()));
 
     return Math.min(stripes, maxStripes());
 }
@@ -92,7 +84,7 @@ function optimumCapacity(width, height) {
 }
 
 function layoutWidth() {
-    if (plasmoid.configuration.forceStripes && !tasks.vertical) {
+    if (tasks.plasmoid.configuration.forceStripes && !tasks.vertical) {
         return Math.min(tasks.width, Math.max(preferredMaxWidth(), tasksPerStripe() * preferredMaxWidth()));
     } else {
         return tasks.width;
@@ -100,7 +92,7 @@ function layoutWidth() {
 }
 
 function layoutHeight() {
-    if (plasmoid.configuration.forceStripes && tasks.vertical) {
+    if (tasks.plasmoid.configuration.forceStripes && tasks.vertical) {
         return Math.min(tasks.height, Math.max(preferredMaxHeight(), tasksPerStripe() * preferredMaxHeight()));
     } else {
         return tasks.height;
@@ -111,7 +103,9 @@ function preferredMinWidth() {
     var width = launcherWidth();
 
     if (!tasks.vertical && !tasks.iconsOnly) {
-        width += (PlasmaCore.Units.smallSpacing * 2) + (theme.mSize(theme.defaultFont).width * 12);
+      width +=
+          (Kirigami.Units.smallSpacing * 2) +
+          (Kirigami.Units.gridUnit * 8);
     }
 
     return width;
@@ -126,7 +120,7 @@ function preferredMaxWidth() {
         }
     }
 
-    if (plasmoid.configuration.groupingStrategy != 0 && !plasmoid.configuration.groupPopups) {
+    if (tasks.plasmoid.configuration.groupingStrategy != 0 && !tasks.plasmoid.configuration.groupPopups && !tasks.iconsOnly) {
         return preferredMinWidth();
     }
 
@@ -135,30 +129,28 @@ function preferredMaxWidth() {
 
 function preferredMinHeight() {
     // TODO FIXME UPSTREAM: Port to proper font metrics for descenders once we have access to them.
-    return theme.mSize(theme.defaultFont).height + 4;
+    return Kirigami.Units.iconSizes.sizeForLabels + 4;
 }
 
 function preferredMaxHeight() {
     if (tasks.vertical) {
-        return verticalMargins()
-                + Math.min(
-                    // Do not allow the preferred icon size to exceed the width of the vertical task manager.
-                    tasks.width,
+      return verticalMargins() +
+             Math.min(
+                 // Do not allow the preferred icon size to exceed the width of
+                 // the vertical task manager.
+                 tasks.width,
+                 tasks.iconsOnly ? tasks.width :
                     Math.max(
-                        // This assumes that we show some text and that we need some minimal vertical space for it.
-                        // In reality, we do not always show the text. We show the text only if there
-                        // is enough horizontal space for some hard coded amount of 'm' characters
-                        // - see minimumMColumns() below.
-                        // Hence in case the user prefers icons smaller than the height of his font,
-                        // the font height will win even if the text will stay invisible.
-                        // We leave it for the future developers to improve this expresssion if the
-                        // named corner case turns out to be important.
-                        PlasmaCore.Units.iconSizes[iconSizes[plasmoid.configuration.iconSize]],
-                        theme.mSize(theme.defaultFont).height
+                        Kirigami.Units.iconSizes.sizeForLabels,
+                        Kirigami.Units.iconSizes.medium
                     )
-                );
+             );
     } else {
-        return verticalMargins() + Math.min(PlasmaCore.Units.iconSizes.small * 3, theme.mSize(theme.defaultFont).height * 3);
+      return verticalMargins() +
+             Math.min(
+                 Kirigami.Units.iconSizes.small * 3,
+                 Kirigami.Units.iconSizes.sizeForLabels *
+                     3);
     }
 }
 
@@ -193,14 +185,14 @@ function taskHeight() {
 }
 
 function launcherWidth() {
-    var baseWidth = tasks.vertical ? preferredMinHeight() : Math.min(tasks.height, PlasmaCore.Units.iconSizes.small * 3);
+    var baseWidth = tasks.vertical ? preferredMinHeight() : Math.min(tasks.height, Kirigami.Units.iconSizes.small * 3);
 
     return (baseWidth + horizontalMargins())
         - (adjustMargin(baseWidth, taskFrame.margins.top) + adjustMargin(baseWidth, taskFrame.margins.bottom));
 }
 
 function maximumContextMenuTextWidth() {
-    return (theme.mSize(theme.defaultFont).width * 28);
+  return (Kirigami.Units.iconSizes.sizeForLabels * 28);
 }
 
 function layout(container) {
@@ -228,9 +220,9 @@ function layout(container) {
 
         adjustedWidth = width;
 
-        if (!tasks.vertical && !tasks.iconsOnly && (plasmoid.configuration.separateLaunchers || stripes == 1)) {
-            if (item.m.IsLauncher === true
-                || (!plasmoid.configuration.separateLaunchers && item.m.IsStartup === true && item.m.HasLauncher === true)) {
+        if (!tasks.vertical && !tasks.iconsOnly && (tasks.plasmoid.configuration.separateLaunchers || stripes == 1)) {
+            if (item.model && (item.model.IsLauncher
+                || (!tasks.plasmoid.configuration.separateLaunchers && item.model.IsStartup && item.model.HasLauncher))) {
                 adjustedWidth = launcherWidth();
             } else if (stripes > 1 && i == tasksModel.logicalLauncherCount) {
                 adjustedWidth += launcherLayoutWidthDiff();

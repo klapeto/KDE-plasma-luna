@@ -1,86 +1,95 @@
 /*
- *   Copyright 2016 Marco Martin <mart@kde.org>
- *   Copyright 2020 Konrad Materka <materka@gmail.com>
- *   Copyright 2020 Nate Graham <nate@kde.org>
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+    SPDX-FileCopyrightText: 2016 Marco Martin <mart@kde.org>
+    SPDX-FileCopyrightText: 2020 Konrad Materka <materka@gmail.com>
+    SPDX-FileCopyrightText: 2020 Nate Graham <nate@kde.org>
 
-import QtQuick 2.1
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
+
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.1 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents // For Highlight
-import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.plasmoid 2.0
+import org.kde.kitemmodels 1.0 as KItemModels
 
 import "items"
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-MouseArea {
+PlasmaComponents3.ScrollView {
     id: hiddenTasksView
 
     property alias layout: hiddenTasks
-    readonly property alias itemCount: hiddenTasks.itemCount
 
     hoverEnabled: true
-    onExited: hiddenTasks.currentIndex = -1
+    onHoveredChanged: if (!hovered) {
+        hiddenTasks.currentIndex = -1;
+    }
+    background: null
 
-    PlasmaExtras.ScrollArea {
-        width: parent.width
-        height: parent.height
-        frameVisible: false
+    GridView {
+        id: hiddenTasks
 
-        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
-        verticalScrollBarPolicy: systemTrayState.activeApplet ? Qt.ScrollBarAlwaysOff : Qt.ScrollBarAsNeeded
+        readonly property int minimumRows: 4
+        readonly property int minimumColumns: 4
 
-        GridView {
-            id: hiddenTasks
+        cellWidth: Math.floor(Math.min(hiddenTasksView.availableWidth, popup.Layout.minimumWidth) / minimumRows)
+        cellHeight: Math.floor(popup.Layout.minimumHeight / minimumColumns)
 
-            readonly property int rows: 4
-            readonly property int columns: 4
+        currentIndex: -1
+        highlight: PlasmaExtras.Highlight {}
+        highlightMoveDuration: 0
 
-            cellWidth: hiddenTasks.width / hiddenTasks.columns
-            cellHeight: hiddenTasks.height / hiddenTasks.rows
+        pixelAligned: true
 
-            currentIndex: -1
-            highlight: PlasmaComponents.Highlight {}
-            highlightMoveDuration: 0
+        readonly property int itemCount: model.count
 
-            property int itemCount: model.rowCount()
+        //! This is used in order to identify the minimum required label height in order for all
+        //! labels to be aligned properly at all items. At the same time this approach does not
+        //! enforce labels with 3 lines at all cases so translations that require only one or two
+        //! lines will always look consistent with no too much padding
+        readonly property int minLabelHeight: {
+            var minHeight = 0;
 
-            Component.onCompleted: {
-                itemCount = model.rowCount()
-            }
+            for(let i in contentItem.children){
+                var gridItem = contentItem.children[i];
+                if (!gridItem || !gridItem.hasOwnProperty("item") || !gridItem.item.hasOwnProperty("labelHeight")) {
+                    continue;
+                }
 
-            model: PlasmaCore.SortFilterModel {
-                sourceModel: plasmoid.nativeInterface.systemTrayModel
-                filterRole: "effectiveStatus"
-                filterCallback: function(source_row, value) {
-                    return value === PlasmaCore.Types.PassiveStatus
+                if (gridItem.item.labelHeight > minHeight) {
+                    minHeight = gridItem.item.labelHeight;
                 }
             }
-            delegate: ItemLoader {}
-        }
-    }
 
-    Connections {
-        target: hiddenTasks.model
-        // hiddenTasks.count is not updated when ListView is hidden and is not rendered
-        // manually update itemCount so that expander arrow hides/shows itself correctly
-        function onModelReset() {hiddenTasks.itemCount = hiddenTasks.model.rowCount()}
-        function onRowsInserted() {hiddenTasks.itemCount = hiddenTasks.model.rowCount()}
-        function onRowsRemoved() {hiddenTasks.itemCount = hiddenTasks.model.rowCount()}
-        function onLayoutChanged() {hiddenTasks.itemCount = hiddenTasks.model.rowCount()}
+            return minHeight;
+        }
+
+        model: KItemModels.KSortFilterProxyModel {
+            sourceModel: Plasmoid.systemTrayModel
+            filterRoleName: "effectiveStatus"
+            filterRowCallback: (sourceRow, sourceParent) => {
+                let value = sourceModel.data(sourceModel.index(sourceRow, 0, sourceParent), filterRole);
+                return value === PlasmaCore.Types.PassiveStatus
+            }
+        }
+        delegate: ItemLoader {
+            width: hiddenTasks.cellWidth
+            height: hiddenTasks.cellHeight
+            minLabelHeight: hiddenTasks.minLabelHeight
+        }
+
+        keyNavigationEnabled: true
+        activeFocusOnTab: true
+
+        KeyNavigation.up: hiddenTasksView.KeyNavigation.up
+
+        onActiveFocusChanged: {
+            if (activeFocus && currentIndex === -1) {
+                currentIndex = 0
+            } else if (!activeFocus && currentIndex >= 0) {
+                currentIndex = -1
+            }
+        }
     }
 }

@@ -4,47 +4,62 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
-import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
 
-PlasmaCore.IconItem {
-    id: icon
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.plasmoid 2.0
+import org.kde.kirigami 2.20 as Kirigami
 
-    roundToIconSize: true
-
-    readonly property bool inPanel: (plasmoid.location === PlasmaCore.Types.TopEdge
-        || plasmoid.location === PlasmaCore.Types.RightEdge
-        || plasmoid.location === PlasmaCore.Types.BottomEdge
-        || plasmoid.location === PlasmaCore.Types.LeftEdge)
+Kirigami.Icon {
+    property PlasmoidItem plasmoidItem
+    readonly property bool inPanel: [PlasmaCore.Types.TopEdge, PlasmaCore.Types.RightEdge, PlasmaCore.Types.BottomEdge, PlasmaCore.Types.LeftEdge]
+        .includes(Plasmoid.location)
 
     Layout.minimumWidth: {
-        switch (plasmoid.formFactor) {
+        switch (Plasmoid.formFactor) {
         case PlasmaCore.Types.Vertical:
             return 0;
         case PlasmaCore.Types.Horizontal:
             return height;
         default:
-            return PlasmaCore.Units.gridUnit * 3;
+            return Kirigami.Units.gridUnit * 3;
         }
     }
 
+    roundToIconSize: false
+
     Layout.minimumHeight: {
-        switch (plasmoid.formFactor) {
+        switch (Plasmoid.formFactor) {
         case PlasmaCore.Types.Vertical:
             return width;
         case PlasmaCore.Types.Horizontal:
             return 0;
         default:
-            return PlasmaCore.Units.gridUnit * 3;
+            return Kirigami.Units.gridUnit * 3;
         }
     }
 
-    Layout.maximumWidth: inPanel ? PlasmaCore.Units.iconSizeHints.panel : -1;
-    Layout.maximumHeight: inPanel ? PlasmaCore.Units.iconSizeHints.panel : -1;
-
-    source: plasmoid.icon ? plasmoid.icon : "plasma"
+    source: Plasmoid.icon || "plasma"
     active: mouseArea.containsMouse
+
+    activeFocusOnTab: true
+
+    Keys.onPressed: event => {
+        switch (event.key) {
+        case Qt.Key_Space:
+        case Qt.Key_Enter:
+        case Qt.Key_Return:
+        case Qt.Key_Select:
+            Plasmoid.activated();
+            event.accepted = true; // BUG 481393: Prevent system tray from receiving the event
+            break;
+        }
+    }
+
+    Accessible.name: Plasmoid.title
+    Accessible.description: plasmoidItem.toolTipSubText ?? ""
+    Accessible.role: Accessible.Button
 
     MouseArea {
         id: mouseArea
@@ -53,7 +68,7 @@ PlasmaCore.IconItem {
 
         anchors.fill: parent
         hoverEnabled: true
-        onPressed: wasExpanded = plasmoid.expanded
-        onClicked: plasmoid.expanded = !wasExpanded
+        onPressed: wasExpanded = plasmoidItem.expanded
+        onClicked: plasmoidItem.expanded = !wasExpanded
     }
 }

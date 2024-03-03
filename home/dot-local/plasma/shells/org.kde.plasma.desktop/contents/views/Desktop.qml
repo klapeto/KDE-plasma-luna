@@ -5,16 +5,14 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-import QtQuick 2.0
+import QtQuick 2.15
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.core as PlasmaCore
 import org.kde.kwindowsystem 1.0
-import org.kde.plasma.activityswitcher 1.0 as ActivitySwitcher
-import org.kde.plasma.shell 2.0 as Shell
+import org.kde.plasma.activityswitcher as ActivitySwitcher
 import "../activitymanager"
 import "../explorer"
-
+import org.kde.kirigami 2.20 as Kirigami
 
 Item {
     id: root
@@ -41,7 +39,6 @@ Item {
     }
 
     function toggleWidgetExplorer(containment) {
-//         console.log("Widget Explorer toggled");
 
         if (sidePanelStack.state == "widgetExplorer") {
             sidePanelStack.state = "closed";
@@ -60,8 +57,49 @@ Item {
         }
     }
 
-    KWindowSystem {
-        id: kwindowsystem
+    Loader {
+        id: wallpaperColors
+
+        active: desktop.usedInAccentColor && root.containment && root.containment.wallpaper
+        asynchronous: true
+
+        sourceComponent: Kirigami.ImageColors {
+            id: imageColors
+            source: root.containment.wallpaper
+
+            readonly property color backgroundColor: Kirigami.Theme.backgroundColor
+            readonly property color textColor: Kirigami.Theme.textColor
+
+            // Ignore the initial dominant color
+            onPaletteChanged: {
+                if (!Qt.colorEqual(root.containment.wallpaper.accentColor, "transparent")) {
+                    desktop.accentColor = root.containment.wallpaper.accentColor;
+                }
+                if (this.palette.length === 0) {
+                    desktop.accentColor = "transparent";
+                } else {
+                    desktop.accentColor = this.dominant;
+                }
+            }
+
+            Kirigami.Theme.inherit: false
+            Kirigami.Theme.backgroundColor: backgroundColor
+            Kirigami.Theme.textColor: textColor
+
+            onBackgroundColorChanged: Qt.callLater(update)
+            onTextColorChanged: Qt.callLater(update)
+
+            property Connections repaintConnection: Connections {
+                target: root.containment.wallpaper
+                function onAccentColorChanged() {
+                    if (Qt.colorEqual(root.containment.wallpaper.accentColor, "transparent")) {
+                        imageColors.update();
+                    } else {
+                        imageColors.paletteChanged();
+                    }
+                }
+            }
+        }
     }
 
     Timer {
@@ -97,7 +135,7 @@ Item {
                 return result;
             }
 
-            var rect = containment.availableScreenRect;
+            var rect = containment.plasmoid.availableScreenRect;
             result += rect.x;
 
             if (Qt.application.layoutDirection === Qt.RightToLeft) {
@@ -106,7 +144,7 @@ Item {
 
             return result;
         }
-        y: desktop.y + (containment ? containment.availableScreenRect.y : 0)
+        y: desktop.y + (containment ? containment.plasmoid.availableScreenRect.y : 0)
 
         onVisibleChanged: {
             if (!visible) {
@@ -119,7 +157,7 @@ Item {
             id: sidePanelStack
             asynchronous: true
             width: item ? item.width: 0
-            height: containment ? containment.availableScreenRect.height - sidePanel.margins.top - sidePanel.margins.bottom : 1000
+            height: containment ? containment.plasmoid.availableScreenRect.height - sidePanel.margins.top - sidePanel.margins.bottom : 1000
             state: "closed"
 
             LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
@@ -146,7 +184,9 @@ Item {
                     }
                 }
                 sidePanel.visible = true;
-                kwindowsystem.forceActivateWindow(sidePanel)
+                if (KWindowSystem.isPlatformX11) {
+                    KX11Extras.forceActiveWindow(sidePanel);
+                }
             }
             onStateChanged: {
                 if (sidePanelStack.state == "closed") {
@@ -158,9 +198,11 @@ Item {
     }
 
     Connections {
-        target: containment
+        target: containment?.plasmoid ?? null
         function onAvailableScreenRectChanged() {
-            sidePanel.requestActivate();
+            if (sidePanel.visible) {
+                sidePanel.requestActivate();
+            }
         }
     }
 
@@ -230,14 +272,14 @@ Item {
                 target: internal.oldContainment
                 properties: "x"
                 to: internal.newContainment != null ? -root.width : 0
-                duration: PlasmaCore.Units.veryLongDuration
+                duration: Kirigami.Units.veryLongDuration
                 easing.type: Easing.InOutQuad
             }
             NumberAnimation {
                 target: internal.newContainment
                 properties: "x"
                 to: 0
-                duration: PlasmaCore.Units.longDuration
+                duration: Kirigami.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
@@ -257,9 +299,20 @@ Item {
         }
     }
 
-
-    Component.onCompleted: {
-        //configure the view behavior
-        desktop.windowType = Shell.Desktop.Desktop;
+    Loader {
+        id: previewBannerLoader
+        readonly property point pos: root.containment?.plasmoid.availableScreenRegion,
+            active ? root.containment.adjustToAvailableScreenRegion(
+                root.containment.width + root.containment.x - item.width - Kirigami.Units.largeSpacing,
+                root.containment.height + root.containment.y - item.height - Kirigami.Units.largeSpacing,
+                item.width + Kirigami.Units.largeSpacing,
+                item.height + Kirigami.Units.largeSpacing)
+            : Qt.point(0, 0)
+        x: pos.x
+        y: pos.y
+        z: Number(root.containment?.z) + 1
+        active: root.containment && Boolean(desktop.showPreviewBanner)
+        visible: active
+        source: "PreviewBanner.qml"
     }
 }

@@ -1,50 +1,28 @@
 /*
- *   Copyright 2016 Marco Martin <mart@kde.org>
- *   Copyright 2020 Nate Graham <nate@kde.org>
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+    SPDX-FileCopyrightText: 2016 Marco Martin <mart@kde.org>
+    SPDX-FileCopyrightText: 2020 Nate Graham <nate@kde.org>
+
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
 
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
+import QtQuick.Window 2.15
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-// We still need PC2 here for that version of Menu, as PC2 Menu is still very problematic with QActions
-// Not being a proper popup window, makes it a showstopper to be used in Plasma
-import org.kde.plasma.components 2.0 as PC2
+import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.plasmoid 2.0
+import org.kde.kirigami 2.20 as Kirigami
 
 Item {
     id: popup
-    //set width/height to avoid useless Dialog resize
-    readonly property int defaultWidth: units.gridUnit * 24
-    readonly property int defaultHeight: units.gridUnit * 24
 
-    width: defaultWidth
-    Layout.minimumWidth: defaultWidth
-    Layout.preferredWidth: defaultWidth
-    Layout.maximumWidth: defaultWidth
-
-    height: defaultHeight
-    Layout.minimumHeight: defaultHeight
-    Layout.preferredHeight: defaultHeight
-    Layout.maximumHeight: defaultHeight
+    Layout.minimumWidth: Kirigami.Units.gridUnit * 24
+    Layout.minimumHeight: Kirigami.Units.gridUnit * 24
 
     property alias hiddenLayout: hiddenItemsView.layout
+    property alias plasmoidContainer: container
 
     // Header
     PlasmaExtras.PlasmoidHeading {
@@ -55,6 +33,9 @@ Item {
             right: parent.right
         }
         height: trayHeading.height + bottomPadding + container.headingHeight
+        Behavior on height {
+            NumberAnimation { duration: Kirigami.Units.shortDuration / 2; easing.type: Easing.InOutQuad }
+        }
     }
 
     // Main content layout
@@ -68,68 +49,108 @@ Item {
         // Header content layout
         RowLayout {
             id: trayHeading
+            Layout.fillWidth: true
 
             PlasmaComponents.ToolButton {
                 id: backButton
-                visible: systemTrayState.activeApplet && systemTrayState.activeApplet.expanded && (hiddenItemsView.itemCount > 0)
+                visible: systemTrayState.activeApplet && systemTrayState.activeApplet.expanded && (hiddenLayout.itemCount > 0)
                 icon.name: LayoutMirroring.enabled ? "go-previous-symbolic-rtl" : "go-previous-symbolic"
+
+                display: PlasmaComponents.AbstractButton.IconOnly
+                text: i18nc("@action:button", "Go Back")
+
+                KeyNavigation.down: hiddenItemsView.visible ? hiddenLayout : container
+
                 onClicked: systemTrayState.setActiveApplet(null)
             }
 
-            PlasmaExtras.Heading {
+            Kirigami.Heading {
                 Layout.fillWidth: true
-                leftPadding: systemTrayState.activeApplet ? 0 : units.smallSpacing * 2
+                leftPadding: systemTrayState.activeApplet ? 0 : Kirigami.Units.largeSpacing
 
                 level: 1
-                text: systemTrayState.activeApplet ? systemTrayState.activeApplet.title : i18n("Status and Notifications")
+                text: systemTrayState.activeApplet ? systemTrayState.activeApplet.plasmoid.title : i18n("Status and Notifications")
+                elide: Text.ElideRight
+            }
+
+            Repeater {
+                id: primaryActionButtons
+
+                model: {
+                    if (actionsButton.applet === null) {
+                        return [];
+                    }
+                    const primaryActions = [];
+                    actionsButton.applet.plasmoid.contextualActions.forEach(action => {
+                        if (action.priority == PlasmaCore.Action.HighPriority) {
+                            primaryActions.push(action);
+                        }
+                    })
+                    return primaryActions;
+                }
+
+                delegate: PlasmaComponents.ToolButton {
+                    // We cannot use `action` as it is already a QQuickAction property of the button
+                    property QtObject qAction: model.modelData
+
+                    visible: qAction && qAction.visible
+
+                    // NOTE: it needs an IconItem because QtQuickControls2 buttons cannot load QIcons as their icon
+                    contentItem: Kirigami.Icon {
+                        anchors.centerIn: parent
+                        active: parent.hovered
+                        implicitWidth: Kirigami.Units.iconSizes.smallMedium
+                        implicitHeight: implicitWidth
+                        source: parent.qAction ? parent.qAction.icon : ""
+                    }
+
+                    checkable: qAction && qAction.checkable
+                    checked: qAction && qAction.checked
+                    display: PlasmaComponents.AbstractButton.IconOnly
+                    text: qAction ? qAction.text : ""
+
+                    KeyNavigation.down: backButton.KeyNavigation.down
+                    KeyNavigation.left: (index > 0) ? primaryActionButtons.itemAt(index - 1) : backButton
+                    KeyNavigation.right: (index < primaryActionButtons.count - 1) ? primaryActionButtons.itemAt(index + 1) :
+                                                            actionsButton.visible ? actionsButton : actionsButton.KeyNavigation.right
+
+                    PlasmaComponents.ToolTip {
+                        text: parent.text
+                    }
+
+                    onClicked: qAction.trigger();
+                    onToggled: qAction.toggle();
+                }
             }
 
             PlasmaComponents.ToolButton {
                 id: actionsButton
                 visible: visibleActions > 0
-                checked: visibleActions > 1 ? configMenu.status !== PC2.DialogStatus.Closed : singleAction && singleAction.checked
-                property QtObject applet: systemTrayState.activeApplet || plasmoid
-                onAppletChanged: {
-                    configMenu.clearMenuItems();
-                    updateVisibleActions();
-                }
-                property int visibleActions: 0
-                property QtObject singleAction
+                checked: visibleActions > 1 ? configMenu.status !== PlasmaExtras.Menu.Closed : singleAction && singleAction.checked
+                property QtObject applet: systemTrayState.activeApplet || root
+                property int visibleActions: menuItemFactory.count
+                property QtObject singleAction: visibleActions === 1 && menuItemFactory.object ? menuItemFactory.object.action : null
 
-                function updateVisibleActions() {
-                    let newSingleAction = null;
-                    let newVisibleActions = 0;
-                    for (let i in applet.contextualActions) {
-                        let action = applet.contextualActions[i];
-                        if (action.visible && action !== actionsButton.applet.action("configure")) {
-                            newVisibleActions++;
-                            newSingleAction = action;
-                            action.changed.connect(() => {updateVisibleActions()});
-                        }
-                    }
-                    if (newVisibleActions > 1) {
-                        newSingleAction = null;
-                    }
-                    visibleActions = newVisibleActions;
-                    singleAction = newSingleAction;
-                }
-                Connections {
-                    target: actionsButton.applet
-                    function onContextualActionsChanged() {
-                        Qt.callLater(actionsButton.updateVisibleActions);
-                    }
-                }
                 icon.name: "application-menu"
                 checkable: visibleActions > 1 || (singleAction && singleAction.checkable)
                 contentItem.opacity: visibleActions > 1
-                // NOTE: it needs an IconItem because QtQuickControls2 buttons cannot load QIcons as their icon
-                PlasmaCore.IconItem {
+
+                display: PlasmaComponents.AbstractButton.IconOnly
+                text: actionsButton.singleAction ? actionsButton.singleAction.text : i18n("More actions")
+
+                Accessible.role: actionsButton.singleAction ? Accessible.Button : Accessible.ButtonMenu
+
+                KeyNavigation.down: backButton.KeyNavigation.down
+                KeyNavigation.right: configureButton.visible ? configureButton : configureButton.KeyNavigation.right
+
+                // NOTE: it needs a Kirigami.Icon because QtQuickControls2 buttons cannot load QIcons as their icon
+                Kirigami.Icon {
                     parent: actionsButton
                     anchors.centerIn: parent
                     active: actionsButton.hovered
-                    implicitWidth: PlasmaCore.Units.iconSizes.smallMedium
+                    implicitWidth: Kirigami.Units.iconSizes.smallMedium
                     implicitHeight: implicitWidth
-                    source: actionsButton.singleAction !== null ? actionsButton.singleAction.icon : ""
+                    source: actionsButton.singleAction !== null ? actionsButton.singleAction.icon.name : ""
                     visible: actionsButton.singleAction
                 }
                 onToggled: {
@@ -147,44 +168,75 @@ Item {
                     }
                 }
                 PlasmaComponents.ToolTip {
-                    text: actionsButton.singleAction ? actionsButton.singleAction.text : i18n("More actions")
+                    text: parent.text
                 }
-                PC2.Menu {
+                PlasmaExtras.Menu {
                     id: configMenu
                     visualParent: actionsButton
-                    placement: PlasmaCore.Types.BottomPosedLeftAlignedPopup
+                    placement: PlasmaExtras.Menu.BottomPosedLeftAlignedPopup
                 }
 
                 Instantiator {
-                    model: actionsButton.applet.contextualActions
-                    delegate: PC2.MenuItem {
+                    id: menuItemFactory
+                    model: {
+                        configMenu.clearMenuItems();
+                        if (!actionsButton.applet) {
+                            return [];
+                        }
+                        let actions = [];
+                        for (let i in actionsButton.applet.plasmoid.contextualActions) {
+                            const action = actionsButton.applet.plasmoid.contextualActions[i];
+                            if (action.visible
+                                    && action.priority > PlasmaCore.Action.LowPriority
+                                    && !primaryActionButtons.model.includes(action)
+                                    && action !== actionsButton.applet.plasmoid.internalAction("configure")) {
+                                actions.push(action);
+                            }
+                        }
+                        return actions;
+                    }
+                    delegate: PlasmaExtras.MenuItem {
                         id: menuItem
                         action: modelData
                     }
-                    onObjectAdded: {
-                        if (object !== actionsButton.applet.action("configure")) {
-                            configMenu.addMenuItem(object);
-                        }
+                    onObjectAdded: (index, object) => {
+                        configMenu.addMenuItem(object);
                     }
                 }
             }
             PlasmaComponents.ToolButton {
+                id: configureButton
                 icon.name: "configure"
-                visible: actionsButton.applet && actionsButton.applet.action("configure")
+                visible: actionsButton.applet && actionsButton.applet.plasmoid.internalAction("configure")
+
+                display: PlasmaComponents.AbstractButton.IconOnly
+                text: actionsButton.applet.plasmoid.internalAction("configure") ? actionsButton.applet.plasmoid.internalAction("configure").text : ""
+
+                KeyNavigation.down: backButton.KeyNavigation.down
+                KeyNavigation.left: actionsButton.visible ? actionsButton : actionsButton.KeyNavigation.left
+                KeyNavigation.right: pinButton
+
                 PlasmaComponents.ToolTip {
-                    text: parent.visible ? actionsButton.applet.action("configure").text : ""
+                    text: parent.visible ? parent.text : ""
                 }
-                onClicked: actionsButton.applet.action("configure").trigger();
+                onClicked: actionsButton.applet.plasmoid.internalAction("configure").trigger();
             }
 
             PlasmaComponents.ToolButton {
                 id: pinButton
                 checkable: true
-                checked: plasmoid.configuration.pin
-                onToggled: plasmoid.configuration.pin = checked
+                checked: Plasmoid.configuration.pin
+                onToggled: Plasmoid.configuration.pin = checked
                 icon.name: "window-pin"
+
+                display: PlasmaComponents.AbstractButton.IconOnly
+                text: i18n("Keep Open")
+
+                KeyNavigation.down: backButton.KeyNavigation.down
+                KeyNavigation.left: configureButton.visible ? configureButton : configureButton.KeyNavigation.left
+
                 PlasmaComponents.ToolTip {
-                    text: i18n("Keep Open")
+                    text: parent.text
                 }
             }
         }
@@ -194,8 +246,17 @@ Item {
             id: hiddenItemsView
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.topMargin: units.smallSpacing
+            Layout.topMargin: Kirigami.Units.smallSpacing
             visible: !systemTrayState.activeApplet
+
+            KeyNavigation.up: pinButton
+
+            onVisibleChanged: {
+                if (visible) {
+                    layout.forceActiveFocus();
+                    systemTrayState.oldVisualIndex = systemTrayState.newVisualIndex = -1;
+                }
+            }
         }
 
         // Container for currently visible item
@@ -206,14 +267,23 @@ Item {
             visible: systemTrayState.activeApplet
 
             // We need to add margin on the top so it matches the dialog's own margin
-            Layout.topMargin: mergeHeadings ? 0 : dialog.margins.top
+            Layout.topMargin: mergeHeadings ? 0 : dialog.topPadding
+
+            KeyNavigation.up: pinButton
+            KeyNavigation.backtab: pinButton
+
+            onVisibleChanged: {
+                if (visible) {
+                    forceActiveFocus();
+                }
+            }
         }
     }
 
     // Footer
     PlasmaExtras.PlasmoidHeading {
         id: plasmoidFooter
-        location: PlasmaExtras.PlasmoidHeading.Location.Footer
+        position: PlasmaComponents.ToolBar.Footer
         anchors {
             bottom: parent.bottom
             left: parent.left

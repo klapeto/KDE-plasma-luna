@@ -6,7 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-import QtQuick 2.15
+import QtQuick
 
 MouseArea {
     property var modelIndex
@@ -18,16 +18,20 @@ MouseArea {
     hoverEnabled: true
     enabled: winId !== 0
 
-    onClicked: {
-        if (mouse.button == Qt.LeftButton) {
+    onClicked: (mouse) => {
+        switch (mouse.button) {
+        case Qt.LeftButton:
             tasksModel.requestActivate(modelIndex);
-            rootTask.toolTipAreaItem.hideImmediately();
+            rootTask.hideImmediately();
             backend.cancelHighlightWindows();
-        } else if (mouse.button == Qt.MiddleButton) {
+            break;
+        case Qt.MiddleButton:
             backend.cancelHighlightWindows();
             tasksModel.requestClose(modelIndex);
-        } else /* right button */ {
+            break;
+        case Qt.RightButton:
             tasks.createContextMenu(rootTask, modelIndex).show();
+            break;
         }
     }
 

@@ -1,344 +1,309 @@
-/***************************************************************************
- *   Copyright (C) 2015 by Eike Hein <hein@kde.org>                        *
- *   Copyright (C) 2021 by Mikel Johnson <mikel5764@gmail.com>             *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
- ***************************************************************************/
+/*
+    SPDX-FileCopyrightText: 2015 Eike Hein <hein@kde.org>
+    SPDX-FileCopyrightText: 2021 Mikel Johnson <mikel5764@gmail.com>
+    SPDX-FileCopyrightText: 2021 Noah Davis <noahadvs@gmail.com>
 
-import QtQuick 2.4
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick 2.15
+import QtQml 2.15
+
 import org.kde.plasma.components 3.0 as PC3
+import org.kde.plasma.extras as PlasmaExtras
 
-FocusScope {
-    id: itemGrid
+import org.kde.ksvg 1.0 as KSvg
+import org.kde.kirigami 2.20 as Kirigami
 
-    function keyNavLeft() {
-        if (itemGrid.currentCol() !== 0) {
-            if (LayoutMirroring.enabled) {
-                gridView.moveCurrentIndexRight();
+// ScrollView makes it difficult to control implicit size using the contentItem.
+// Using EmptyPage instead.
+EmptyPage {
+    id: root
+    property alias model: view.model
+    property alias count: view.count
+    property alias currentIndex: view.currentIndex
+    property alias currentItem: view.currentItem
+    property alias delegate: view.delegate
+    property alias blockTargetWheel: wheelHandler.blockTargetWheel
+    property alias view: view
+
+    clip: view.height < view.contentHeight
+
+    header: MouseArea {
+        implicitHeight: KickoffSingleton.listItemMetrics.margins.top
+        hoverEnabled: true
+        onEntered: {
+            if (containsMouse) {
+                let targetIndex = view.indexAt(mouseX + view.contentX, view.contentY)
+                if (targetIndex >= 0) {
+                    view.currentIndex = targetIndex
+                    view.forceActiveFocus(Qt.MouseFocusReason)
+                }
+            }
+        }
+    }
+
+    footer: MouseArea {
+        implicitHeight: KickoffSingleton.listItemMetrics.margins.bottom
+        hoverEnabled: true
+        onEntered: {
+            if (containsMouse) {
+                let targetIndex = view.indexAt(mouseX + view.contentX, view.height + view.contentY - 1)
+                if (targetIndex >= 0) {
+                    view.currentIndex = targetIndex
+                    view.forceActiveFocus(Qt.MouseFocusReason)
+                }
+            }
+        }
+    }
+
+    /* Not setting GridView as the contentItem because GridView has no way to
+     * set horizontal alignment. I don't want to use leftPadding/rightPadding
+     * for that because I'd have to change the implicitWidth formula and use a
+     * more complicated calculation to get the correct padding.
+     */
+    GridView {
+        id: view
+        readonly property real availableWidth: width - leftMargin - rightMargin
+        readonly property real availableHeight: height - topMargin - bottomMargin
+        readonly property int columns: Math.floor(availableWidth / cellWidth)
+        readonly property int rows: Math.floor(availableHeight / cellHeight)
+        property bool movedWithKeyboard: false
+        property bool movedWithWheel: false
+
+        // NOTE: parent is the contentItem that Control subclasses automatically
+        // create when no contentItem is set, but content is added.
+        height: parent.height
+        // There are lots of ways to try to center the content of a GridView
+        // and many of them have bad visual flaws. This way works pretty well.
+        // Not center aligning when there might be a scrollbar to keep click target positions consistent.
+        anchors.horizontalCenter: kickoff.mayHaveGridWithScrollBar ? undefined : parent.horizontalCenter
+        anchors.horizontalCenterOffset: if (kickoff.mayHaveGridWithScrollBar) {
+            if (root.mirrored) {
+                return verticalScrollBar.implicitWidth/2
             } else {
-                gridView.moveCurrentIndexLeft();
+                return -verticalScrollBar.implicitWidth/2
             }
-            return true;
         } else {
-            return false;
+            return 0
         }
-    }
+        width: Math.min(parent.width, Math.floor((parent.width - leftMargin - rightMargin - (kickoff.mayHaveGridWithScrollBar ? verticalScrollBar.implicitWidth : 0)) / cellWidth) * cellWidth + leftMargin + rightMargin)
 
-    function keyNavRight() {
-        if (itemGrid.currentCol() !== columns - 1 && gridView.currentIndex != gridView.count -1) {
-            if (LayoutMirroring.enabled) {
-                gridView.moveCurrentIndexLeft();
-            } else {
-                gridView.moveCurrentIndexRight();
+        Accessible.description: i18n("Grid with %1 rows, %2 columns", rows, columns) // can't use i18np here
+
+
+        implicitWidth: {
+            let w = view.cellWidth * kickoff.minimumGridRowCount + leftMargin + rightMargin
+            if (kickoff.mayHaveGridWithScrollBar) {
+                w += verticalScrollBar.implicitWidth
             }
-            return true;
-        } else {
-            return false;
+            return w
         }
-    }
+        implicitHeight: view.cellHeight * kickoff.minimumGridRowCount + topMargin + bottomMargin
 
-    function keyNavUp() {
-        if (itemGrid.currentRow() !== 0) {
-            gridView.moveCurrentIndexUp();
-            gridView.positionViewAtIndex(gridView.currentIndex, GridView.Contain);
-            return true;
-        } else {
-            return false;
-        }
-    }
+        leftMargin: kickoff.backgroundMetrics.leftPadding
+        rightMargin: kickoff.backgroundMetrics.rightPadding
 
-    function keyNavDown() {
-        if (itemGrid.currentRow() < itemGrid.lastRow()) {
-            //Fix moveCurrentIndexDown()'s lack of proper spatial nav down
-            //into partial columns.
-            var newIndex = gridView.currentIndex + columns;
-            gridView.currentIndex = Math.min(newIndex, gridView.count - 1);
-            gridView.positionViewAtIndex(gridView.currentIndex, GridView.Contain);
-            return true;
-        } else {
-            return false;
-        }
-    }
+        cellHeight: KickoffSingleton.gridCellSize
+        cellWidth: KickoffSingleton.gridCellSize
 
-    readonly property Item gridView: gridView
-
-    property alias currentIndex: gridView.currentIndex
-    property alias currentItem: gridView.currentItem
-    property alias contentItem: gridView.contentItem
-    property alias count: gridView.count
-    property alias model: gridView.model
-
-    property alias cellWidth: gridView.cellWidth
-    property alias cellHeight: gridView.cellHeight
-    property alias iconSize: gridView.iconSize
-
-    property alias contentHeight: gridView.contentHeight
-    property alias interactive: gridView.interactive
-    property alias move: gridView.move
-    property alias moveDisplaced: gridView.moveDisplaced
-
-    // NOTE: We don't name panes because doing so would be annoying and redundant
-    Accessible.role: Accessible.Paragraph
-    Accessible.name: i18n("Grid with %1 rows, %2 columns", rows, columns) // can't use i18np here
-
-    onFocusChanged: {
-        if (!focus) {
-            currentIndex = 0;
-        }
-    }
-
-    Connections {
-        target: plasmoid
-
-        function onExpandedChanged() {
-            if (!plasmoid.expanded) {
-                gridView.positionAtBeginning();
-            }
-        }
-    }
-
-    property int columns: Math.floor(width / itemGrid.cellWidth);
-    property int rows: Math.ceil(count / columns);
-
-    function currentRow() {
-        if (currentIndex == -1) {
-            return -1;
-        }
-
-        return Math.floor(currentIndex / Math.floor(width / itemGrid.cellWidth));
-    }
-
-    function currentCol() {
-        if (currentIndex == -1) {
-            return -1;
-        }
-
-        return currentIndex - (currentRow() * Math.floor(width / itemGrid.cellWidth));
-    }
-
-    function lastRow() {
-        return Math.ceil(count / columns) - 1;
-    }
-
-    function tryActivate(row, col) {
-        if (count) {
-            row = Math.min(row, rows - 1);
-            col = Math.min(col, columns - 1);
-            currentIndex = Math.min(row ? ((Math.max(1, row) * columns) + col)
-                : col,
-                count - 1);
-
-            focus = true;
-        }
-    }
-
-    function forceLayout() {
-        gridView.forceLayout();
-    }
-
-    ActionMenu {
-        id: actionMenu
-
-        onActionClicked: {
-            visualParent.actionTriggered(actionId, actionArgument);
-        }
-    }
-
-    PC3.ScrollView {
-        anchors.fill: parent
-        PC3.ScrollBar.horizontal.visible: false
+        currentIndex: count > 0 ? 0 : -1
         focus: true
+        interactive: height < contentHeight
+        pixelAligned: true
+        reuseItems: true
+        boundsBehavior: Flickable.StopAtBounds
+        // default keyboard navigation doesn't allow focus reasons to be used
+        // and eats up/down key events when at the beginning or end of the list.
+        keyNavigationEnabled: false
+        keyNavigationWraps: false
 
-        GridView {
-            id: gridView
-            property int iconSize: PlasmaCore.Units.iconSizes.large
+        highlightMoveDuration: 0
+        highlight: PlasmaExtras.Highlight {
+            // The default Z value for delegates is 1. The default Z value for the section delegate is 2.
+            // The highlight gets a value of 3 while the drag is active and then goes back to the default value of 0.
+            z: root.currentItem && root.currentItem.Drag.active ?
+                3 : 0
+            pressed: view.currentItem && view.currentItem.isPressed
+            active: view.activeFocus
+                || (kickoff.contentArea === root
+                    && kickoff.searchField.activeFocus)
+            width: view.cellWidth
+            height: view.cellHeight
+        }
 
-            property bool animating: false
-            cellWidth: gridView.iconSize + theme.mSize(theme.defaultFont).height
-                + (4 * PlasmaCore.Units.smallSpacing + Math.round(PlasmaCore.Units.smallSpacing * 1.5)) //item margins + spacing
-                + (2 * gridView.cellMargin) //highlight padding
-                + cellMargin * 2 //actual margins
-            cellHeight: cellWidth
+        delegate: KickoffGridDelegate {
+            id: itemDelegate
+            width: view.cellWidth
+            Accessible.role: Accessible.Cell
+        }
 
-            property int cellMargin: Math.round(PlasmaCore.Units.smallSpacing * 1.5)
+        move: normalTransition
+        moveDisplaced: normalTransition
 
-            leftMargin: LayoutMirroring.enabled ? 0 : Math.round((parent.width-cellWidth*Math.floor(parent.width / cellWidth))/2)
-            rightMargin: LayoutMirroring.enabled ? Math.round((parent.width-cellWidth*Math.floor(parent.width / cellWidth))/2) : 0
-            topMargin: Math.round(PlasmaCore.Units.smallSpacing * 0.25)
-            bottomMargin: (contentHeight + topMargin) > parent.height ? Math.round(PlasmaCore.Units.smallSpacing * 0.25) : 0
-            focus: true
-
-            // Let root handle keyboard interaction
-            Keys.forwardTo: [root]
-
-            currentIndex: 0
-            function positionAtBeginning() {
-                positionViewAtBeginning();
-                // positionViewAtBeginning doesn't account for margins
-                // move content manually only if it overflows
-                if (visibleArea.heightRatio !== 1.0) {
-                    contentY -= topMargin;
-                }
-                currentIndex = 0;
+        Transition {
+            id: normalTransition
+            NumberAnimation {
+                duration: Kirigami.Units.shortDuration
+                properties: "x, y"
+                easing.type: Easing.OutCubic
             }
-            keyNavigationWraps: false
-            boundsBehavior: Flickable.StopAtBounds
+        }
 
-            delegate: KickoffGridItem { }
+        PC3.ScrollBar.vertical: PC3.ScrollBar {
+            id: verticalScrollBar
+            parent: root
+            z: 2
+            height: root.height
+            anchors.right: parent.right
+        }
 
-            PC3.ToolTip {
-                parent: gridView.currentItem ? gridView.currentItem : gridView
-                visible: itemGrid.parent == root.currentContentView && gridView.currentItem ? gridView.currentItem.labelTruncated && ((navigationMethod.state == "keyboard" && keyboardNavigation.state == "RightColumn" && itemGrid.activeFocus) || hoverArea.containsMouse) : false
-                text: gridView.currentItem ? gridView.currentItem.display : ""
+        Kirigami.WheelHandler {
+            id: wheelHandler
+            target: view
+            filterMouseEvents: true
+            // `20 * Qt.styleHints.wheelScrollLines` is the default speed.
+            horizontalStepSize: 20 * Qt.styleHints.wheelScrollLines
+            verticalStepSize: 20 * Qt.styleHints.wheelScrollLines
+
+            onWheel: wheel => {
+                view.movedWithWheel = true
+                view.movedWithKeyboard = false
+                movedWithWheelTimer.restart()
             }
+        }
 
-            highlight: Item {
-                opacity: navigationMethod.state != "keyboard" || (keyboardNavigation.state == "RightColumn" && gridView.activeFocus) ? 1 : 0.5
-                PlasmaCore.FrameSvgItem {
-                    visible: gridView.currentItem
-
-                    anchors.fill: parent
-                    anchors.margins: gridView.cellMargin
-
-                    imagePath: "widgets/viewitem"
-                    prefix: "hover"
+        Connections {
+            target: kickoff
+            function onExpandedChanged() {
+                if (kickoff.expanded) {
+                    view.currentIndex = 0
+                    view.positionViewAtBeginning()
                 }
             }
+        }
 
-            highlightFollowsCurrentItem: true
-            highlightMoveDuration: 0
+        // Used to block hover events temporarily after using keyboard navigation.
+        // If you have one hand on the touch pad or mouse and another hand on the keyboard,
+        // it's easy to accidentally reset the highlight/focus position to the mouse position.
+        Timer {
+            id: movedWithKeyboardTimer
+            interval: 200
+            onTriggered: view.movedWithKeyboard = false
+        }
 
-            onModelChanged: {
-                currentIndex = 0;
+        Timer {
+            id: movedWithWheelTimer
+            interval: 200
+            onTriggered: view.movedWithWheel = false
+        }
+
+        function focusCurrentItem(event, focusReason) {
+            currentItem.forceActiveFocus(focusReason)
+            event.accepted = true
+        }
+
+        Keys.onMenuPressed: event => {
+            if (currentItem !== null) {
+                currentItem.forceActiveFocus(Qt.ShortcutFocusReason)
+                currentItem.openActionMenu()
             }
+        }
 
-            MouseArea {
-                anchors.left: parent.left
-
-                width: parent.width
-                height: parent.height
-
-                id: hoverArea
-
-                property Item pressed: null
-                property int pressX: -1
-                property int pressY: -1
-                property bool tapAndHold: false
-
-                hoverEnabled: true
-                acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-                onPressed: {
-                    var mapped = gridView.mapToItem(gridView.contentItem, mouse.x, mouse.y);
-                    var item = gridView.itemAt(mapped.x, mapped.y);
-
-                    if (!item) {
-                        return;
-                    }
-
-                    if (mouse.buttons & Qt.RightButton) {
-                        if (item.hasActionList) {
-                            mapped = gridView.contentItem.mapToItem(item, mapped.x, mapped.y);
-                            gridView.currentItem.openActionMenu(mapped.x, mapped.y);
+        Keys.onPressed: event => {
+            let targetX = currentItem ? currentItem.x : contentX
+            let targetY = currentItem ? currentItem.y : contentY
+            let targetIndex = currentIndex
+            // supports mirroring
+            const atLeft = currentIndex % columns === (Qt.application.layoutDirection == Qt.RightToLeft ? columns - 1 : 0)
+            // at the beginning of a line
+            const isLeading = currentIndex % columns === 0
+            // at the top of a given column and in the top row
+            let atTop = currentIndex < columns
+            // supports mirroring
+            const atRight = currentIndex % columns === (Qt.application.layoutDirection == Qt.RightToLeft ? 0 : columns - 1)
+            // at the end of a line
+            const isTrailing = currentIndex % columns === columns - 1
+            // at bottom of a given column, not necessarily in the last row
+            let atBottom = currentIndex >= count - columns
+            // Implements the keyboard navigation described in https://www.w3.org/TR/wai-aria-practices-1.2/#grid
+            if (count > 1) {
+                switch (event.key) {
+                    case Qt.Key_Left: if (!atLeft && !kickoff.searchField.activeFocus) {
+                        moveCurrentIndexLeft()
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } break
+                    case Qt.Key_H: if (!atLeft && !kickoff.searchField.activeFocus && event.modifiers & Qt.ControlModifier) {
+                        moveCurrentIndexLeft()
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } break
+                    case Qt.Key_Up: if (!atTop) {
+                        moveCurrentIndexUp()
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } break
+                    case Qt.Key_K: if (!atTop && event.modifiers & Qt.ControlModifier) {
+                        moveCurrentIndexUp()
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } break
+                    case Qt.Key_Right: if (!atRight && !kickoff.searchField.activeFocus) {
+                        moveCurrentIndexRight()
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } break
+                    case Qt.Key_L: if (!atRight && !kickoff.searchField.activeFocus && event.modifiers & Qt.ControlModifier) {
+                        moveCurrentIndexRight()
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } break
+                    case Qt.Key_Down: if (!atBottom) {
+                        moveCurrentIndexDown()
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } break
+                    case Qt.Key_J: if (!atBottom && event.modifiers & Qt.ControlModifier) {
+                        moveCurrentIndexDown()
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } break
+                    case Qt.Key_Home: if (event.modifiers === Qt.ControlModifier && currentIndex !== 0) {
+                        currentIndex = 0
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } else if (!isLeading) {
+                        targetIndex -= currentIndex % columns
+                        currentIndex = Math.max(targetIndex, 0)
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } break
+                    case Qt.Key_End: if (event.modifiers === Qt.ControlModifier && currentIndex !== count - 1) {
+                        currentIndex = count - 1
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } else if (!isTrailing) {
+                        targetIndex += columns - 1 - (currentIndex % columns)
+                        currentIndex = Math.min(targetIndex, count - 1)
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } break
+                    case Qt.Key_PageUp: if (!atTop) {
+                        targetY = targetY - height + 1
+                        targetIndex = indexAt(targetX, targetY)
+                        // TODO: Find a more efficient, but accurate way to do this
+                        while (targetIndex === -1) {
+                            targetY += 1
+                            targetIndex = indexAt(targetX, targetY)
                         }
-                    } else {
-                        pressed = item;
-                        pressX = mouse.x;
-                        pressY = mouse.y;
-                    }
-                }
-
-                onReleased: {
-                    var mapped = gridView.mapToItem(gridView.contentItem, mouse.x, mouse.y);
-                    var item = gridView.itemAt(mapped.x, mapped.y);
-
-                    if (item && pressed === item && !tapAndHold) {
-                        if (item.appView) {
-                            if (mouse.source == Qt.MouseEventSynthesizedByQt) {
-                                positionChanged(mouse);
-                            }
-                            if (isManagerMode && view.currentItem && !view.currentItem.modelChildren) {
-                                view.activatedItem = view.currentItem;
-                                view.moveRight();
-                            } else if (!isManagerMode) {
-                                view.state = "OutgoingLeft";
-                            }
-                        } else {
-                            item.activate();
+                        currentIndex = Math.max(targetIndex, 0)
+                        focusCurrentItem(event, Qt.BacktabFocusReason)
+                    } break
+                    case Qt.Key_PageDown: if (!atBottom) {
+                        targetY = targetY + height - 1
+                        targetIndex = indexAt(targetX, targetY)
+                        // TODO: Find a more efficient, but accurate way to do this
+                        while (targetIndex === -1) {
+                            targetY -= 1
+                            targetIndex = indexAt(targetX, targetY)
                         }
-                    }
-                    if (tapAndHold && mouse.source == Qt.MouseEventSynthesizedByQt) {
-                        if (item.hasActionList) {
-                            mapped = gridView.contentItem.mapToItem(item, mapped.x, mapped.y);
-                            gridView.currentItem.openActionMenu(mapped.x, mapped.y);
-                        }
-                    }
-                    pressed = null;
-                    pressX = -1;
-                    pressY = -1;
-                    tapAndHold = false;
+                        currentIndex = Math.min(targetIndex, count - 1)
+                        focusCurrentItem(event, Qt.TabFocusReason)
+                    } break
                 }
-
-                onPositionChanged: {
-                    var mapped = gridView.mapToItem(gridView.contentItem, mouse.x, mouse.y);
-                    var item = gridView.itemAt(mapped.x, mapped.y);
-
-                    if (item) {
-                        navigationMethod.state = "mouse"
-                        keyboardNavigation.state = "RightColumn"
-                        if (kickoff.dragSource == null || kickoff.dragSource == item) {
-                            gridView.currentIndex = item.itemIndex;
-                        }
-                    }
-
-                    if (mouse.source != Qt.MouseEventSynthesizedByQt || tapAndHold) {
-                        if (pressed && pressX != -1 && pressed.url && dragHelper.isDrag(pressX, pressY, mouse.x, mouse.y)) {
-                            kickoff.dragSource = item;
-                            if (mouse.source == Qt.MouseEventSynthesizedByQt) {
-                                dragHelper.dragIconSize = PlasmaCore.Units.iconSizes.huge
-                                dragHelper.startDrag(kickoff, pressed.url, pressed.decoration);
-                            } else {
-                                dragHelper.dragIconSize = PlasmaCore.Units.iconSizes.medium
-                                dragHelper.startDrag(kickoff, pressed.url, pressed.decoration);
-                            }
-                            pressed = null;
-                            pressX = -1;
-                            pressY = -1;
-                            tapAndHold = false;
-                        }
-                    }
-                }
-
-                onContainsMouseChanged: {
-                    if (!containsMouse) {
-                        pressed = null;
-                        pressX = -1;
-                        pressY = -1;
-                        tapAndHold = false;
-                    }
-                }
-
-                onPressAndHold: {
-                    if (mouse.source == Qt.MouseEventSynthesizedByQt) {
-                        tapAndHold = true;
-                        positionChanged(mouse);
-                    }
-                }
+            }
+            movedWithKeyboard = event.accepted
+            if (movedWithKeyboard) {
+                movedWithKeyboardTimer.restart()
             }
         }
     }

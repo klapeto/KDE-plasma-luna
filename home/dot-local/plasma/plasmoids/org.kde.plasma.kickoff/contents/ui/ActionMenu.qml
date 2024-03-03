@@ -1,136 +1,89 @@
-/***************************************************************************
- *   Copyright (C) 2013 by Aurélien Gâteau <agateau@kde.org>               *
- *   Copyright (C) 2014-2015 by Eike Hein <hein@kde.org>                   *
- *   Copyright (C) 2021 by Mikel Johnson <mikel5764@gmail.com>             *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
- ***************************************************************************/
+/*
+    SPDX-FileCopyrightText: 2013 Aurélien Gâteau <agateau@kde.org>
+    SPDX-FileCopyrightText: 2014-2015 Eike Hein <hein@kde.org>
+    SPDX-FileCopyrightText: 2021 Mikel Johnson <mikel5764@gmail.com>
+    SPDX-FileCopyrightText: 2021 Noah Davis <noahadvs@gmail.com>
 
-import QtQuick 2.0
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 
-import org.kde.plasma.components 2.0 as PlasmaComponents // for Menu + MenuItem
+pragma Singleton // NOTE: Singletons are shared between all instances of a plasmoid
+
+import QtQuick 2.15
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.extras 2.0 as PlasmaExtras
+import "code/tools.js" as Tools
 
 Item {
-    id: actionMenuRoot
+    id: root
 
-    property QtObject menu
-    property Item visualParent
-    property variant actionList
+    property var actionList: null
 
-    signal actionClicked(string actionId, variant actionArgument)
+    // Only one action menu can be open at a time, so this should be safe to use.
+    property PlasmoidItem plasmoid: null
 
-    onActionListChanged: refreshMenu();
+    // Not a QQC1 Menu. It's actually a custom QObject that uses a QMenu.
+    readonly property PlasmaExtras.Menu menu: PlasmaExtras.Menu {
+        id: menu
 
-    function open(x, y) {
-        if (!actionList || !actionList.length) {
-            return;
-        }
-
-        if (x && y) {
-            menu.open(x, y);
-        } else {
-            menu.open();
-        }
+        visualParent: null
+        placement: PlasmaExtras.Menu.BottomPosedLeftAlignedPopup
     }
 
-    function refreshMenu() {
-        if (menu) {
-            menu.destroy();
-        }
+    visible: false
 
-        if (!actionList) {
-            return;
-        }
-
-        menu = contextMenuComponent.createObject(actionMenuRoot);
-
-        // actionList.forEach(function(actionItem) {
-        //     var item = contextMenuItemComponent.createObject(menu, {
-        //         "actionItem": actionItem,
-        //     });
-        // });
-
-        fillMenu(menu, actionList);
+    Instantiator {
+        active: root.actionList !== null
+        model: root.actionList
+        delegate: menuItemComponent
+        onObjectAdded: (index, object) => menu.addMenuItem(object)
+        onObjectRemoved: (index, object) => menu.removeMenuItem(object)
     }
 
-    function fillMenu(menu, items) {
-        items.forEach(function(actionItem) {
-            if (actionItem.subActions) {
-                // This is a menu
-                var submenuItem = contextSubmenuItemComponent.createObject(
-                                        menu, { "actionItem" : actionItem });
+    Component {
+        id: menuComponent
 
-                fillMenu(submenuItem.submenu, actionItem.subActions);
+        PlasmaExtras.Menu {}
+    }
 
-            } else {
-                var item = contextMenuItemComponent.createObject(
-                                menu,
-                                {
-                                    "actionItem": actionItem,
-                                }
-                );
+    Component {
+        id: menuItemComponent
+
+        PlasmaExtras.MenuItem {
+            id: menuItem
+
+            required property var modelData
+            property PlasmaExtras.Menu subMenu: modelData.subActions
+                ? menuComponent.createObject(menuItem, { visualParent: menuItem.action })
+                : null
+
+            text: modelData.text ? modelData.text : ""
+            enabled: modelData.type !== "title" && ("enabled" in modelData ? modelData.enabled : true)
+            separator: modelData.type === "separator"
+            section: modelData.type === "title"
+            icon: modelData.icon ? modelData.icon : null
+            checkable: modelData.hasOwnProperty("checkable") ? modelData.checkable : false
+            checked: modelData.hasOwnProperty("checked") ? modelData.checked : false
+
+            property Instantiator _instantiator: Instantiator {
+                active: menuItem.subMenu !== null
+                model: modelData.subActions
+                delegate: menuItemComponent
+                onObjectAdded: (index, object) => subMenu.addMenuItem(object)
+                onObjectRemoved: (index, object) => subMenu.removeMenuItem(object)
             }
-        });
-
-    }
-
-    Component {
-        id: contextMenuComponent
-
-        PlasmaComponents.Menu {
-            visualParent: actionMenuRoot.visualParent
-        }
-    }
-
-    Component {
-        id: contextSubmenuItemComponent
-
-        PlasmaComponents.MenuItem {
-            id: submenuItem
-
-            property variant actionItem
-
-            text: actionItem.text ? actionItem.text : ""
-            icon: actionItem.icon ? actionItem.icon : null
-
-            property variant submenu : submenu_
-
-            PlasmaComponents.Menu {
-                id: submenu_
-                visualParent: submenuItem.action
-            }
-        }
-    }
-
-    Component {
-        id: contextMenuItemComponent
-
-        PlasmaComponents.MenuItem {
-            property variant actionItem
-
-            text      : actionItem.text ? actionItem.text : ""
-            enabled   : actionItem.type !== "title" && ("enabled" in actionItem ? actionItem.enabled : true)
-            separator : actionItem.type === "separator"
-            section   : actionItem.type === "title"
-            icon      : actionItem.icon ? actionItem.icon : null
-            checkable : actionItem.checkable ? actionItem.checkable : false
-            checked   : actionItem.checked ? actionItem.checked : false
 
             onClicked: {
-                actionMenuRoot.actionClicked(actionItem.actionId, actionItem.actionArgument);
+                const modelActionTriggered = Tools.triggerAction(
+                    menu.visualParent.view.model,
+                    menu.visualParent.index,
+                    modelData.actionId,
+                    modelData.actionArgument
+                )
+                if (modelActionTriggered) {
+                    kickoff.expanded = false
+                }
             }
         }
     }

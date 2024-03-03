@@ -1,72 +1,70 @@
 /*
- * Copyright 2013  Heena Mahour <heena393@gmail.com>
- * Copyright 2013 Sebastian Kügler <sebas@kde.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-import QtQuick 2.0
+    SPDX-FileCopyrightText: 2013 Heena Mahour <heena393@gmail.com>
+    SPDX-FileCopyrightText: 2013 Sebastian Kügler <sebas@kde.org>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.kquickcontrolsaddons 2.0
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.plasma5support 2.0 as P5Support
 import org.kde.plasma.private.digitalclock 1.0
 import org.kde.kquickcontrolsaddons 2.0
-import org.kde.plasma.calendar 2.0 as PlasmaCalendar
+import org.kde.kirigami 2.20 as Kirigami
 
-Item {
+import org.kde.kcmutils // KCMLauncher
+import org.kde.config // KAuthorized
+
+PlasmoidItem {
     id: root
 
-    width: units.gridUnit * 10
-    height: units.gridUnit * 4
+    width: Kirigami.Units.gridUnit * 10
+    height: Kirigami.Units.gridUnit * 4
     property string dateFormatString: setDateFormatString()
     Plasmoid.backgroundHints: PlasmaCore.Types.ShadowBackground | PlasmaCore.Types.ConfigurableBackground
-    
     property date tzDate: {
+        const data = dataSource.data[Plasmoid.configuration.lastSelectedTimezone];
+        if (data === undefined) {
+            return new Date();
+        }
         // get the time for the given timezone from the dataengine
-        var now = dataSource.data[plasmoid.configuration.lastSelectedTimezone]["DateTime"];
+        const now = data["DateTime"];
         // get current UTC time
-        var msUTC = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const msUTC = now.getTime() + (now.getTimezoneOffset() * 60000);
         // add the dataengine TZ offset to it
-        return new Date(msUTC + (dataSource.data[plasmoid.configuration.lastSelectedTimezone]["Offset"] * 1000));
+        return new Date(msUTC + (data["Offset"] * 1000));
     }
 
     function initTimezones() {
-        var tz  = Array()
-        if (plasmoid.configuration.selectedTimeZones.indexOf("Local") === -1) {
+        const tz = []
+        if (Plasmoid.configuration.selectedTimeZones.indexOf("Local") === -1) {
             tz.push("Local");
         }
-        root.allTimezones = tz.concat(plasmoid.configuration.selectedTimeZones);
+        root.allTimezones = tz.concat(Plasmoid.configuration.selectedTimeZones);
     }
 
-    function timeForZone(zone) {
-        var compactRepresentationItem = plasmoid.compactRepresentationItem;
+    function timeForZone(zone, showSecondsForZone) {
         if (!compactRepresentationItem) {
             return "";
         }
 
         // get the time for the given timezone from the dataengine
-        var now = dataSource.data[zone]["DateTime"];
+        const now = dataSource.data[zone]["DateTime"];
         // get current UTC time
-        var msUTC = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const msUTC = now.getTime() + (now.getTimezoneOffset() * 60000);
         // add the dataengine TZ offset to it
-        var dateTime = new Date(msUTC + (dataSource.data[zone]["Offset"] * 1000));
+        const dateTime = new Date(msUTC + (dataSource.data[zone]["Offset"] * 1000));
 
-        var formattedTime = Qt.formatTime(dateTime, compactRepresentationItem.timeFormat);
+        let formattedTime;
+        if (showSecondsForZone) {
+            formattedTime = Qt.formatTime(dateTime, compactRepresentationItem.timeFormatWithSeconds);
+        } else {
+            formattedTime = Qt.formatTime(dateTime, compactRepresentationItem.timeFormat);
+        }
 
         if (dateTime.getDay() !== dataSource.data["Local"]["DateTime"].getDay()) {
-            formattedTime += " (" + Qt.formatDate(dateTime, compactRepresentationItem.dateFormat) + ")";
+            formattedTime += " (" + compactRepresentationItem.dateFormatter(dateTime) + ")";
         }
 
         return formattedTime;
@@ -74,41 +72,64 @@ Item {
 
     function nameForZone(zone) {
         // add the timezone string to the clock
-        var timezoneString = plasmoid.configuration.displayTimezoneAsCode ? dataSource.data[zone]["Timezone Abbreviation"]
-                                                                          : TimezonesI18n.i18nCity(dataSource.data[zone]["Timezone City"]);
-
-        return timezoneString;
+        if (Plasmoid.configuration.displayTimezoneAsCode) {
+            return dataSource.data[zone]["Timezone Abbreviation"];
+        } else {
+            return TimezonesI18n.i18nCity(dataSource.data[zone]["Timezone"]);
+        }
     }
 
-    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
-    Plasmoid.compactRepresentation: DigitalClock { }
-    Plasmoid.fullRepresentation: CalendarView { }
+    preferredRepresentation: compactRepresentation
+    compactRepresentation: DigitalClock {
+        activeFocusOnTab: true
+        hoverEnabled: true
 
-    Plasmoid.toolTipItem: Loader {
+        Accessible.name: tooltipLoader.item.Accessible.name
+        Accessible.description: tooltipLoader.item.Accessible.description
+    }
+    fullRepresentation: CalendarView { }
+
+    toolTipItem: Loader {
         id: tooltipLoader
 
-        Layout.minimumWidth: item ? item.width : 0
-        Layout.maximumWidth: item ? item.width : 0
-        Layout.minimumHeight: item ? item.height : 0
-        Layout.maximumHeight: item ? item.height : 0
+        Layout.minimumWidth: item ? item.implicitWidth : 0
+        Layout.maximumWidth: item ? item.implicitWidth : 0
+        Layout.minimumHeight: item ? item.implicitHeight : 0
+        Layout.maximumHeight: item ? item.implicitHeight : 0
 
-        source: "Tooltip.qml"
+        source: Qt.resolvedUrl("Tooltip.qml")
     }
 
     //We need Local to be *always* present, even if not disaplayed as
     //it's used for formatting in ToolTip.dateTimeChanged()
     property var allTimezones
     Connections {
-        target: plasmoid.configuration
+        target: Plasmoid.configuration
         function onSelectedTimeZonesChanged() { root.initTimezones(); }
     }
 
-    PlasmaCore.DataSource {
+    Binding {
+        target: root
+        property: "hideOnWindowDeactivate"
+        value: !Plasmoid.configuration.pin
+        restoreMode: Binding.RestoreBinding
+    }
+
+    P5Support.DataSource {
         id: dataSource
         engine: "time"
         connectedSources: allTimezones
-        interval: plasmoid.configuration.showSeconds ? 1000 : 60000
-        intervalAlignment: plasmoid.configuration.showSeconds ? PlasmaCore.Types.NoAlignment : PlasmaCore.Types.AlignToMinute
+        interval: intervalAlignment === P5Support.Types.NoAlignment ? 1000 : 60000
+        intervalAlignment: {
+            if (Plasmoid.configuration.showSeconds === 2
+                || (Plasmoid.configuration.showSeconds === 1
+                    && compactRepresentationItem
+                    && compactRepresentationItem.containsMouse)) {
+                return P5Support.Types.NoAlignment;
+            } else {
+                return P5Support.Types.AlignToMinute;
+            }
+        }
     }
 
     function setDateFormatString() {
@@ -116,33 +137,34 @@ Item {
         // /all/ locales in LongFormat have "dddd" either
         // at the beginning or at the end. so we just
         // remove it + the delimiter and space
-        var format = Qt.locale().dateFormat(Locale.LongFormat);
+        let format = Qt.locale().dateFormat(Locale.LongFormat);
         format = format.replace(/(^dddd.?\s)|(,?\sdddd$)/, "");
         return format;
     }
 
-    function action_clockkcm() {
-        KCMShell.openSystemSettings("clock");
-    }
-
-    function action_formatskcm() {
-        KCMShell.openSystemSettings("formats");
-    }
+    Plasmoid.contextualActions: [
+        PlasmaCore.Action {
+            id: clipboardAction
+            text: i18n("Copy to Clipboard")
+            icon.name: "edit-copy"
+        },
+        PlasmaCore.Action {
+            text: i18n("Adjust Date and Time…")
+            icon.name: "clock"
+            visible: KAuthorized.authorize("kcm_clock")
+            onTriggered: KCMLauncher.openSystemSettings("kcm_clock")
+        },
+        PlasmaCore.Action {
+            text: i18n("Set Time Format…")
+            icon.name: "gnumeric-format-thousand-separator"
+            visible: KAuthorized.authorizeControlModule("kcm_regionandlang")
+            onTriggered: KCMLauncher.openSystemSettings("kcm_regionandlang")
+        }
+    ]
 
     Component.onCompleted: {
-        plasmoid.setAction("clipboard", i18n("Copy to Clipboard"), "edit-copy");
-        ClipboardMenu.setupMenu(plasmoid.action("clipboard"));
+        ClipboardMenu.setupMenu(clipboardAction);
 
         root.initTimezones();
-        if (KCMShell.authorize("clock.desktop").length > 0) {
-            plasmoid.setAction("clockkcm", i18n("Adjust Date and Time..."), "preferences-system-time");
-        }
-        if (KCMShell.authorize("formats.desktop").length > 0) {
-            plasmoid.setAction("formatskcm", i18n("Set Time Format..."));
-        }
-
-        // Set the list of enabled plugins from config
-        // to the manager
-        PlasmaCalendar.EventPluginsManager.enabledPlugins = plasmoid.configuration.enabledCalendarPlugins;
     }
 }

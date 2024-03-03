@@ -3,136 +3,122 @@
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
-import QtQuick 2.0
-import QtQuick.Layouts 1.1
-import QtQuick.Window 2.0
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.core as PlasmaCore
+import org.kde.ksvg 1.0 as KSvg
+import org.kde.plasma.plasmoid 2.0
 import org.kde.kquickcontrolsaddons 2.0
+import org.kde.kirigami 2.20 as Kirigami
 
 PlasmaCore.ToolTipArea {
     id: root
     objectName: "org.kde.desktop-CompactApplet"
     anchors.fill: parent
 
-    mainText: plasmoid.toolTipMainText
-    subText: plasmoid.toolTipSubText
-    location: plasmoid.location
-    active: !plasmoid.expanded
-    textFormat: plasmoid.toolTipTextFormat
-    mainItem: plasmoid.toolTipItem ? plasmoid.toolTipItem : null
+    mainText: plasmoidItem ? plasmoidItem.toolTipMainText : ""
+    subText: plasmoidItem ? plasmoidItem.toolTipSubText : ""
+    location: Plasmoid.location
+    active: plasmoidItem ? !plasmoidItem.expanded : false
+    textFormat: plasmoidItem ? plasmoidItem.toolTipTextFormat : 0
+    mainItem: plasmoidItem && plasmoidItem.toolTipItem ? plasmoidItem.toolTipItem : null
+
+    readonly property bool vertical: location === PlasmaCore.Types.RightEdge || location === PlasmaCore.Types.LeftEdge
 
     property Item fullRepresentation
     property Item compactRepresentation
     property Item expandedFeedback: expandedItem
+    property PlasmoidItem plasmoidItem
 
     onCompactRepresentationChanged: {
         if (compactRepresentation) {
-            compactRepresentation.parent = root;
-            compactRepresentation.anchors.fill = root;
+            compactRepresentation.anchors.fill = null;
+            compactRepresentation.parent = compactRepresentationParent;
+            compactRepresentation.anchors.fill = compactRepresentationParent;
             compactRepresentation.visible = true;
         }
         root.visible = true;
     }
 
     onFullRepresentationChanged: {
-
-        if (!fullRepresentation) {
-            return;
+        if (fullRepresentation) {
+            fullRepresentation.anchors.fill = null;
+            fullRepresentation.parent = appletParent;
+            fullRepresentation.anchors.fill = appletParent;
         }
-
-        //if the fullRepresentation size was restored to a stored size, or if is dragged from the desktop, restore popup size
-        if (fullRepresentation.Layout && fullRepresentation.Layout.preferredWidth > 0) {
-            popupWindow.mainItem.width = Qt.binding(function() {
-                return fullRepresentation.Layout.preferredWidth
-            })
-        } else if (fullRepresentation.implicitWidth > 0) {
-            popupWindow.mainItem.width = Qt.binding(function() {
-                return fullRepresentation.implicitWidth
-            })
-        } else if (fullRepresentation.width > 0) {
-            popupWindow.mainItem.width = Qt.binding(function() {
-                return fullRepresentation.width
-            })
-        } else {
-            popupWindow.mainItem.width = Qt.binding(function() {
-                return PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).width * 35
-            })
-        }
-
-        if (fullRepresentation.Layout && fullRepresentation.Layout.preferredHeight > 0) {
-            popupWindow.mainItem.height = Qt.binding(function() {
-                return fullRepresentation.Layout.preferredHeight
-            })
-        } else if (fullRepresentation.implicitHeight > 0) {
-            popupWindow.mainItem.height = Qt.binding(function() {
-                return fullRepresentation.implicitHeight
-            })
-        } else if (fullRepresentation.height > 0) {
-            popupWindow.mainItem.height = Qt.binding(function() {
-                return fullRepresentation.height
-            })
-        } else {
-            popupWindow.mainItem.height = Qt.binding(function() {
-                return PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).height * 25
-            })
-        }
-
-        fullRepresentation.parent = appletParent;
-        fullRepresentation.anchors.fill = fullRepresentation.parent;
     }
 
-    PlasmaCore.FrameSvgItem {
+    FocusScope {
+        id: compactRepresentationParent
+        anchors.fill: parent
+        activeFocusOnTab: true
+        onActiveFocusChanged: {
+            // When the scope gets the active focus, try to focus its first descendant,
+            // if there is on which has activeFocusOnTab
+            if (!activeFocus) {
+                return;
+            }
+            let nextItem = nextItemInFocusChain();
+            let candidate = nextItem;
+            while (candidate.parent) {
+                if (candidate === compactRepresentationParent) {
+                    nextItem.forceActiveFocus();
+                    return;
+                }
+                candidate = candidate.parent;
+            }
+        }
+
+        objectName: "expandApplet"
+        Accessible.name: root.mainText
+        Accessible.description: i18nd("plasma_shell_org.kde.plasma.desktop", "Open %1", root.subText)
+        Accessible.role: Accessible.Button
+        Accessible.onPressAction: Plasmoid.activated()
+
+        Keys.onPressed: {
+            switch (event.key) {
+                case Qt.Key_Space:
+                case Qt.Key_Enter:
+                case Qt.Key_Return:
+                case Qt.Key_Select:
+                    Plasmoid.activated();
+                    break;
+            }
+        }
+    }
+
+    KSvg.FrameSvgItem {
         id: expandedItem
+        z: -100
 
-        property var containerMargins: {
-            let item = root;
-            while (item.parent) {
-                item = item.parent;
-                if (item.isAppletContainer) {
-                    return item.getMargins;
-                }
-            }
-            return undefined;
-        }
-
-        anchors {
-            fill: parent
-            property bool returnAllMargins: true 
-            // The above makes sure margin is returned even for side margins, that 
-            // would be otherwise turned off.
-            bottomMargin: containerMargins ? -containerMargins('bottom', returnAllMargins) : 0;
-            topMargin: containerMargins ? -containerMargins('top', returnAllMargins) : 0;
-            leftMargin: containerMargins ? -containerMargins('left', returnAllMargins) : 0;
-            rightMargin: containerMargins ? -containerMargins('right', returnAllMargins) : 0;
-        }
         imagePath: "widgets/tabbar"
-        visible: fromCurrentTheme && opacity > 0
+        visible: opacity > 0
         prefix: {
-            var prefix;
-            switch (plasmoid.location) {
-                case PlasmaCore.Types.LeftEdge:
-                    prefix = "west-active-tab";
-                    break;
-                case PlasmaCore.Types.TopEdge:
-                    prefix = "north-active-tab";
-                    break;
-                case PlasmaCore.Types.RightEdge:
-                    prefix = "east-active-tab";
-                    break;
-                default:
-                    prefix = "south-active-tab";
-                }
-                if (!hasElementPrefix(prefix)) {
-                    prefix = "active-tab";
-                }
-                return prefix;
+            let prefix;
+            switch (Plasmoid.location) {
+            case PlasmaCore.Types.LeftEdge:
+                prefix = "west-active-tab";
+                break;
+            case PlasmaCore.Types.TopEdge:
+                prefix = "north-active-tab";
+                break;
+            case PlasmaCore.Types.RightEdge:
+                prefix = "east-active-tab";
+                break;
+            default:
+                prefix = "south-active-tab";
             }
-        opacity: plasmoid.expanded ? 1 : 0
+            if (!hasElementPrefix(prefix)) {
+                prefix = "active-tab";
+            }
+            return prefix;
+        }
+        opacity: plasmoidItem && plasmoidItem.expanded ? 1 : 0
         Behavior on opacity {
             NumberAnimation {
-                duration: PlasmaCore.Units.shortDuration
+                duration: Kirigami.Units.shortDuration
                 easing.type: Easing.InOutQuad
             }
         }
@@ -141,35 +127,63 @@ PlasmaCore.ToolTipArea {
     Timer {
         id: expandedSync
         interval: 100
-        onTriggered: plasmoid.expanded = popupWindow.visible;
+        onTriggered: plasmoidItem.expanded = dialog.visible;
     }
 
     Connections {
-        target: plasmoid.action("configure")
+        target: Plasmoid.internalAction("configure")
         function onTriggered() {
-            if (plasmoid.hideOnWindowDeactivate) {
-                plasmoid.expanded = false
+            if (root.plasmoidItem.hideOnWindowDeactivate) {
+                plasmoidItem.expanded = false
             }
         }
     }
 
     Connections {
-        target: plasmoid
+        target: root.Plasmoid
         function onContextualActionsAboutToShow() { root.hideImmediately() }
     }
 
-    PlasmaCore.Dialog {
-        id: popupWindow
+    PlasmaCore.AppletPopup {
+        id: dialog
         objectName: "popupWindow"
-        flags: Qt.WindowStaysOnTopHint
-        visible: plasmoid.expanded && fullRepresentation
-        visualParent: compactRepresentation ? compactRepresentation : null
-        location: plasmoid.location
-        hideOnWindowDeactivate: plasmoid.hideOnWindowDeactivate
-        backgroundHints: plasmoid.noBackground ? PlasmaCore.Dialog.NoBackground : (plasmoid.containmentDisplayHints & PlasmaCore.Types.DesktopFullyCovered) ? PlasmaCore.Dialog.SolidBackground : PlasmaCore.Dialog.StandardBackground
+
+        popupDirection: switch (Plasmoid.location) {
+            case PlasmaCore.Types.TopEdge:
+                return Qt.BottomEdge
+            case PlasmaCore.Types.LeftEdge:
+                return Qt.RightEdge
+            case PlasmaCore.Types.RightEdge:
+                return Qt.LeftEdge
+            default:
+                return Qt.TopEdge
+        }
+        margin: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.ContainmentPrefersFloatingApplets) ? Kirigami.Units.largeSpacing : 0
+        floating: Plasmoid.location == PlasmaCore.Types.Floating
+        removeBorderStrategy: Plasmoid.location === PlasmaCore.Types.Floating
+            ? PlasmaCore.AppletPopup.AtScreenEdges
+            : PlasmaCore.AppletPopup.AtScreenEdges | PlasmaCore.AppletPopup.AtPanelEdges
+
+        hideOnWindowDeactivate: root.plasmoidItem && root.plasmoidItem.hideOnWindowDeactivate
+        visible: root.plasmoidItem && root.plasmoidItem.expanded && fullRepresentation
+        visualParent: root.compactRepresentation
+        backgroundHints: (Plasmoid.containmentDisplayHints & PlasmaCore.Types.ContainmentPrefersOpaqueBackground) ? PlasmaCore.AppletPopup.SolidBackground : PlasmaCore.AppletPopup.StandardBackground
+        appletInterface: root.plasmoidItem
 
         property var oldStatus: PlasmaCore.Types.UnknownStatus
 
+        onVisibleChanged: {
+            if (!visible) {
+                expandedSync.restart();
+                Plasmoid.status = oldStatus;
+            } else {
+                oldStatus = Plasmoid.status;
+                Plasmoid.status = PlasmaCore.Types.RequiresAttentionStatus;
+                // This call currently fails and complains at runtime:
+                // QWindow::setWindowState: QWindow::setWindowState does not accept Qt::WindowActive
+                dialog.requestActivate();
+            }
+        }
         //It's a MouseEventListener to get all the events, so the eventfilter will be able to catch them
         mainItem: MouseEventListener {
             id: appletParent
@@ -177,20 +191,35 @@ PlasmaCore.ToolTipArea {
             focus: true
 
             Keys.onEscapePressed: {
-                plasmoid.expanded = false;
+                root.plasmoidItem.expanded = false;
             }
 
-            LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
-            LayoutMirroring.childrenInherit: true
+            Layout.minimumWidth: fullRepresentation ? fullRepresentation.Layout.minimumWidth : 0
+            Layout.minimumHeight: fullRepresentation ? fullRepresentation.Layout.minimumHeight : 0
 
-            Layout.minimumWidth: (fullRepresentation && fullRepresentation.Layout) ? fullRepresentation.Layout.minimumWidth : 0
-            Layout.minimumHeight: (fullRepresentation && fullRepresentation.Layout) ? fullRepresentation.Layout.minimumHeight: 0
+            Layout.maximumWidth: fullRepresentation ? fullRepresentation.Layout.maximumWidth : Infinity
+            Layout.maximumHeight: fullRepresentation ? fullRepresentation.Layout.maximumHeight : Infinity
 
-            Layout.preferredWidth: (fullRepresentation && fullRepresentation.Layout) ? fullRepresentation.Layout.preferredWidth : -1
-            Layout.preferredHeight: (fullRepresentation && fullRepresentation.Layout) ? fullRepresentation.Layout.preferredHeight: -1
-
-            Layout.maximumWidth: (fullRepresentation && fullRepresentation.Layout) ? fullRepresentation.Layout.maximumWidth : Infinity
-            Layout.maximumHeight: (fullRepresentation && fullRepresentation.Layout) ? fullRepresentation.Layout.maximumHeight: Infinity
+            implicitWidth: {
+                if (root.fullRepresentation !== null) {
+                    /****/ if (root.fullRepresentation.Layout.preferredWidth > 0) {
+                        return root.fullRepresentation.Layout.preferredWidth;
+                    } else if (root.fullRepresentation.implicitWidth > 0) {
+                        return root.fullRepresentation.implicitWidth;
+                    }
+                }
+                return Kirigami.Units.iconSizes.sizeForLabels * 35;
+            }
+            implicitHeight: {
+                if (root.fullRepresentation !== null) {
+                    /****/ if (fullRepresentation.Layout.preferredHeight > 0) {
+                        return fullRepresentation.Layout.preferredHeight;
+                    } else if (fullRepresentation.implicitHeight > 0) {
+                        return fullRepresentation.implicitHeight;
+                    }
+                }
+                return Kirigami.Units.iconSizes.sizeForLabels * 25;
+            }
 
             onActiveFocusChanged: {
                 if (activeFocus && fullRepresentation) {
@@ -199,41 +228,86 @@ PlasmaCore.ToolTipArea {
             }
 
             // Draws a line between the applet dialog and the panel
-            PlasmaCore.SvgItem {
+            KSvg.SvgItem {
+                id: separator
                 // Only draw for popups of panel applets, not desktop applets
-                visible: plasmoid.formFactor === PlasmaCore.Types.Vertical || plasmoid.formFactor === PlasmaCore.Types.Horizontal
-
+                visible: [PlasmaCore.Types.TopEdge, PlasmaCore.Types.LeftEdge, PlasmaCore.Types.RightEdge, PlasmaCore.Types.BottomEdge]
+                    .includes(Plasmoid.location) && !dialog.margin
                 anchors {
-                    top: plasmoid.location == PlasmaCore.Types.BottomEdge ? undefined : parent.top
-                    left: plasmoid.location == PlasmaCore.Types.RightEdge ? undefined : parent.left
-                    right: plasmoid.location == PlasmaCore.Types.LeftEdge ? undefined : parent.right
-                    bottom: plasmoid.location == PlasmaCore.Types.TopEdge ? undefined : parent.bottom
-                    topMargin: plasmoid.location == PlasmaCore.Types.BottomEdge ? undefined : -popupWindow.margins.top
-                    leftMargin: plasmoid.location == PlasmaCore.Types.RightEdge ? undefined : -popupWindow.margins.left
-                    rightMargin: plasmoid.location == PlasmaCore.Types.LeftEdge ? undefined : -popupWindow.margins.right
-                    bottomMargin: plasmoid.location == PlasmaCore.Types.TopEdge ? undefined : -popupWindow.margins.bottom
+                    topMargin: -dialog.topMargin
+                    leftMargin: -dialog.leftMargin
+                    rightMargin: -dialog.rightMargin
+                    bottomMargin: -dialog.bottomMargin
                 }
-                height: (plasmoid.location == PlasmaCore.Types.TopEdge || plasmoid.location == PlasmaCore.Types.BottomEdge) ? 1 : undefined
-                width: (plasmoid.location == PlasmaCore.Types.LeftEdge || plasmoid.location == PlasmaCore.Types.RightEdge) ? 1 : undefined
                 z: 999 /* Draw the line on top of the applet */
-                elementId: (plasmoid.location == PlasmaCore.Types.TopEdge || plasmoid.location == PlasmaCore.Types.BottomEdge) ? "horizontal-line" : "vertical-line"
-                svg: PlasmaCore.Svg {
-                    imagePath: "widgets/line"
-                }
+                elementId: (Plasmoid.location === PlasmaCore.Types.TopEdge || Plasmoid.location === PlasmaCore.Types.BottomEdge) ? "horizontal-line" : "vertical-line"
+                imagePath: "widgets/line"
+                states: [
+                    State {
+                        when: Plasmoid.location === PlasmaCore.Types.TopEdge
+                        AnchorChanges {
+                            target: separator
+                            anchors {
+                                top: separator.parent.top
+                                left: separator.parent.left
+                                right: separator.parent.right
+                            }
+                        }
+                        PropertyChanges {
+                            target: separator
+                            height: 1
+                        }
+                    },
+                    State {
+                        when: Plasmoid.location === PlasmaCore.Types.LeftEdge
+                        AnchorChanges {
+                            target: separator
+                            anchors {
+                                left: separator.parent.left
+                                top: separator.parent.top
+                                bottom: separator.parent.bottom
+                            }
+                        }
+                        PropertyChanges {
+                            target: separator
+                            width: 1
+                        }
+                    },
+                    State {
+                        when: Plasmoid.location === PlasmaCore.Types.RightEdge
+                        AnchorChanges {
+                            target: separator
+                            anchors {
+                                top: separator.parent.top
+                                right: separator.parent.right
+                                bottom: separator.parent.bottom
+                            }
+                        }
+                        PropertyChanges {
+                            target: separator
+                            width: 1
+                        }
+                    },
+                    State {
+                        when: Plasmoid.location === PlasmaCore.Types.BottomEdge
+                        AnchorChanges {
+                            target: separator
+                            anchors {
+                                left: separator.parent.left
+                                right: separator.parent.right
+                                bottom: separator.parent.bottom
+                            }
+                        }
+                        PropertyChanges {
+                            target: separator
+                            height: 1
+                        }
+                    }
+                ]
             }
-        }
 
-        onVisibleChanged: {
-            if (!visible) {
-                expandedSync.restart();
-                plasmoid.status = oldStatus;
-            } else {
-                oldStatus = plasmoid.status;
-                plasmoid.status = PlasmaCore.Types.RequiresAttentionStatus;
-                // This call currently fails and complains at runtime:
-                // QWindow::setWindowState: QWindow::setWindowState does not accept Qt::WindowActive
-                popupWindow.requestActivate();
-            }
+            LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
+            LayoutMirroring.childrenInherit: true
         }
     }
 }

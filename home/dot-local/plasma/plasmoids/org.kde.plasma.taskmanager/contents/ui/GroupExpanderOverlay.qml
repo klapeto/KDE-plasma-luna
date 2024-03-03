@@ -6,9 +6,11 @@
 
 import QtQuick 2.15
 
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
+import org.kde.ksvg 1.0 as KSvg
+import org.kde.plasma.plasmoid 2.0
 
-PlasmaCore.SvgItem {
+KSvg.SvgItem {
     id: arrow
 
     anchors {
@@ -16,12 +18,12 @@ PlasmaCore.SvgItem {
         horizontalCenter: iconBox.horizontalCenter
     }
 
-    visible: parent.m.IsGroupParent === true
+    visible: parent.model.IsGroupParent
 
     states: [
         State {
             name: "top"
-            when: plasmoid.location === PlasmaCore.Types.TopEdge
+            when: Plasmoid.location === PlasmaCore.Types.TopEdge
             AnchorChanges {
                 target: arrow
                 anchors.top: arrow.parent.top
@@ -34,7 +36,7 @@ PlasmaCore.SvgItem {
         },
         State {
             name: "left"
-            when: plasmoid.location === PlasmaCore.Types.LeftEdge
+            when: Plasmoid.location === PlasmaCore.Types.LeftEdge
             AnchorChanges {
                 target: arrow
                 anchors.top: undefined
@@ -47,7 +49,7 @@ PlasmaCore.SvgItem {
         },
         State {
             name: "right"
-            when: plasmoid.location === PlasmaCore.Types.RightEdge
+            when: Plasmoid.location === PlasmaCore.Types.RightEdge
             AnchorChanges {
                 target: arrow
                 anchors.top: undefined
@@ -63,11 +65,11 @@ PlasmaCore.SvgItem {
     implicitWidth: Math.min(naturalSize.width, iconBox.width)
     implicitHeight: Math.min(naturalSize.height, iconBox.width)
 
-    svg: taskSvg
+    imagePath: "widgets/tasks"
     elementId: elementForLocation()
 
     function elementForLocation() {
-        switch (plasmoid.location) {
+        switch (Plasmoid.location) {
             case PlasmaCore.Types.LeftEdge:
                 return "group-expander-left";
             case PlasmaCore.Types.TopEdge:

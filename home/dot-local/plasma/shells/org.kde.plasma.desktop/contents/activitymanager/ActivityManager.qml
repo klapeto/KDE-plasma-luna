@@ -7,13 +7,11 @@
 
 import QtQuick 2.0
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
-import org.kde.kquickcontrolsaddons 2.0
+import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.kirigami 2.20 as Kirigami
+import org.kde.config as KConfig  // KAuthorized
+import org.kde.kcmutils  // KCMLauncher
 
-import org.kde.activities 0.1 as Activities
-import org.kde.activities.settings 0.1
 
 FocusScope {
     id: root
@@ -24,17 +22,17 @@ FocusScope {
     }
 
     //this is used to perfectly align the filter field and delegates
-    property int cellWidth: PlasmaCore.Theme.mSize(PlasmaCore.Theme.defaultFont).width * 30
-    property int spacing: 2 * PlasmaCore.Units.smallSpacing
+    property int cellWidth: Kirigami.Units.iconSizes.sizeForLabels * 30
+    property int spacing: 2 * Kirigami.Units.smallSpacing
 
     property bool showSwitcherOnly: false
 
-    width: PlasmaCore.Units.gridUnit * 16
+    width: Kirigami.Units.gridUnit * 16
 
     Item {
         id: activityBrowser
 
-        property int spacing: 2 * PlasmaCore.Units.smallSpacing
+        property int spacing: 2 * Kirigami.Units.smallSpacing
 
         signal closeRequested()
 
@@ -79,17 +77,16 @@ FocusScope {
                 left: parent.left
                 right: parent.right
 
-                leftMargin: PlasmaCore.Units.smallSpacing
-                rightMargin: PlasmaCore.Units.smallSpacing
+                leftMargin: Kirigami.Units.smallSpacing
+                rightMargin: Kirigami.Units.smallSpacing
             }
 
-            onCloseRequested: activityBrowser.closeRequested()
-            Component.onCompleted: focusSearch()
-
             visible: !root.showSwitcherOnly
+
+            onCloseRequested: activityBrowser.closeRequested()
         }
 
-        PlasmaExtras.ScrollArea {
+        PlasmaComponents.ScrollView {
             anchors {
                 top:    heading.visible ? heading.bottom : parent.top
                 bottom: bottomPanel.visible ? bottomPanel.top : parent.bottom
@@ -101,17 +98,15 @@ FocusScope {
             ActivityList {
                 id: activityList
                 showSwitcherOnly: root.showSwitcherOnly
-
                 filterString: heading.searchString.toLowerCase()
-
-                itemsWidth: root.width - PlasmaCore.Units.smallSpacing
+                itemsWidth: root.width - Kirigami.Units.smallSpacing
             }
         }
 
         Item {
             id: bottomPanel
 
-            height: newActivityButton.height + PlasmaCore.Units.largeSpacing
+            height: newActivityButton.height + Kirigami.Units.gridUnit
 
             visible: !root.showSwitcherOnly
 
@@ -125,13 +120,13 @@ FocusScope {
                 id: newActivityButton
 
                 text: i18nd("plasma_shell_org.kde.plasma.desktop", "Create activity…")
-                iconSource: "list-add"
+                icon.name: "list-add"
 
                 width: parent.width
 
-                onClicked: ActivitySettings.newActivity()
+                onClicked: KCMLauncher.openSystemSettings("kcm_activities", "newActivity")
 
-                visible: ActivitySettings.newActivityAuthorized
+                visible: KConfig.KAuthorized.authorize("plasma-desktop/add_activities")
                 opacity: newActivityDialog.status == Loader.Ready ?
                               1 - newActivityDialog.item.opacity : 1
             }

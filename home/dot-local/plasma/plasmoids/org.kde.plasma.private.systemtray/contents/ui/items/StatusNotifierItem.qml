@@ -1,24 +1,13 @@
 /*
- *   Copyright 2016 Marco Martin <mart@kde.org>
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+    SPDX-FileCopyrightText: 2016 Marco Martin <mart@kde.org>
+
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
 
 import QtQuick 2.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core as PlasmaCore
+import org.kde.kirigami 2.20 as Kirigami
 
 AbstractItem {
     id: taskIcon
@@ -29,9 +18,8 @@ AbstractItem {
     subText: model.ToolTipSubTitle
     textFormat: Text.AutoText
 
-    PlasmaCore.IconItem {
+    Kirigami.Icon {
         id: iconItem
-
         parent: taskIcon.iconContainer
         anchors.fill: iconItem.parent
         roundToIconSize: false
@@ -44,74 +32,79 @@ AbstractItem {
                     return model.AttentionIconName
                 }
             }
-            return model.Icon ? model.Icon : model.IconName
+            return model.IconName.length > 0 ? model.IconName : model.Icon
         }
         active: taskIcon.containsMouse
     }
 
-    onContextMenu: {
-        openContextMenu(plasmoid.nativeInterface.popupPosition(taskIcon, mouse.x, mouse.y))
+    onActivated: pos => {
+        const service = model.Service;
+        const operation = service.operationDescription("Activate");
+        operation.x = pos.x; //mouseX
+        operation.y = pos.y; //mouseY
+        const job = service.startOperationCall(operation);
+        job.finished.connect(() => {
+            if (!job.result) {
+                // On error try to invoke the context menu.
+                // Workaround primarily for apps using libappindicator.
+                openContextMenu(pos);
+            }
+        })
     }
 
-    onClicked: {
-        var pos = plasmoid.nativeInterface.popupPosition(taskIcon, mouse.x, mouse.y);
-        var service = model.Service;
+    onContextMenu: mouse => {
+        if (mouse === null) {
+            openContextMenu(Plasmoid.popupPosition(taskIcon, taskIcon.width / 2, taskIcon.height / 2));
+        } else {
+            openContextMenu(Plasmoid.popupPosition(taskIcon, mouse.x, mouse.y));
+        }
+    }
+
+    onClicked: mouse => {
+        var pos = Plasmoid.popupPosition(taskIcon, mouse.x, mouse.y);
 
         switch (mouse.button) {
         case Qt.LeftButton:
-            var operation = service.operationDescription("Activate");
-            operation.x = pos.x;
-            operation.y = pos.y;
-            var job = service.startOperationCall(operation);
-            job.finished.connect(function () {
-                if (!job.result) {
-                    // On error try to invoke the context menu.
-                    // Workaround primarily for apps using libappindicator.
-                    openContextMenu(pos);
-                }
-            });
-            taskIcon.activated()
+            taskIcon.activated(pos)
             break;
         case Qt.RightButton:
             openContextMenu(pos);
             break;
-
         case Qt.MiddleButton:
-            var operation = service.operationDescription("SecondaryActivate");
+            const service = model.Service;
+            const operation = service.operationDescription("SecondaryActivate");
             operation.x = pos.x;
-
             operation.y = pos.y;
             service.startOperationCall(operation);
-            taskIcon.activated()
             break;
         }
     }
 
-    function openContextMenu(pos) {
-        var service = model.Service;
-        var operation = service.operationDescription("ContextMenu");
+    function openContextMenu(pos = Qt.point(width/2, height/2)) {
+        const service = model.Service;
+        const operation = service.operationDescription("ContextMenu");
         operation.x = pos.x;
         operation.y = pos.y;
 
-        var job = service.startOperationCall(operation);
-        job.finished.connect(function () {
-            plasmoid.nativeInterface.showStatusNotifierContextMenu(job, taskIcon);
+        const job = service.startOperationCall(operation);
+        job.finished.connect(() => {
+            Plasmoid.showStatusNotifierContextMenu(job, taskIcon);
         });
     }
 
-    onWheel: {
+    onWheel: wheel => {
         //don't send activateVertScroll with a delta of 0, some clients seem to break (kmix)
         if (wheel.angleDelta.y !== 0) {
-            var service = model.Service;
-            var operation = service.operationDescription("Scroll");
-            operation.delta =wheel.angleDelta.y;
+            const service = model.Service;
+            const operation = service.operationDescription("Scroll");
+            operation.delta = wheel.angleDelta.y;
             operation.direction = "Vertical";
             service.startOperationCall(operation);
         }
         if (wheel.angleDelta.x !== 0) {
-            var service = model.Service;
-            var operation = service.operationDescription("Scroll");
-            operation.delta =wheel.angleDelta.x;
+            const service = model.Service;
+            const operation = service.operationDescription("Scroll");
+            operation.delta = wheel.angleDelta.x;
             operation.direction = "Horizontal";
             service.startOperationCall(operation);
         }

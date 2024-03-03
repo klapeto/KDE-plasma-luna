@@ -5,12 +5,10 @@
 */
 
 import QtQuick 2.0
-import QtQuick.Controls 2.3 as QtControls
-import QtQuick.Layouts 1.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick.Controls 2.3 as QQC2
 
 
-QtControls.Button {
+QQC2.Button {
     id: mouseInputButton
     property string defaultText: i18nd("plasma_shell_org.kde.plasma.desktop", "Add Action")
     text: defaultText
@@ -41,7 +39,7 @@ QtControls.Button {
         }
 
         onWheel: {
-            var newEventString = configDialog.currentContainmentActionsModel.wheelEventString(wheel.pixelDelta, wheel.buttons, wheel.modifiers);
+            var newEventString = configDialog.currentContainmentActionsModel.wheelEventString(wheel);
 
             if (eventString === newEventString || !configDialog.currentContainmentActionsModel.isTriggerUsed(newEventString)) {
                 eventString = newEventString;

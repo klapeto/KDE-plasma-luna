@@ -5,22 +5,20 @@
 */
 
 import QtQuick 2.15
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.kirigami 2.20 as Kirigami
+import org.kde.plasma.plasmoid 2.0
 
-Flow {
+Grid {
     property bool animating: false
 
-    readonly property bool tasksGrowInOppositeDirection: plasmoid.configuration.reverseMode
-    readonly property bool isHorizontalPanel: plasmoid.formFactor === PlasmaCore.Types.Horizontal
-
-    layoutDirection: (tasksGrowInOppositeDirection && isHorizontalPanel)
+    layoutDirection: (Plasmoid.configuration.reverseMode && !tasks.vertical)
         ? (Qt.application.layoutDirection === Qt.LeftToRight)
             ? Qt.RightToLeft
             : Qt.LeftToRight
         : Qt.application.layoutDirection
 
-    property int rows: Math.floor(height / children[0].height)
-    property int columns: Math.floor(width / children[0].width)
+    rows: tasks.vertical ? -1 : Math.floor(height / children[0].height)
+    columns: tasks.vertical ? Math.floor(width / children[0].width) : -1
 
     move: Transition {
         SequentialAnimation {
@@ -29,7 +27,7 @@ Flow {
             NumberAnimation {
                 properties: "x, y"
                 easing.type: Easing.OutQuad
-                duration: PlasmaCore.Units.longDuration
+                duration: Kirigami.Units.longDuration
             }
 
             PropertyAction { target: taskList; property: "animating"; value: false }

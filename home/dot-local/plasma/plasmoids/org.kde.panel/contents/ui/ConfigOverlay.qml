@@ -1,443 +1,341 @@
 /*
- *  Copyright 2013 Marco Martin <mart@kde.org>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  2.010-1301, USA.
- */
+    SPDX-FileCopyrightText: 2013 Marco Martin <mart@kde.org>
+    SPDX-FileCopyrightText: 2022 Niccolò Venerandi <niccolo@venerandi.com>
+    SPDX-FileCopyrightText: 2023 ivan tkachenko <me@ratijas.tk>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 
 import QtQuick 2.5
 import QtQuick.Layouts 1.0
-
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import QtQuick.Window
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
+import org.kde.kirigami 2.20 as Kirigami
 
 MouseArea {
     id: configurationArea
 
     z: 1000
-
-    anchors.fill: currentLayout
-
     hoverEnabled: true
 
-    property bool isResizingLeft: false
-    property bool isResizingRight: false
     property Item currentApplet
+    property real startDragOffset: 0.0
 
-    property int lastX
-    property int lastY
-
-    readonly property int spacerHandleSize: PlasmaCore.Units.smallSpacing
-
-    onHeightChanged: tooltip.visible = false;
-    onWidthChanged: tooltip.visible = false;
-
-    onPositionChanged: {
-        if (currentApplet && currentApplet.applet &&
-            currentApplet.applet.pluginName === "org.kde.plasma.panelspacer") {
-            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                if ((mouse.y - handle.y) < spacerHandleSize ||
-                    (mouse.y - handle.y) > (handle.height - spacerHandleSize)) {
-                    configurationArea.cursorShape = Qt.SizeVerCursor;
-                } else {
-                    configurationArea.cursorShape = Qt.ArrowCursor;
-                }
-            } else {
-                if ((mouse.x - handle.x) < spacerHandleSize ||
-                    (mouse.x - handle.x) > (handle.width - spacerHandleSize)) {
-                    configurationArea.cursorShape = Qt.SizeHorCursor;
-                } else {
-                    configurationArea.cursorShape = Qt.ArrowCursor;
-                }
-            }
-        } else {
-            if (configurationArea.containsPress) {
-                configurationArea.cursorShape = Qt.ClosedHandCursor;
-            } else {
-                configurationArea.cursorShape = Qt.OpenHandCursor;
-            }
-        }
-
+    onPositionChanged: mouse => {
         if (pressed) {
-            if (currentApplet && currentApplet.applet.pluginName === "org.kde.plasma.panelspacer") {
 
-                if (isResizingLeft) {
-                    if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                        handle.y += (mouse.y - lastY);
-                        handle.height = currentApplet.height + (currentApplet.y - handle.y);
-                    } else {
-                        handle.x += (mouse.x - lastX);
-                        handle.width = currentApplet.width + (currentApplet.x - handle.x);
-                    }
-
-                    lastX = mouse.x;
-                    lastY = mouse.y;
-                    return;
-
-                } else if (isResizingRight) {
-                    if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                        handle.height = mouse.y - handle.y;
-                    } else {
-                        handle.width = mouse.x - handle.x;
-                    }
-
-                    lastX = mouse.x;
-                    lastY = mouse.y;
-                    return;
-                }
-            }
-
-            var padding = PlasmaCore.Units.gridUnit * 3;
+            // If the object has been dragged outside of the panel and there's
+            // a different containment there, we remove it from the panel
+            // containment and add it to the new one.
+            var padding = Kirigami.Units.gridUnit * 5;
             if (currentApplet && (mouse.x < -padding || mouse.y < -padding ||
                 mouse.x > width + padding || mouse.y > height + padding)) {
-                var newCont = plasmoid.containmentAt(mouse.x, mouse.y);
+                var newCont = root.containmentItemAt(mouse.x, mouse.y);
 
                 if (newCont && newCont !== plasmoid) {
-                    var newPos = newCont.mapFromApplet(plasmoid, mouse.x, mouse.y);
+                    var newPos = newCont.mapFromApplet(currentApplet.applet.plasmoid, mouse.x, mouse.y);
                     var applet = currentApplet.applet;
+                    appletsModel.remove(placeHolder.parent.index);
                     currentApplet.destroy();
                     applet.anchors.fill = undefined
-                    newCont.addApplet(applet, newPos.x, newPos.y);
+                    newCont.plasmoid.addApplet(applet.plasmoid, Qt.rect(newPos.x, newPos.y, applet.width, applet.height));
                     return;
                 }
             }
-
-            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                currentApplet.y += (mouse.y - lastY);
-                handle.y = currentApplet.y;
+            if (Plasmoid.formFactor === PlasmaCore.Types.Vertical && currentApplet) {
+                currentApplet.y = mouse.y - startDragOffset;
             } else {
-                currentApplet.x += (mouse.x - lastX);
-                handle.x = currentApplet.x;
+                currentApplet.x = mouse.x - startDragOffset;
             }
 
-            lastX = mouse.x;
-            lastY = mouse.y;
+            const item = root.layoutManager.childAtCoordinates(mouse.x, mouse.y);
 
-            var item = currentLayout.childAt(mouse.x, mouse.y);
-
-            if (item && item !== placeHolder) {
-                placeHolder.width = item.width;
-                placeHolder.height = item.height;
-                placeHolder.parent = configurationArea;
-                var posInItem = mapToItem(item, mouse.x, mouse.y);
-                let i = 0;
-
-                if ((plasmoid.formFactor === PlasmaCore.Types.Vertical && posInItem.y < item.height/2) ||
-                    (plasmoid.formFactor !== PlasmaCore.Types.Vertical && posInItem.x < item.width/2)) {
-                    i = root.layoutManager.insertBefore(item, placeHolder);
-                } else {
-                    i = root.layoutManager.insertAfter(item, placeHolder);
+            if (item && item.applet !== placeHolder) {
+                var posInItem = mapToItem(item, mouse.x, mouse.y)
+                var pos = root.isHorizontal ? posInItem.x : posInItem.y
+                var size = root.isHorizontal ? item.width : item.height
+                if (pos < size / 3) {
+                    root.layoutManager.move(placeHolder.parent, item.index)
+                } else if (pos > size / 3 * 2) {
+                    root.layoutManager.move(placeHolder.parent, item.index+1)
                 }
-                if (i!=undefined) {root.layoutManager.updateMargins()}
             }
 
         } else {
-            var item = currentLayout.childAt(mouse.x, mouse.y);
-            if (root.dragOverlay && item && item !== lastSpacer) {
-                root.dragOverlay.currentApplet = item;
-            } else {
-                root.dragOverlay.currentApplet = null;
+            const item = currentLayout.childAt(mouse.x, mouse.y);
+            if (item && item !== lastSpacer) {
+                currentApplet = item;
             }
         }
 
-        if (root.dragOverlay.currentApplet) {
+        if (currentApplet) {
             hideTimer.stop();
-            tooltip.visible = true;
             tooltip.raise();
         }
     }
 
     onEntered: hideTimer.stop();
 
-    onExited: hideTimer.restart();
+    onExited: hideTimer.restart()
 
     onCurrentAppletChanged: {
-        if (!currentApplet || !root.dragOverlay.currentApplet) {
+        if (!currentApplet) {
             hideTimer.start();
             return;
         }
-        handle.x = currentApplet.x;
-        handle.y = currentApplet.y;
-        handle.width = currentApplet.width;
-        handle.height = currentApplet.height;
     }
 
-    onPressed: {
-        if (!root.dragOverlay.currentApplet) {
+    onPressed: mouse => {
+        // Need to set currentApplet here too, to make touch selection + drag
+        // with with a touchscreen, because there are no entered events in that
+        // case
+        let item = currentLayout.childAt(mouse.x, mouse.y);
+        // BUG 454095: Don't allow dragging lastSpacer as it's not a real applet
+        if (!item || item == lastSpacer || item == addWidgetsButton) {
+            configurationArea.currentApplet = null
             return;
         }
+        tooltip.raise();
+        hideTimer.stop();
 
-        if (currentApplet.applet.pluginName === "org.kde.plasma.panelspacer") {
-            if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                if ((mouse.y - handle.y) < spacerHandleSize) {
-                    configurationArea.isResizingLeft = true;
-                    configurationArea.isResizingRight = false;
-                } else if ((mouse.y - handle.y) > (handle.height - spacerHandleSize)) {
-                    configurationArea.isResizingLeft = false;
-                    configurationArea.isResizingRight = true;
-                } else {
-                    configurationArea.isResizingLeft = false;
-                    configurationArea.isResizingRight = false;
-                }
+        // We set the current applet being dragged as a property of placeHolder
+        // to be able to read its properties from the LayoutManager
+        appletsModel.insert(item.index, {applet: placeHolder});
+        placeHolder.parent.inThickArea = item.inThickArea
+        currentApplet = appletContainerComponent.createObject(dropArea, {applet: item.applet, x: item.x,
+                                                                     y: item.y, z: 900,
+                                                                     width: item.width, height: item.height, index: -1})
+        placeHolder.parent.dragging = currentApplet
+        appletsModel.remove(item.index)
+        root.dragAndDropping = true
 
-            } else {
-                if ((mouse.x - handle.x) < spacerHandleSize) {
-                    configurationArea.isResizingLeft = true;
-                    configurationArea.isResizingRight = false;
-                } else if ((mouse.x - handle.x) > (handle.width - spacerHandleSize)) {
-                    configurationArea.isResizingLeft = false;
-                    configurationArea.isResizingRight = true;
-                } else {
-                    configurationArea.isResizingLeft = false;
-                    configurationArea.isResizingRight = false;
-                }
-            }
-        }
-
-        lastX = mouse.x;
-        lastY = mouse.y;
-        placeHolder.width = currentApplet.width;
-        placeHolder.height = currentApplet.height;
-        placeHolder.dragging = currentApplet;
-        root.layoutManager.insertBefore(currentApplet, placeHolder);
-        currentApplet.parent = moveAppletLayer;
-        currentApplet.z = 900;
-    }
-
-    onReleased: {
-        if (!root.dragOverlay.currentApplet) {
-            return;
-        }
-
-        if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-            currentApplet.applet.configuration.length = handle.height;
+        if (Plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+            startDragOffset = mouse.y - currentApplet.y;
         } else {
-            currentApplet.applet.configuration.length = handle.width;
+            startDragOffset = mouse.x - currentApplet.x;
         }
+    }
 
-        configurationArea.isResizingLeft = false;
-        configurationArea.isResizingRight = false;
+    onReleased: mouse => finishDragOperation()
 
-        root.layoutManager.insertBefore(placeHolder, currentApplet);
-        placeHolder.parent = configurationArea;
-        currentApplet.z = 1;
+    onCanceled: finishDragOperation()
 
-        handle.x = currentApplet.x;
-        handle.y = currentApplet.y;
-        handle.width = currentApplet.width;
-        handle.height = currentApplet.height;
-        root.layoutManager.save();
+    function finishDragOperation() {
+        root.dragAndDropping = false
+        if (!currentApplet) {
+            return;
+        }
+        appletsModel.set(placeHolder.parent.index, {applet: currentApplet.applet})
+        let newCurrentApplet = currentApplet.applet.parent
+        newCurrentApplet.animateFrom(currentApplet.x, currentApplet.y)
+        newCurrentApplet.dragging = null
+        placeHolder.parent = this
+        currentApplet.destroy()
+        root.layoutManager.save()
     }
 
     Item {
         id: placeHolder
         property Item dragging
+        property bool busy: false
         visible: configurationArea.containsMouse
-        Layout.fillWidth: currentApplet ? currentApplet.Layout.fillWidth : false
-        Layout.fillHeight: currentApplet ? currentApplet.Layout.fillHeight : false
+        Layout.preferredWidth: configurationArea.currentApplet?.Layout.preferredWidth ?? 0
+        Layout.preferredHeight: configurationArea.currentApplet?.Layout.preferredHeight ?? 0
+        Layout.maximumWidth: configurationArea.currentApplet?.Layout.maximumWidth ?? 0
+        Layout.maximumHeight: configurationArea.currentApplet?.Layout.maximumHeight ?? 0
+        Layout.minimumWidth: configurationArea.currentApplet?.Layout.minimumWidth ?? 0
+        Layout.minimumHeight: configurationArea.currentApplet?.Layout.minimumHeight ?? 0
+        Layout.fillWidth: configurationArea.currentApplet?.Layout.fillWidth ?? false
+        Layout.fillHeight: configurationArea.currentApplet?.Layout.fillHeight ?? false
     }
 
     Timer {
         id: hideTimer
-        interval: PlasmaCore.Units.longDuration
-        onTriggered: tooltip.visible = false;
-    }
-
-    Connections {
-        target: currentApplet
-        function onXChanged() {handle.x = currentApplet.x}
-        function onYChanged() {handle.y = currentApplet.y}
-        function onWidthChanged() {handle.width = currentApplet.width}
-        function onHeightChanged() {handle.height = currentApplet.height}
+        interval: Kirigami.Units.longDuration * 5
+        onTriggered: configurationArea.currentApplet = null
     }
 
     Rectangle {
         id: handle
-        visible: configurationArea.containsMouse
-        color: theme.backgroundColor
+
+        x: configurationArea.currentApplet?.x ?? 0
+        y: configurationArea.currentApplet?.y ?? 0
+        width: configurationArea.currentApplet?.width ?? 0
+        height: configurationArea.currentApplet?.height ?? 0
+
+        color: Kirigami.Theme.backgroundColor
         radius: 3
-        opacity: currentApplet ? 0.5 : 0
-        PlasmaCore.IconItem {
+        opacity: configurationArea.currentApplet && configurationArea.containsMouse ? 0.5 : 0
+
+        Kirigami.Icon {
+            visible: !root.dragAndDropping
             source: "transform-move"
             width: Math.min(parent.width, parent.height)
             height: width
             anchors.centerIn: parent
         }
-        Rectangle {
-            anchors {
-                left: parent.left
-                top: parent.top
-                bottom: (plasmoid.formFactor !== PlasmaCore.Types.Vertical) ? parent.bottom : undefined
-                right: (plasmoid.formFactor !== PlasmaCore.Types.Vertical) ? undefined : parent.right
-            }
-            visible: currentApplet && currentApplet.applet.pluginName === "org.kde.plasma.panelspacer"
-            opacity: visible && !xAnim.running && !yAnim.running ? 1.0 : 0
-            width: configurationArea.spacerHandleSize
-            height: configurationArea.spacerHandleSize
-            color: theme.textColor
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: PlasmaCore.Units.longDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
-        Rectangle {
-            anchors {
-                right: parent.right
-                top: (plasmoid.formFactor !== PlasmaCore.Types.Vertical) ? parent.top : undefined
-                bottom: parent.bottom
-                left: (plasmoid.formFactor !== PlasmaCore.Types.Vertical) ? undefined : parent.left
-            }
-            visible: currentApplet && currentApplet.applet.pluginName === "org.kde.plasma.panelspacer"
-            opacity: visible && !xAnim.running && !yAnim.running ? 1.0 : 0
-            width: configurationArea.spacerHandleSize
-            height: configurationArea.spacerHandleSize
-            color: theme.textColor
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: PlasmaCore.Units.longDuration
-                    easing.type: Easing.InOutQuad
-                }
-            }
-        }
         Behavior on x {
             enabled: !configurationArea.pressed
             NumberAnimation {
-                id: xAnim
-                duration: PlasmaCore.Units.longDuration
+                duration: Kirigami.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
         Behavior on y {
-            id: yAnim
             enabled: !configurationArea.pressed
             NumberAnimation {
-                duration: PlasmaCore.Units.longDuration
+                duration: Kirigami.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
         Behavior on width {
             enabled: !configurationArea.pressed
             NumberAnimation {
-                duration: PlasmaCore.Units.longDuration
+                duration: Kirigami.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
         Behavior on height {
             enabled: !configurationArea.pressed
             NumberAnimation {
-                duration: PlasmaCore.Units.longDuration
+                duration: Kirigami.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
         Behavior on opacity {
             NumberAnimation {
-                duration: PlasmaCore.Units.longDuration
+                duration: Kirigami.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
     }
-    PlasmaCore.Dialog {
+    PlasmaCore.PopupPlasmaWindow {
         id: tooltip
-        visualParent: currentApplet
+        visible: configurationArea.currentApplet && !root.dragAndDropping
+        visualParent: configurationArea.currentApplet
+        // Try to dodge the ruler, as we can't cover it since it's a layershell surface
+        margin: configurationArea.Window.window?.lengthMode === 2 ? Kirigami.Units.gridUnit * 2 : 0
+        width: mainItem.implicitWidth + leftPadding + rightPadding
+        height: mainItem.implicitHeight + topPadding + bottomPadding
 
-        type: PlasmaCore.Dialog.Dock
-        flags: Qt.WindowStaysOnTopHint|Qt.WindowDoesNotAcceptFocus|Qt.BypassWindowManagerHint
-        location: plasmoid.location
+        popupDirection: switch (Plasmoid.location) {
+            case PlasmaCore.Types.TopEdge:
+                return Qt.BottomEdge
+            case PlasmaCore.Types.LeftEdge:
+                return Qt.RightEdge
+            case PlasmaCore.Types.RightEdge:
+                return Qt.LeftEdge
+            default:
+                return Qt.TopEdge
+        }
 
         onVisualParentChanged: {
             if (visualParent) {
-                currentApplet.applet.prepareContextualActions();
-                alternativesButton.visible = currentApplet.applet.action("alternatives") && currentApplet.applet.action("alternatives").enabled;
-                configureButton.visible = currentApplet.applet.action("configure") && currentApplet.applet.action("configure").enabled;
-                label.text = currentApplet.applet.title;
+                const thisPlasmoid = configurationArea.currentApplet.applet.plasmoid;
+                thisPlasmoid.contextualActionsAboutToShow();
+                alternativesButton.visible = thisPlasmoid.internalAction("alternatives")?.enabled ?? false;
+                configureButton.visible = thisPlasmoid.internalAction("configure")?.enabled ?? false;
+                label.text = thisPlasmoid.title;
             }
         }
 
         mainItem: MouseArea {
-            enabled: currentApplet
-            width: handleButtons.width
-            height: handleButtons.height
+            enabled: tooltip.visible
+            implicitWidth: handleButtons.width
+            implicitHeight: handleButtons.height
             hoverEnabled: true
             onEntered: hideTimer.stop();
             onExited:  hideTimer.restart();
 
             ColumnLayout {
                 id: handleButtons
-                spacing: PlasmaCore.Units.smallSpacing
+                spacing: Kirigami.Units.smallSpacing
 
                 PlasmaExtras.PlasmoidHeading {
-                    leftPadding: PlasmaCore.Units.smallSpacing * 2
-                    rightPadding: PlasmaCore.Units.smallSpacing * 2
+                    leftPadding: Kirigami.Units.smallSpacing * 2
+                    rightPadding: Kirigami.Units.smallSpacing * 2
 
-                    contentItem: PlasmaExtras.Heading {
+                    contentItem: Kirigami.Heading {
                         id: label
                         level: 3
                         horizontalAlignment: Text.AlignHCenter
                     }
                 }
 
-                PlasmaComponents.ToolButton {
+                PlasmaComponents3.ToolButton {
                     Layout.fillWidth: true
                     // we want destructive actions to be far from the initial
                     // cursor position, so show this on the top unless it's on
                     // a top panel
                     visible: tooltip.location !== PlasmaCore.Types.TopEdge
-                             && currentApplet.applet.action("remove")
-                             && currentApplet.applet.action("remove").enabled
-                    iconSource: "delete"
-                    text: i18n("Remove")
+                             && (configurationArea.currentApplet?.applet.plasmoid.internalAction("remove")?.enabled ?? false)
+                    icon.name: "delete"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Remove")
                     onClicked: {
-                        tooltip.visible = false;
-                        currentApplet.applet.action("remove").trigger();
+                        configurationArea.currentApplet.applet.plasmoid.internalAction("remove").trigger();
+                        configurationArea.currentApplet = null;
                     }
                 }
-                PlasmaComponents.ToolButton {
+                PlasmaComponents3.ToolButton {
                     id: configureButton
                     Layout.fillWidth: true
-                    iconSource: "configure"
-                    text: i18n("Configure...")
+                    icon.name: "configure"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Configure…")
+                    visible: configurationArea.currentApplet.applet.plasmoid.hasConfigurationInterface
                     onClicked: {
-                        tooltip.visible = false;
-                        currentApplet.applet.action("configure").trigger()
+                        configurationArea.currentApplet.applet.plasmoid.internalAction("configure").trigger();
+                        configurationArea.currentApplet = null;
                     }
                 }
-                PlasmaComponents.ToolButton {
+                PlasmaComponents3.ToolButton {
                     id: alternativesButton
                     Layout.fillWidth: true
-                    iconSource: "widget-alternatives"
-                    text: i18n("Show Alternatives...")
+                    icon.name: "widget-alternatives"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Show Alternatives…")
                     onClicked: {
-                        tooltip.visible = false;
-                        currentApplet.applet.action("alternatives").trigger()
+                        configurationArea.currentApplet.applet.plasmoid.internalAction("alternatives").trigger();
+                        configurationArea.currentApplet = null;
                     }
                 }
-                PlasmaComponents.ToolButton {
+                PlasmaComponents3.ToolButton {
                     Layout.fillWidth: true
                     // we want destructive actions to be far from the initial
                     // cursor position, so show this on the bottom for top panels
                     visible: tooltip.location === PlasmaCore.Types.TopEdge
-                             && currentApplet.applet.action("remove")
-                             && currentApplet.applet.action("remove").enabled
-                    iconSource: "delete"
-                    text: i18n("Remove")
+                             && (configurationArea.currentApplet?.applet.plasmoid.internalAction("remove")?.enabled ?? false)
+                    icon.name: "delete"
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Remove")
                     onClicked: {
-                        tooltip.visible = false;
-                        currentApplet.applet.action("remove").trigger();
+                        configurationArea.currentApplet.applet.plasmoid.internalAction("remove").trigger();
+                        configurationArea.currentApplet = null;
+                    }
+                }
+
+                Kirigami.Heading {
+                    Layout.fillWidth: true
+                    visible: panelSpacerWidth.visible
+                    text: i18nd("plasma_shell_org.kde.plasma.desktop", "Spacer width")
+                    level: 3
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
+                PlasmaComponents3.SpinBox {
+                    id: panelSpacerWidth
+                    editable: true
+                    Layout.fillWidth: true
+                    focus: !Kirigami.InputMethod.willShowOnActive
+                    visible: configurationArea.currentApplet?.applet.plasmoid.pluginName === "org.kde.plasma.panelspacer"
+                        && !configurationArea.currentApplet.applet.plasmoid.configuration.expanding
+                    from: 0
+                    stepSize: 10
+                    to: root.width
+                    value: configurationArea.currentApplet?.applet.plasmoid.configuration.length ?? 0
+                    onValueModified: {
+                        configurationArea.currentApplet.applet.plasmoid.configuration.length = value
                     }
                 }
             }

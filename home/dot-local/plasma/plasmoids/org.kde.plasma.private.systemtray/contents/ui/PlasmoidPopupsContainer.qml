@@ -1,36 +1,23 @@
 /*
- *   Copyright 2015 Marco Martin <mart@kde.org>
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+    SPDX-FileCopyrightText: 2015 Marco Martin <mart@kde.org>
 
-import QtQuick 2.4
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 1.4
-//needed for units
-import org.kde.plasma.core 2.0 as PlasmaCore
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
+
+import QtQuick 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Controls 2.15
 import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.plasmoid 2.0
 
 StackView {
     id: mainStack
     focus: true
 
-    Layout.minimumWidth: units.gridUnit * 12
-    Layout.minimumHeight: units.gridUnit * 12
+    Layout.minimumWidth: Kirigami.Units.gridUnit * 12
+    Layout.minimumHeight: Kirigami.Units.gridUnit * 12
 
     readonly property Item activeApplet: systemTrayState.activeApplet
 
@@ -46,7 +33,8 @@ StackView {
     onActiveAppletChanged: {
         mainStack.appletHasHeading = false
         mainStack.appletHasFooter = false
-        if (activeApplet != null) {
+
+        if (activeApplet != null && activeApplet.fullRepresentationItem && !activeApplet.preferredRepresentation) {
             //reset any potential anchor
             activeApplet.fullRepresentationItem.anchors.left = undefined;
             activeApplet.fullRepresentationItem.anchors.top = undefined;
@@ -55,7 +43,8 @@ StackView {
             activeApplet.fullRepresentationItem.anchors.centerIn = undefined;
             activeApplet.fullRepresentationItem.anchors.fill = undefined;
 
-            if (activeApplet.fullRepresentationItem instanceof PlasmaComponents3.Page) {
+            if (activeApplet.fullRepresentationItem instanceof PlasmaComponents3.Page ||
+                activeApplet.fullRepresentationItem instanceof PlasmaExtras.Representation) {
                 if (activeApplet.fullRepresentationItem.header && activeApplet.fullRepresentationItem.header instanceof PlasmaExtras.PlasmoidHeading) {
                     mainStack.appletHasHeading = true
                     activeApplet.fullRepresentationItem.header.background.visible = false
@@ -66,60 +55,37 @@ StackView {
                 }
             }
 
-            mainStack.replace({item: activeApplet.fullRepresentationItem, immediate: !systemTrayState.expanded, properties: {focus: true}});
-        } else {
-            mainStack.replace(emptyPage);
-        }
-    }
-    Connections {
-        target: plasmoid
-        function onAppletRemoved(applet) {
-            if (applet === systemTrayState.activeApplet) {
-                mainStack.clear()
+            let unFlipped = systemTrayState.oldVisualIndex < systemTrayState.newVisualIndex;
+            if (Qt.application.layoutDirection !== Qt.LeftToRight) {
+                unFlipped = !unFlipped;
             }
+
+            const isTransitionEnabled = systemTrayState.expanded;
+            (mainStack.empty ? mainStack.push : mainStack.replace)(activeApplet.fullRepresentationItem, {
+                "width": Qt.binding(() => mainStack.width),
+                "height": Qt.binding(() => mainStack.height),
+                "x": 0,
+                "focus": Qt.binding(() => !mainStack.busy), // QTBUG-44043: retrigger binding after StackView is ready to restore focus
+                "opacity": 1,
+                "KeyNavigation.up": mainStack.KeyNavigation.up,
+                "KeyNavigation.backtab": mainStack.KeyNavigation.backtab,
+            }, isTransitionEnabled ? (unFlipped ? StackView.PushTransition : StackView.PopTransition) : StackView.Immediate);
+        } else {
+            mainStack.clear();
         }
-    }
-    //used to animate away to nothing
-    Item {
-        id: emptyPage
     }
 
-    delegate: StackViewDelegate {
-        function transitionFinished(properties) {
-            properties.exitItem.opacity = 1
+    onCurrentItemChanged: {
+        if (currentItem !== null && root.expanded) {
+            currentItem.forceActiveFocus();
         }
-        replaceTransition: StackViewTransition {
-            ParallelAnimation {
-                PropertyAnimation {
-                    target: enterItem
-                    property: "x"
-                    from: enterItem.width
-                    to: 0
-                    duration: units.longDuration
-                }
-                PropertyAnimation {
-                    target: enterItem
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: units.longDuration
-                }
-            }
-            ParallelAnimation {
-                PropertyAnimation {
-                    target: exitItem
-                    property: "x"
-                    from: 0
-                    to: -exitItem.width
-                    duration: units.longDuration
-                }
-                PropertyAnimation {
-                    target: exitItem
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: units.longDuration
-                }
+    }
+
+    Connections {
+        target: Plasmoid
+        function onAppletRemoved(applet) {
+            if (applet === systemTrayState.activeApplet) {
+                mainStack.clear();
             }
         }
     }

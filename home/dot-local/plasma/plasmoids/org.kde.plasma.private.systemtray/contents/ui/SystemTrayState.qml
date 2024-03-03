@@ -1,24 +1,11 @@
 /*
- *   Copyright 2020 Konrad Materka <materka@gmail.com>
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+    SPDX-FileCopyrightText: 2020 Konrad Materka <materka@gmail.com>
+
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
 
 import QtQuick 2.12
-import org.kde.plasma.core 2.1 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 
 //This object contains state of the SystemTray, mainly related to the 'expanded' state
@@ -34,20 +21,43 @@ QtObject {
     //this is to suppress expanded state change during Plasma startup
     property bool acceptExpandedChange: false
 
-    function setActiveApplet(applet) {
+    // These properties allow us to keep track of where the expanded applet
+    // was and is on the panel, allowing PlasmoidPopupContainer.qml to animate
+    // depending on their locations.
+    property int oldVisualIndex: -1
+    property int newVisualIndex: -1
+
+    function setActiveApplet(applet, visualIndex) {
+        if (visualIndex === undefined) {
+            oldVisualIndex = -1
+            newVisualIndex = -1
+        } else {
+            oldVisualIndex = (activeApplet && activeApplet.status === PlasmaCore.Types.PassiveStatus) ? 9999 : newVisualIndex
+            newVisualIndex = visualIndex
+        }
+
         const oldApplet = activeApplet
-        activeApplet = applet
+        if (applet && !applet.preferredRepresentation) {
+            applet.expanded = true;
+        }
+        if (!applet || !applet.preferredRepresentation) {
+            activeApplet = applet;
+        }
+
         if (oldApplet && oldApplet !== applet) {
             oldApplet.expanded = false
         }
-        expanded = true
+
+        if (applet && !applet.preferredRepresentation) {
+            expanded = true
+        }
     }
 
     onExpandedChanged: {
         if (expanded) {
-            plasmoid.status = PlasmaCore.Types.RequiresAttentionStatus
+            Plasmoid.status = PlasmaCore.Types.RequiresAttentionStatus
         } else {
-            plasmoid.status = PlasmaCore.Types.PassiveStatus;
+            Plasmoid.status = PlasmaCore.Types.PassiveStatus;
             if (activeApplet) {
                 // if not expanded we don't have an active applet anymore
                 activeApplet.expanded = false
@@ -55,36 +65,33 @@ QtObject {
             }
         }
         acceptExpandedChange = false
-        plasmoid.expanded = expanded
+        root.expanded = expanded
     }
 
     //listen on SystemTray AppletInterface signals
     property Connections plasmoidConnections: Connections {
-        target: plasmoid
+        target: Plasmoid
         //emitted when activation is requested, for example by using a global keyboard shortcut
         function onActivated() {
             acceptExpandedChange = true
         }
-        //emitted when the configuration dialog is opened
-        function onUserConfiguringChanged() {
-            if (plasmoid.userConfiguring) {
-                systemTrayState.expanded = false
-            }
-        }
+    }
+
+    property Connections rootConnections: Connections {
         function onExpandedChanged() {
             if (acceptExpandedChange) {
-                expanded = plasmoid.expanded
+                expanded = root.expanded
             } else {
-                plasmoid.expanded = expanded
+                root.expanded = expanded
             }
         }
     }
 
     property Connections activeAppletConnections: Connections {
-        target: activeApplet
+        target: activeApplet && activeApplet
 
         function onExpandedChanged() {
-            if (!activeApplet.expanded) {
+            if (activeApplet && !activeApplet.expanded) {
                 expanded = false
             }
         }

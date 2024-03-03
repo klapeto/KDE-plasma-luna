@@ -7,13 +7,12 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.5 as QQC2
 
-import org.kde.plasma.components 2.0 as PC2 // for DialogStatus, ModelCOntextMenu, and Highlight
 import org.kde.plasma.components 3.0 as PC3
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.kwindowsystem 1.0
-import org.kde.kirigami 2.19 as Kirigami
+import org.kde.kirigami 2.20 as Kirigami
 
 import QtQuick.Window 2.1
 import QtQuick.Layouts 1.1
@@ -23,7 +22,7 @@ import org.kde.plasma.private.shell 2.0
 PC3.Page {
     id: main
 
-    width: Math.max(heading.paintedWidth, PlasmaCore.Units.iconSizes.enormous * 3 + PlasmaCore.Units.smallSpacing * 4 + PlasmaCore.Units.gridUnit * 2)
+    width: Math.max(heading.paintedWidth, Kirigami.Units.iconSizes.enormous * 3 + Kirigami.Units.smallSpacing * 4 + Kirigami.Units.gridUnit * 2)
     height: 800//Screen.height
 
     opacity: draggingWidget ? 0.3 : 1
@@ -36,8 +35,8 @@ PC3.Page {
     //therefore get deleted whilst we are still in a drag exec()
     //this is a clue to the owning dialog that hideOnWindowDeactivate should be deleted
     //See https://bugs.kde.org/show_bug.cgi?id=332733
-    property bool preventWindowHide: draggingWidget || categoriesDialog.status !== PC2.DialogStatus.Closed
-                                  || getWidgetsDialog.status !== PC2.DialogStatus.Closed
+    property bool preventWindowHide: draggingWidget || categoriesDialog.status !== PlasmaExtras.Menu.Closed
+                                  || getWidgetsDialog.status !== PlasmaExtras.Menu.Closed
 
     property bool outputOnly: draggingWidget
 
@@ -49,7 +48,7 @@ PC3.Page {
 
     onVisibleChanged: {
         if (!visible) {
-            kwindowsystem.showingDesktop = false
+            KWindowSystem.showingDesktop = false
         }
     }
 
@@ -77,10 +76,6 @@ PC3.Page {
         if (pluginName) {
             widgetExplorer.addApplet(pluginName)
         }
-    }
-
-    KWindowSystem {
-        id: kwindowsystem
     }
 
     QQC2.Action {
@@ -112,7 +107,7 @@ PC3.Page {
         }
     }
 
-    PC2.ModelContextMenu {
+    PlasmaExtras.ModelContextMenu {
         id: categoriesDialog
         visualParent: categoryButton
         // model set on first invocation
@@ -126,63 +121,24 @@ PC3.Page {
         }
     }
 
-    PC2.ModelContextMenu {
+    PlasmaExtras.ModelContextMenu {
         id: getWidgetsDialog
         visualParent: getWidgetsButton
-        placement: PlasmaCore.Types.TopPosedLeftAlignedPopup
+        placement: PlasmaExtras.Menu.TopPosedLeftAlignedPopup
         // model set on first invocation
         onClicked: model.trigger()
     }
-    /*
-    PlasmaCore.Dialog {
-        id: tooltipDialog
-        property Item appletDelegate
-        location: PlasmaCore.Types.RightEdge //actually we want this to be the opposite location of the explorer itself
-
-        type: PlasmaCore.Dialog.Tooltip
-        flags:Qt.Window|Qt.WindowStaysOnTopHint|Qt.X11BypassWindowManagerHint
-
-        onAppletDelegateChanged: {
-            if (!appletDelegate) {
-                toolTipHideTimer.restart()
-                toolTipShowTimer.running = false
-            } else if (tooltipDialog.visible) {
-                tooltipDialog.visualParent = appletDelegate
-            } else {
-                tooltipDialog.visualParent = appletDelegate
-                toolTipShowTimer.restart()
-                toolTipHideTimer.running = false
-            }
-        }
-        mainItem: Tooltip { id: tooltipWidget }
-
-        Behavior on y {
-            NumberAnimation { duration: PlasmaCore.Units.longDuration }
-        }
-    }
-    Timer {
-        id: toolTipShowTimer
-        interval: 500
-        repeat: false
-        onTriggered: {
-            tooltipDialog.visible = true
-        }
-    }
-    Timer {
-        id: toolTipHideTimer
-        interval: 1000
-        repeat: false
-        onTriggered: tooltipDialog.visible = false
-    }
-    */
 
     header: PlasmaExtras.PlasmoidHeading {
         ColumnLayout {
             id: header
             anchors.fill: parent
 
+            spacing: Kirigami.Units.smallSpacing
+
             RowLayout {
-                PlasmaExtras.Heading {
+                spacing: Kirigami.Units.smallSpacing
+                Kirigami.Heading {
                     id: heading
                     level: 1
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "Widgets")
@@ -194,6 +150,10 @@ PC3.Page {
                     id: getWidgetsButton
                     icon.name: "get-hot-new-stuff"
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "Get New Widgets…")
+
+                    KeyNavigation.right: closeButton
+                    KeyNavigation.down: searchInput
+
                     onClicked: {
                         getWidgetsDialog.model = widgetExplorer.widgetsMenuActions
                         getWidgetsDialog.openRelative()
@@ -202,18 +162,22 @@ PC3.Page {
                 PC3.ToolButton {
                     id: closeButton
                     icon.name: "window-close"
+
+                    KeyNavigation.down: categoryButton
+
                     onClicked: main.closed()
                 }
             }
 
             RowLayout {
-                PC3.TextField {
+                spacing: Kirigami.Units.smallSpacing
+
+                PlasmaExtras.SearchField {
                     id: searchInput
                     Layout.fillWidth: true
-                    clearButtonShown: true
-                    placeholderText: i18nd("plasma_shell_org.kde.plasma.desktop", "Search…")
 
-                    inputMethodHints: Qt.ImhNoPredictiveText
+                    KeyNavigation.down: list
+                    KeyNavigation.right: categoryButton
 
                     onTextChanged: {
                         list.positionViewAtBeginning()
@@ -221,12 +185,15 @@ PC3.Page {
                         widgetExplorer.widgetsModel.searchTerm = text
                     }
 
-                    Component.onCompleted: if (Kirigami.InputMethod && !Kirigami.InputMethod.willShowOnActive) { forceActiveFocus() }
+                    Component.onCompleted: if (!Kirigami.InputMethod.willShowOnActive) { forceActiveFocus() }
                 }
                 PC3.ToolButton {
                     id: categoryButton
                     text: i18nd("plasma_shell_org.kde.plasma.desktop", "All Widgets")
                     icon.name: "view-filter"
+
+                    KeyNavigation.down: list
+
                     onClicked: {
                         categoriesDialog.model = widgetExplorer.filterModel
                         categoriesDialog.open(0, categoryButton.height)
@@ -251,14 +218,11 @@ PC3.Page {
         anchors.fill: parent
         anchors.rightMargin: - main.sidePanel.margins.right
 
-        // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-83890
-        PC3.ScrollBar.horizontal.policy: PC3.ScrollBar.AlwaysOff
-
         // hide the flickering by fading in nicely
         opacity: setModelTimer.running ? 0 : 1
         Behavior on opacity {
             OpacityAnimator {
-                duration: PlasmaCore.Units.longDuration
+                duration: Kirigami.Units.longDuration
                 easing.type: Easing.InOutQuad
             }
         }
@@ -269,12 +233,13 @@ PC3.Page {
             // model set delayed by Timer above
 
             activeFocusOnTab: true
-            keyNavigationWraps: true
             cellWidth: Math.floor(width / 3)
-            cellHeight: cellWidth + PlasmaCore.Units.gridUnit * 4 + PlasmaCore.Units.smallSpacing * 2
+            cellHeight: cellWidth + Kirigami.Units.gridUnit * 4 + Kirigami.Units.smallSpacing * 2
 
             delegate: AppletDelegate {}
-            highlight: PC2.Highlight {}
+            highlight: PlasmaExtras.Highlight {
+                pressed: list.currentItem && list.currentItem.pressed
+            }
             highlightMoveDuration: 0
             //highlightResizeDuration: 0
 
@@ -283,7 +248,7 @@ PC3.Page {
                 NumberAnimation {
                     properties: "x"
                     from: -list.width
-                    duration: PlasmaCore.Units.shortDuration
+                    duration: Kirigami.Units.shortDuration
                 }
             }
 
@@ -292,7 +257,7 @@ PC3.Page {
                 NumberAnimation {
                     properties: "x"
                     to: list.width
-                    duration: PlasmaCore.Units.shortDuration
+                    duration: Kirigami.Units.shortDuration
                 }
             }
 
@@ -305,16 +270,19 @@ PC3.Page {
             displaced: Transition {
                 NumberAnimation {
                     properties: "x,y"
-                    duration: PlasmaCore.Units.shortDuration
+                    duration: Kirigami.Units.shortDuration
                 }
             }
+
+            KeyNavigation.up: searchInput
         }
     }
 
     PlasmaExtras.PlaceholderMessage {
         anchors.centerIn: parent
-        width: parent.width - (PlasmaCore.Units.largeSpacing * 4)
-        text: searchInput.text.length > 0 ? i18n("No widgets matched the search terms") : i18n("No widgets available")
-        visible: list.count == 0
+        width: parent.width - (Kirigami.Units.gridUnit * 4)
+        iconName: "edit-none"
+        text: searchInput.text.length > 0 ? i18nd("plasma_shell_org.kde.plasma.desktop", "No widgets matched the search terms") : i18nd("plasma_shell_org.kde.plasma.desktop", "No widgets available")
+        visible: list.count == 0 && !setModelTimer.running
     }
 }

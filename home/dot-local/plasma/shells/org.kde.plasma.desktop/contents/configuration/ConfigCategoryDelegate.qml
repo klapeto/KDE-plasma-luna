@@ -7,26 +7,25 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.3 as QtControls
+import QtQuick.Controls 2.3 as QQC2
 import QtQuick.Window 2.2
-import org.kde.plasma.core 2.0 as PlasmaCore
 
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.kirigami 2.5 as Kirigami
 
-QtControls.ItemDelegate {
+QQC2.ItemDelegate {
     id: delegate
 
     signal activated()
 
 //BEGIN properties
     Layout.fillWidth: true
-    Layout.maximumWidth: Kirigami.Units.gridUnit * 7
     hoverEnabled: true
 
     Accessible.role: Accessible.MenuItem
     Accessible.name: model.name
-    Accessible.description: i18n("Open configuration page")
+    Accessible.description: i18nd("plasma_shell_org.kde.plasma.desktop", "Open configuration page")
+    Accessible.onPressAction: delegate.clicked()
 
     property var item
 //END properties
@@ -44,26 +43,27 @@ QtControls.ItemDelegate {
 //BEGIN UI components
     contentItem: ColumnLayout {
         id: delegateContents
-        spacing: PlasmaCore.Units.smallSpacing
+        spacing: Kirigami.Units.smallSpacing
 
-        QIconItem {
-            id: iconItem
+        Kirigami.Icon {
             Layout.alignment: Qt.AlignHCenter
-            width: PlasmaCore.Units.iconSizes.medium
-            height: width
-            icon: model.icon
-            state: highlighted && Window.active ? QIconItem.SelectedState : QIconItem.DefaultState
+            implicitWidth: Kirigami.Units.iconSizes.medium
+            implicitHeight: Kirigami.Units.iconSizes.medium
+            source: model.icon
+            selected: Window.active && (delegate.highlighted || delegate.pressed)
         }
 
-        QtControls.Label {
+        QQC2.Label {
             id: nameLabel
             Layout.fillWidth: true
-            Layout.leftMargin: PlasmaCore.Units.smallSpacing
-            Layout.rightMargin: PlasmaCore.Units.smallSpacing
+            Layout.leftMargin: Kirigami.Units.smallSpacing
+            Layout.rightMargin: Kirigami.Units.smallSpacing
             text: model.name
             wrapMode: Text.Wrap
             horizontalAlignment: Text.AlignHCenter
-            color: highlighted && Window.active ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
+            color: Window.active && (delegate.highlighted || delegate.pressed) ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
+            font.bold: delegate.highlighted && delegate.parent.activeFocus
+            Accessible.ignored: true
         }
     }
 //END UI components

@@ -9,14 +9,13 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 import org.kde.kirigami 2.19 as Kirigami
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.plasmoid 2.0
+import org.kde.kcmutils as KCM
 
 import org.kde.plasma.private.taskmanager 0.1 as TaskManagerApplet
 
-Item {
-    width: childrenRect.width
-    height: childrenRect.height
-
+KCM.SimpleKCM {
     property alias cfg_groupingStrategy: groupingStrategy.currentIndex
     property alias cfg_groupedTaskVisualization: groupedTaskVisualization.currentIndex
     property alias cfg_groupPopups: groupPopups.checked
@@ -60,24 +59,10 @@ Item {
 
             model: [
                 i18nc("Completes the sentence 'Clicking grouped task cycles through tasks' ", "Cycles through tasks"),
-                i18nc("Completes the sentence 'Clicking grouped task shows tooltip window thumbnails' ", "Shows tooltip window thumbnails"),
-                i18nc("Completes the sentence 'Clicking grouped task shows windows side by side' ", "Shows windows side by side"),
+                i18nc("Completes the sentence 'Clicking grouped task shows tooltip window thumbnails' ", "Shows small window previews"),
+                i18nc("Completes the sentence 'Clicking grouped task shows windows side by side' ", "Shows large window previews"),
                 i18nc("Completes the sentence 'Clicking grouped task shows textual list' ", "Shows textual list"),
             ]
-        }
-        // "You asked for Tooltips but Tooltips are disabled" message
-        Kirigami.InlineMessage {
-            Layout.fillWidth: true
-            visible: groupedTaskVisualization.currentIndex === 1 && !plasmoid.configuration.showToolTips && backend.windowViewAvailable
-            type: Kirigami.MessageType.Warning
-            text: i18n("Tooltips are disabled, so the windows will be displayed side by side instead.")
-        }
-        // "You asked for Tooltips but Tooltips are disabled and Window View is not available" message
-        Kirigami.InlineMessage {
-            Layout.fillWidth: true
-            visible: groupedTaskVisualization.currentIndex === 1 && !plasmoid.configuration.showToolTips && !backend.windowViewAvailable
-            type: Kirigami.MessageType.Warning
-            text: i18n("Tooltips are disabled, and the compositor does not support displaying windows side by side, so a textual list will be displayed instead")
         }
         // "You asked for Window View but Window View is not available" message
         Kirigami.InlineMessage {
@@ -93,21 +78,21 @@ Item {
 
         CheckBox {
             id: groupPopups
-            visible: (plasmoid.pluginName !== "org.kde.plasma.icontasks")
+            visible: (Plasmoid.pluginName !== "org.kde.plasma.icontasks")
             text: i18n("Combine into single button")
             enabled: groupingStrategy.currentIndex > 0
         }
 
         CheckBox {
             id: onlyGroupWhenFull
-            visible: (plasmoid.pluginName !== "org.kde.plasma.icontasks")
+            visible: (Plasmoid.pluginName !== "org.kde.plasma.icontasks")
             text: i18n("Group only when the Task Manager is full")
             enabled: groupingStrategy.currentIndex > 0 && groupPopups.checked
         }
 
         Item {
             Kirigami.FormData.isSection: true
-            visible: (plasmoid.pluginName !== "org.kde.plasma.icontasks")
+            visible: (Plasmoid.pluginName !== "org.kde.plasma.icontasks")
         }
 
         ComboBox {
@@ -120,14 +105,14 @@ Item {
 
         CheckBox {
             id: separateLaunchers
-            visible: (plasmoid.pluginName !== "org.kde.plasma.icontasks")
+            visible: (Plasmoid.pluginName !== "org.kde.plasma.icontasks")
             text: i18n("Keep launchers separate")
             enabled: sortingStrategy.currentIndex == 1
         }
 
         Item {
             Kirigami.FormData.isSection: true
-            visible: (plasmoid.pluginName !== "org.kde.plasma.icontasks")
+            visible: (Plasmoid.pluginName !== "org.kde.plasma.icontasks")
         }
 
         CheckBox {
@@ -218,17 +203,36 @@ Item {
         RadioButton {
             Kirigami.FormData.label: i18n("New tasks appear:")
             checked: !reverseMode.checked
-            text: Qt.application.layoutDirection === Qt.LeftToRight ? i18n("To the right") : i18n("To the left")
+            text: {
+                if (Plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    return i18n("On the bottom")
+                }
+                // horizontal
+                if (Qt.application.layoutDirection === Qt.LeftToRight) {
+                    return i18n("To the right");
+                } else {
+                    return i18n("To the left")
+                }
+            }
             ButtonGroup.group: reverseModeRadioButtonGroup
             visible: reverseMode.visible
         }
 
         RadioButton {
             id: reverseMode
-            checked: plasmoid.configuration.reverseMode === true
-            text: Qt.application.layoutDirection === Qt.RightToLeft ? i18n("To the right") : i18n("To the left")
+            checked: Plasmoid.configuration.reverseMode === true
+            text: {
+                if (Plasmoid.formFactor === PlasmaCore.Types.Vertical) {
+                    return i18n("On the Top")
+                }
+                // horizontal
+                if (Qt.application.layoutDirection === Qt.LeftToRight) {
+                    return i18n("To the left");
+                } else {
+                    return i18n("To the right");
+                }
+            }
             ButtonGroup.group: reverseModeRadioButtonGroup
-            visible: plasmoid.formFactor === PlasmaCore.Types.Horizontal
         }
 
     }

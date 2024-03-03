@@ -1,111 +1,111 @@
-/***************************************************************************
- *   Copyright 2013 Sebastian Kügler <sebas@kde.org>                       *
- *   Copyright 2015 Marco Martin <mart@kde.org>                            *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License as       *
- *   published by the Free Software Foundation; either version 2 of the    *
- *   License, or (at your option) any later version.                       *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this program; if not, write to the                 *
- *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
- ***************************************************************************/
+/*
+    SPDX-FileCopyrightText: 2013 Sebastian Kügler <sebas@kde.org>
+    SPDX-FileCopyrightText: 2015 Marco Martin <mart@kde.org>
 
-import QtQuick 2.0
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
+
+import QtQuick 2.15
 import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core as PlasmaCore
+import org.kde.kirigami 2.20 as Kirigami
 
 PlasmaCore.ToolTipArea {
     id: tooltip
 
-    property bool vertical: plasmoid.formFactor === PlasmaCore.Types.Vertical
-    implicitWidth: Math.round(22 * PlasmaCore.Units.devicePixelRatio)
-    implicitHeight: implicitWidth
+    readonly property int arrowAnimationDuration: Kirigami.Units.shortDuration
+    property bool vertical: Plasmoid.formFactor === PlasmaCore.Types.Vertical
+    property int iconSize: Kirigami.Units.iconSizes.smallMedium
+    implicitWidth: iconSize
+    implicitHeight: iconSize
+    activeFocusOnTab: true
+
+    Accessible.name: subText
+    Accessible.description: i18n("Show all the items in the system tray in a popup")
+    Accessible.role: Accessible.Button
+    Accessible.onPressAction: systemTrayState.expanded = !systemTrayState.expanded
+
+    Keys.onPressed: event => {
+        switch (event.key) {
+        case Qt.Key_Space:
+        case Qt.Key_Enter:
+        case Qt.Key_Return:
+        case Qt.Key_Select:
+            systemTrayState.expanded = !systemTrayState.expanded;
+        }
+    }
 
     subText: systemTrayState.expanded ? i18n("Close popup") : i18n("Show hidden icons")
 
-    MouseArea {
-        id: arrowMouseArea
+    property bool wasExpanded
+
+    TapHandler {
+        onPressedChanged: {
+            if (pressed) {
+                tooltip.wasExpanded = systemTrayState.expanded;
+            }
+        }
+        onTapped: {
+            systemTrayState.expanded = !tooltip.wasExpanded;
+            expandedRepresentation.hiddenLayout.currentIndex = -1;
+        }
+    }
+
+    Kirigami.Icon {
         anchors.fill: parent
-        onClicked: systemTrayState.expanded = !systemTrayState.expanded
 
-        readonly property int arrowAnimationDuration: units.shortDuration
-
-        PlasmaCore.Svg {
-            id: arrowSvg
-            imagePath: "widgets/arrows"
+        rotation: systemTrayState.expanded ? 180 : 0
+        Behavior on rotation {
+            RotationAnimation {
+                duration: tooltip.arrowAnimationDuration
+            }
         }
-
-        PlasmaCore.SvgItem {
-            id: arrow
-
-            anchors.centerIn: parent
-            width: Math.min(parent.width, parent.height)
-            height: width
-
-            rotation: systemTrayState.expanded ? 180 : 0
-            Behavior on rotation {
-                RotationAnimation {
-                    duration: arrowMouseArea.arrowAnimationDuration
-                }
-            }
-            opacity: systemTrayState.expanded ? 0 : 1
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: arrowMouseArea.arrowAnimationDuration
-                }
-            }
-
-            svg: arrowSvg
-            elementId: {
-                if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    return "down-arrow";
-                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    return "right-arrow";
-                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    return "left-arrow";
-                } else {
-                    return "up-arrow";
-                }
+        opacity: systemTrayState.expanded ? 0 : 1
+        Behavior on opacity {
+            NumberAnimation {
+                duration: tooltip.arrowAnimationDuration
             }
         }
 
-        PlasmaCore.SvgItem {
-            anchors.centerIn: parent
-            width: arrow.width
-            height: arrow.height
-
-            rotation: systemTrayState.expanded ? 0 : -180
-            Behavior on rotation {
-                RotationAnimation {
-                    duration: arrowMouseArea.arrowAnimationDuration
-                }
+        source: {
+            if (Plasmoid.location === PlasmaCore.Types.TopEdge) {
+                return "tray-arrow-down";
+            } else if (Plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                return "tray-arrow-right";
+            } else if (Plasmoid.location === PlasmaCore.Types.RightEdge) {
+                return "tray-arrow-left";
+            } else {
+                return "tray-arrow-up";
             }
-            opacity: systemTrayState.expanded ? 1 : 0
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: arrowMouseArea.arrowAnimationDuration
-                }
-            }
+        }
+    }
 
-            svg: arrowSvg
-            elementId: {
-                if (plasmoid.location === PlasmaCore.Types.TopEdge) {
-                    return "up-arrow";
-                } else if (plasmoid.location === PlasmaCore.Types.LeftEdge) {
-                    return "left-arrow";
-                } else if (plasmoid.location === PlasmaCore.Types.RightEdge) {
-                    return "right-arrow";
-                } else {
-                    return "down-arrow";
-                }
+    Kirigami.Icon {
+        anchors.fill: parent
+
+        rotation: systemTrayState.expanded ? 0 : -180
+        Behavior on rotation {
+            RotationAnimation {
+                duration: tooltip.arrowAnimationDuration
+            }
+        }
+        opacity: systemTrayState.expanded ? 1 : 0
+        Behavior on opacity {
+            NumberAnimation {
+                duration: tooltip.arrowAnimationDuration
+            }
+        }
+
+        source: {
+            if (Plasmoid.location === PlasmaCore.Types.TopEdge) {
+                return "tray-arrow-up";
+            } else if (Plasmoid.location === PlasmaCore.Types.LeftEdge) {
+                return "tray-arrow-left";
+            } else if (Plasmoid.location === PlasmaCore.Types.RightEdge) {
+                return "tray-arrow-right";
+            } else {
+                return "tray-arrow-down";
             }
         }
     }

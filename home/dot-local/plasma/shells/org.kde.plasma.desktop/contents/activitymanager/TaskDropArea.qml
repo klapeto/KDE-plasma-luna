@@ -6,10 +6,9 @@
 
 import QtQuick 2.0
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
-
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.draganddrop 2.0 as DND
+import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 DND.DropArea {
     id: root
@@ -25,11 +24,11 @@ DND.DropArea {
     property bool isHovered: false
     property bool actionVisible: false
 
-    PlasmaComponents.Highlight {
+    PlasmaExtras.Highlight {
         id: dropHighlight
         anchors {
             fill: parent
-            // topMargin: icon.height + 3 * PlasmaCore.Units.smallSpacing
+            // topMargin: icon.height + 3 * Kirigami.Units.smallSpacing
             topMargin: root.topPadding
         }
         visible: root.isHovered
@@ -40,11 +39,11 @@ DND.DropArea {
         id: dropAreaLeftText
         anchors {
             fill: dropHighlight
-            leftMargin: PlasmaCore.Units.largeSpacing
-            rightMargin: PlasmaCore.Units.largeSpacing
+            leftMargin: Kirigami.Units.gridUnit
+            rightMargin: Kirigami.Units.gridUnit
         }
 
-        color: PlasmaCore.Theme.textColor
+        color: Kirigami.Theme.textColor
         visible: root.actionVisible
 
         text: root.actionTitle

@@ -8,13 +8,16 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-import QtQuick 2.15
-import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
+import QtQuick
+import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.kirigami 2 as Kirigami
+import org.kde.kwindowsystem 1.0
 
 ColumnLayout {
     property var submodelIndex
@@ -32,17 +35,25 @@ ColumnLayout {
 
         let text;
         if (isGroup) {
-            if (model.display === undefined) {
+            if (model.display.length === 0) {
                 return "";
             }
-            text = model.display.toString();
+            text = model.display;
         } else {
             text = displayParent;
         }
 
+        // Normally the window title will always have " — [app name]" at the end of
+        // the window-provided title. But if it doesn't, this is intentional 100%
+        // of the time because the developer or user has deliberately removed that
+        // part, so just display it with no more fancy processing.
+        if (!text.match(/\s+(—|-|–)/)) {
+            return text;
+        }
+
         // KWin appends increasing integers in between pointy brackets to otherwise equal window titles.
         // In this case save <#number> as counter and delete it at the end of text.
-        text = `${(text.match(/.*(?=\s*(—|-))/) || [""])[0]}${(text.match(/<\d+>/) || [""]).pop()}`;
+        text = `${(text.match(/.*(?=\s+(—|-|–))/) || [""])[0]}${(text.match(/<\d+>/) || [""]).pop()}`;
 
         // In case the window title had only redundant information (i.e. appName), text is now empty.
         // Add a hyphen to indicate that and avoid empty space.
@@ -51,29 +62,28 @@ ColumnLayout {
         }
         return text;
     }
-    readonly property bool titleIncludesTrack: playerController.item
-        && title.includes(playerController.item.track)
+    readonly property bool titleIncludesTrack: toolTipDelegate.playerData && title.includes(toolTipDelegate.playerData.track)
 
-    spacing: PlasmaCore.Units.smallSpacing
+    spacing: Kirigami.Units.smallSpacing
 
     // text labels + close button
     RowLayout {
         id: header
         // match spacing of DefaultToolTip.qml in plasma-framework
-        spacing: isWin ? PlasmaCore.Units.smallSpacing : PlasmaCore.Units.largeSpacing
+        spacing: isWin ? Kirigami.Units.smallSpacing : Kirigami.Units.gridUnit
 
         // This number controls the overall size of the window tooltips
         Layout.maximumWidth: toolTipDelegate.tooltipInstanceMaximumWidth
         Layout.minimumWidth: isWin ? Layout.maximumWidth : 0
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         // match margins of DefaultToolTip.qml in plasma-framework
-        Layout.margins: isWin ? 0 : PlasmaCore.Units.gridUnit / 2
+        Layout.margins: isWin ? 0 : Kirigami.Units.gridUnit / 2
 
         // all textlabels
         ColumnLayout {
             spacing: 0
             // app name
-            PlasmaExtras.Heading {
+            Kirigami.Heading {
                 id: appNameHeading
                 level: 3
                 maximumLineCount: 1
@@ -119,7 +129,7 @@ ColumnLayout {
 
             Badge {
                 anchors.centerIn: parent
-                height: PlasmaCore.Units.iconSizes.smallMedium
+                height: Kirigami.Units.iconSizes.smallMedium
                 number: smartLauncherCount
             }
         }
@@ -147,29 +157,32 @@ ColumnLayout {
         clip: true
         visible: toolTipDelegate.isWin
 
-        readonly property bool isMinimized: isGroup ? IsMinimized == true : isMinimizedParent
+        readonly property bool isMinimized: isGroup ? IsMinimized : isMinimizedParent
         // TODO: this causes XCB error message when being visible the first time
         readonly property var winId: toolTipDelegate.isWin && toolTipDelegate.windows[flatIndex] !== undefined ? toolTipDelegate.windows[flatIndex] : 0
 
         // There's no PlasmaComponents3 version
         PlasmaExtras.Highlight {
             anchors.fill: hoverHandler
-            visible: hoverHandler.item ? hoverHandler.item.containsMouse : false
-            pressed: hoverHandler.item ? hoverHandler.item.containsPress : false
+            visible: Boolean(hoverHandler.item?.containsMouse)
+            pressed: Boolean(hoverHandler.item?.containsPress)
             hovered: true
         }
 
         Loader {
             id: thumbnailLoader
-            active: !albumArtImage.visible && Number.isInteger(thumbnailSourceItem.winId) && flatIndex !== -1 // Avoid loading when the instance is going to be destroyed
+            active: !toolTipDelegate.isLauncher
+                && !albumArtImage.visible
+                && (Number.isInteger(thumbnailSourceItem.winId) || pipeWireLoader.item && !pipeWireLoader.item.hasThumbnail)
+                && flatIndex !== -1 // Avoid loading when the instance is going to be destroyed
             asynchronous: true
             visible: active
             anchors.fill: hoverHandler
             // Indent a little bit so that neither the thumbnail nor the drop
             // shadow can cover up the highlight
-            anchors.margins: PlasmaCore.Units.smallSpacing * 2
+            anchors.margins: Kirigami.Units.smallSpacing * 2
 
-            sourceComponent: thumbnailSourceItem.isMinimized ? iconItem : x11Thumbnail
+            sourceComponent: thumbnailSourceItem.isMinimized || pipeWireLoader.active ? iconItem : x11Thumbnail
 
             Component {
                 id: x11Thumbnail
@@ -183,11 +196,30 @@ ColumnLayout {
             Component {
                 id: iconItem
 
-                PlasmaCore.IconItem {
+                Kirigami.Icon {
+                    id: realIconItem
                     source: icon
                     animated: false
-                    usesPlasmaTheme: false
                     visible: valid
+                    opacity: pipeWireLoader.active ? 0 : 1
+
+                    SequentialAnimation {
+                        running: true
+
+                        PauseAnimation {
+                            duration: Kirigami.Units.humanMoment
+                        }
+
+                        NumberAnimation {
+                            id: showAnimation
+                            duration: Kirigami.Units.longDuration
+                            easing.type: Easing.OutCubic
+                            property: "opacity"
+                            target: realIconItem
+                            to: 1
+                        }
+                    }
+
                 }
             }
         }
@@ -199,22 +231,22 @@ ColumnLayout {
             // shadow can cover up the highlight
             anchors.margins: thumbnailLoader.anchors.margins
 
-            active: !albumArtImage.visible && !Number.isInteger(thumbnailSourceItem.winId) && flatIndex !== -1
+            active: !toolTipDelegate.isLauncher && !albumArtImage.visible && KWindowSystem.isPlatformWayland && flatIndex !== -1
             asynchronous: true
             //In a loader since we might not have PipeWire available yet (WITH_PIPEWIRE could be undefined in plasma-workspace/libtaskmanager/declarative/taskmanagerplugin.cpp)
             source: "PipeWireThumbnail.qml"
         }
 
         Loader {
-            active: (pipeWireLoader.active && pipeWireLoader.item.visible) || (thumbnailLoader.status === Loader.Ready && !thumbnailSourceItem.isMinimized)
+            active: (pipeWireLoader.item && pipeWireLoader.item.hasThumbnail) || (thumbnailLoader.status === Loader.Ready && !thumbnailSourceItem.isMinimized)
             asynchronous: true
             visible: active
             anchors.fill: pipeWireLoader.active ? pipeWireLoader : thumbnailLoader
 
             sourceComponent: DropShadow {
                 horizontalOffset: 0
-                verticalOffset: Math.round(3 * PlasmaCore.Units.devicePixelRatio)
-                radius: Math.round(8.0 * PlasmaCore.Units.devicePixelRatio)
+                verticalOffset: 3
+                radius: 8
                 samples: Math.round(radius * 1.5)
                 color: "Black"
                 source: pipeWireLoader.active ? pipeWireLoader.item : thumbnailLoader.item // source could be undefined when albumArt is available, so put it in a Loader.
@@ -260,7 +292,7 @@ ColumnLayout {
             sourceSize: Qt.size(parent.width, parent.height)
 
             asynchronous: true
-            source: playerController.item ? playerController.item.albumArt : ""
+            source: toolTipDelegate.playerData?.artUrl ?? ""
             fillMode: Image.PreserveAspectFit
             visible: available
         }
@@ -281,7 +313,7 @@ ColumnLayout {
     // Player controls row, load on demand so group tooltips could be loaded faster
     Loader {
         id: playerController
-        active: hasPlayer && flatIndex !== -1 // Avoid loading when the instance is going to be destroyed
+        active: toolTipDelegate.playerData && flatIndex !== -1 // Avoid loading when the instance is going to be destroyed
         asynchronous: true
         visible: active
         Layout.fillWidth: true
@@ -307,8 +339,8 @@ ColumnLayout {
         Layout.rightMargin: header.Layout.margins
         sourceComponent: RowLayout {
             PlasmaComponents3.ToolButton { // Mute button
-                icon.width: PlasmaCore.Units.iconSizes.small
-                icon.height: PlasmaCore.Units.iconSizes.small
+                icon.width: Kirigami.Units.iconSizes.small
+                icon.height: Kirigami.Units.iconSizes.small
                 icon.name: if (checked) {
                     "audio-volume-muted"
                 } else if (slider.displayValue <= 25) {
@@ -379,8 +411,8 @@ ColumnLayout {
 
         let subTextEntries = [];
 
-        const onAllDesktops = (isGroup ? IsOnAllVirtualDesktops : isOnAllVirtualDesktopsParent) === true;
-        if (!plasmoid.configuration.showOnlyCurrentDesktop && virtualDesktopInfo.numberOfDesktops > 1) {
+        const onAllDesktops = isGroup ? IsOnAllVirtualDesktops : isOnAllVirtualDesktopsParent;
+        if (!Plasmoid.configuration.showOnlyCurrentDesktop && virtualDesktopInfo.numberOfDesktops > 1) {
             const virtualDesktops = isGroup ? VirtualDesktops : virtualDesktopParent;
 
             if (!onAllDesktops && virtualDesktops !== undefined && virtualDesktops.length > 0) {
@@ -414,7 +446,7 @@ ColumnLayout {
                 if (activityName === "") {
                     continue;
                 }
-                if (plasmoid.configuration.showOnlyCurrentActivity) {
+                if (Plasmoid.configuration.showOnlyCurrentActivity) {
                     if (activity !== activityInfo.currentActivity) {
                         activityNames.push(activityName);
                     }
@@ -423,7 +455,7 @@ ColumnLayout {
                 }
             }
 
-            if (plasmoid.configuration.showOnlyCurrentActivity) {
+            if (Plasmoid.configuration.showOnlyCurrentActivity) {
                 if (activityNames.length > 0) {
                     subTextEntries.push(i18nc("Activities a window is currently on (apart from the current one)",
                         "Also available on %1", activityNames.join(", ")));

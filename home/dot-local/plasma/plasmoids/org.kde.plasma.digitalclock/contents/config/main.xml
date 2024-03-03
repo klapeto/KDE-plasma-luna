@@ -10,9 +10,14 @@
       <label>Whether the timezone should be displayed when the clock is showing the local timezone.</label>
       <default>false</default>
     </entry>
-    <entry name="showSeconds" type="Bool">
-      <label>Whether seconds should be shown in the clock.</label>
-      <default>false</default>
+    <entry name="showSeconds" type="Enum">
+      <label>How seconds should be shown in the clock.</label>
+      <choices>
+        <choice name="Never" />
+        <choice name="ToolTip" />
+        <choice name="Always" />
+      </choices>
+      <default>1</default>
     </entry>
     <entry name="showDate" type="Bool">
       <label>Whether the date should be shown next to the clock.</label>
@@ -26,6 +31,10 @@
       <label>Custom date format string.</label>
       <default>ddd d</default>
     </entry>
+    <entry name="autoFontAndSize" type="Bool">
+      <label>Use Plasma default font and automatically determine font size.</label>
+      <default>true</default>
+    </entry>
     <entry name="fontFamily" type="string">
       <label>Font family. e.g "arial". The system font is used if this is not set.</label>
       <default></default>
@@ -37,6 +46,18 @@
     <entry name="italicText" type="Bool">
       <label>Sets the font to italic.</label>
       <default>false</default>
+    </entry>
+    <entry name="fontWeight" type="Int">
+      <label>Sets font weight.</label>
+      <default>50</default>
+    </entry>
+    <entry name="fontStyleName" type="string">
+      <label>Sets font style </label>
+      <default></default>
+    </entry>
+    <entry name="fontSize" type="Int">
+      <label>Sets font size.</label>
+      <default>10</default>
     </entry>
     <entry name="timeFormat" type="string">
       <default>default</default>
@@ -53,9 +74,14 @@
       <label>Whether the mouse wheel switches between the timezones configured in selectedTimeZones.</label>
       <default>false</default>
     </entry>
-    <entry name="displayTimezoneAsCode" type="Bool">
-      <label>Whether the timezone is displayed as a code i.e. "GMT" or full text i.e. "London".</label>
-      <default>true</default>
+    <entry name="displayTimezoneFormat" type="Enum">
+      <label>Whether the timezone is displayed as a code i.e. "GMT", full text i.e. "London" or UTC offset "+1".</label>
+      <choices name="Settings::displayTimezoneFormat">
+        <choice name="Code" />
+        <choice name="FullText" />
+        <choice name="UTCOffset" />
+      </choices>
+      <default>0</default>
     </entry>
     <entry name="showWeekNumbers" type="Bool">
       <label>Whether the calendar should show week numbers.</label>
@@ -76,6 +102,15 @@
     <entry name="pin" type="Bool">
       <label>Whether the popup should remain open when another window is activated</label>
       <default>false</default>
+    </entry>
+    <entry name="dateDisplayFormat" type="Enum">
+      <label>Whether the date should be shown below or beside the time</label>
+      <choices name="Settings::dateDisplayFormat">
+        <choice name="Adaptive" />
+        <choice name="BesideTime" />
+        <choice name="BelowTime" />
+      </choices>
+      <default>0</default>
     </entry>
   </group>
 </kcfg>

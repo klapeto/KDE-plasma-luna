@@ -1,565 +1,423 @@
 /*
- *  Copyright 2013 Marco Martin <mart@kde.org>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  2.010-1301, USA.
- */
+    SPDX-FileCopyrightText: 2013 Marco Martin <mart@kde.org>
+    SPDX-FileCopyrightText: 2022 Niccolò Venerandi <niccolo@venerandi.com>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
 import org.kde.plasma.plasmoid 2.0
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.core as PlasmaCore
+import org.kde.ksvg 1.0 as KSvg
+import org.kde.plasma.components 3.0 as PC3
 import org.kde.kquickcontrolsaddons 2.0
 import org.kde.draganddrop 2.0 as DragDrop
+import org.kde.kirigami 2.20 as Kirigami
 
 import "LayoutManager.js" as LayoutManager
 
-DragDrop.DropArea {
+ContainmentItem {
     id: root
     width: 640
     height: 48
 
 //BEGIN properties
-    Layout.minimumWidth: fixedWidth > 0 ? fixedWidth : (currentLayout.Layout.minimumWidth + (isHorizontal && toolBox ? toolBox.width : 0))
-    Layout.maximumWidth: fixedWidth > 0 ? fixedWidth : (currentLayout.Layout.maximumWidth + (isHorizontal && toolBox ? toolBox.width : 0))
-    Layout.preferredWidth: fixedWidth > 0 ? fixedWidth : (currentLayout.Layout.preferredWidth + (isHorizontal && toolBox ? toolBox.width : 0))
-
-    Layout.minimumHeight: fixedHeight > 0 ? fixedHeight : (currentLayout.Layout.minimumHeight + (!isHorizontal && toolBox ? toolBox.height : 0))
-    Layout.maximumHeight: fixedHeight > 0 ? fixedHeight : (currentLayout.Layout.maximumHeight + (!isHorizontal && toolBox ? toolBox.height : 0))
-    Layout.preferredHeight: fixedHeight > 0 ? fixedHeight : (currentLayout.Layout.preferredHeight + (!isHorizontal && toolBox? toolBox.height : 0))
+    Layout.preferredWidth: fixedWidth || currentLayout.implicitWidth + currentLayout.horizontalDisplacement
+    Layout.preferredHeight: fixedHeight || currentLayout.implicitHeight + currentLayout.verticalDisplacement
 
     property Item toolBox
     property var layoutManager: LayoutManager
 
-    property Item dragOverlay
+    property Item configOverlay
 
-    property bool isHorizontal: plasmoid.formFactor !== PlasmaCore.Types.Vertical
+    property bool isHorizontal: Plasmoid.formFactor !== PlasmaCore.Types.Vertical
     property int fixedWidth: 0
     property int fixedHeight: 0
-
-    // These are invisible and only used to read panel margins
-    // Both will fallback to "standard" panel margins if the theme does not
-    // define a normal or a thick margin.
-    // TODO accidentally flipped the two
-    PlasmaCore.FrameSvgItem {
-        id: panelSvg
-        visible: false
-        prefix: 'normal'
-        imagePath: "widgets/panel-background"
-    }
-    PlasmaCore.FrameSvgItem {
-        id: thickPanelSvg
-        visible: false
-        prefix: 'thick'
-        imagePath: "widgets/panel-background"
-    }
-    property bool marginAreasEnabled: panelSvg.margins != thickPanelSvg.margins
-    property var marginHighlightSvg: PlasmaCore.Svg{imagePath: "widgets/margins-highlight"}
-    //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
-    //the size a margin should be to force a panel to be the required size above
-    readonly property real spacingAtMinSize: Math.round(Math.max(1, (currentLayout.isLayoutHorizontal ? root.height+panelSvg.fixedMargins.top*2 : root.width+panelSvg.fixedMargins.left*2) - units.iconSizes.smallMedium - units.smallSpacing*2)/2)
+    property bool hasSpacer
+    // True when a widget is being drag and dropped within the panel.
+    property bool dragAndDropping: false
+    // True when e.g. the task manager is drag and dropping tasks.
+    property bool appletRequestsInhibitDnD: false
 
 //END properties
 
 //BEGIN functions
-function addApplet(applet, x, y) {
-    // don't show applet if it chooses to be hidden but still make it
-    // accessible in the panelcontroller
-    // Due to the nature of how "visible" propagates in QML, we need to
-    // explicitly set it on the container (so the Layout ignores it)
-    // as well as the applet (so it reliably knows about), otherwise it can
-    // happen that an applet erroneously thinks it's visible, or suddenly
-    // starts thinking that way on teardown (virtual desktop pager)
-    // leading to crashes
-    var visibleBinding = Qt.binding(function() {
-        return applet.status !== PlasmaCore.Types.HiddenStatus || (!plasmoid.immutable && plasmoid.userConfiguring);
-    })
-
-    var container = appletContainerComponent.createObject(root, {
-        applet: applet,
-        visible: visibleBinding,
-        inThickArea: false
-    });
-
-    applet.parent = container;
-    applet.anchors.fill = container;
-
-    applet.visible = visibleBinding;
-
-    // Is there a DND placeholder? Replace it!
-    if (dndSpacer.parent === currentLayout) {
-        LayoutManager.insertBefore(dndSpacer, container);
-        dndSpacer.parent = root;
-        LayoutManager.updateMargins();
-        return;
-
-    // If the provided position is valid, use it.
-    } else if (x >= 0 && y >= 0) {
-        var index = LayoutManager.insertAtCoordinates(container, x , y);
-
-    // Fall through to determining an appropriate insert position.
-    } else {
-        var before = lastSpacer;
-        container.animationsEnabled = false;
-
-        // Insert icons to the left of whatever is at the center (usually a Task Manager),
-        // if it exists.
-        // FIXME TODO: This is a real-world fix to produce a sensible initial position for
-        // launcher icons added by launcher menu applets. The basic approach has been used
-        // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
-        // frequent-enough occurrence that we'd like to abstract it further in the future
-        // and get rid of the ugliness of parties external to the containment adding applets
-        // of a specific type, and the containment caring about the applet type. In a better
-        // system the containment would be informed of requested launchers, and determine by
-        // itself what it wants to do with that information.
-        if (!startupTimer.running && applet.pluginName === "org.kde.plasma.icon") {
-            var middle = currentLayout.childAt(root.width / 2, root.height / 2);
-
-            if (middle) {
-                before = middle;
+    function checkLastSpacer() {
+        for (var i = 0; i < appletsModel.count; ++i) {
+            const applet = appletsModel.get(i).applet;
+            if (!applet || !applet.visible || !applet.Layout) {
+                continue;
             }
-
-        // lastSpacer is here, enqueue before it.
+            if ((isHorizontal && applet.Layout.fillWidth) ||
+                (!isHorizontal && applet.Layout.fillHeight)) {
+                    hasSpacer = true;
+                return;
+            }
         }
-
-
-        LayoutManager.insertBefore(before, container);
-
-        //event compress the enable of animations
-        startupTimer.restart();
+        hasSpacer = false;
     }
-    LayoutManager.updateMargins();
-}
 
-
-function checkLastSpacer() {
-    var flexibleFound = false;
-    for (var i = 0; i < currentLayout.children.length; ++i) {
-        var applet = currentLayout.children[i].applet;
-        if (!applet) {
-            continue;
+    function plasmoidLocationString(): string {
+        switch (Plasmoid.location) {
+        case PlasmaCore.Types.LeftEdge:
+            return "west";
+        case PlasmaCore.Types.TopEdge:
+            return "north";
+        case PlasmaCore.Types.RightEdge:
+            return "east";
+        case PlasmaCore.Types.BottomEdge:
+            return "south";
         }
-        if (!applet.visible || !applet.Layout) {
-            continue;
-        }
-        if ((root.isHorizontal && applet.Layout.fillWidth) ||
-            (!root.isHorizontal && applet.Layout.fillHeight)) {
-                flexibleFound = true;
-            break
-        }
+        return "";
     }
-    lastSpacer.visible= !flexibleFound;
-}
 //END functions
 
 //BEGIN connections
-    Component.onCompleted: {
-        currentLayout.isLayoutHorizontal = isHorizontal
-        LayoutManager.plasmoid = plasmoid;
-        LayoutManager.root = root;
-        LayoutManager.layout = currentLayout;
-        LayoutManager.lastSpacer = lastSpacer;
-        LayoutManager.marginHighlights = [];
-        LayoutManager.restore();
-        containmentSizeSyncTimer.restart();
-
-        plasmoid.action("configure").visible = Qt.binding(function() {
-            return !plasmoid.immutable;
-        });
-        plasmoid.action("configure").enabled = Qt.binding(function() {
-            return !plasmoid.immutable;
-        });
+    Containment.onAppletAdded: (applet, geometry) => {
+        LayoutManager.addApplet(applet, geometry.x, geometry.y);
+        root.checkLastSpacer();
+        // When a new preset panel is added, avoid calling save() multiple times
+        Qt.callLater(LayoutManager.save);
     }
 
-    onDragEnter: {
-        if (plasmoid.immutable) {
-            event.ignore();
-            return;
+    Containment.onAppletRemoved: (applet) => {
+        let plasmoidItem = root.itemFor(applet);
+        if (plasmoidItem) {
+            appletsModel.remove(plasmoidItem.parent.index);
         }
-        //during drag operations we disable panel auto resize
-        if (root.isHorizontal) {
-            root.fixedWidth = root.width
-        } else {
-            root.fixedHeight = root.height
-        }
-        LayoutManager.insertAtCoordinates(dndSpacer, event.x, event.y)
-    }
-
-    onDragMove: {
-        LayoutManager.insertAtCoordinates(dndSpacer, event.x, event.y);
-    }
-
-    onDragLeave: {
-        dndSpacer.parent = root;
-        root.fixedWidth = 0;
-        root.fixedHeight = 0;
-    }
-
-    onDrop: {
-        plasmoid.processMimeData(event.mimeData, event.x, event.y);
-        event.accept(event.proposedAction);
-        root.fixedWidth = 0;
-        root.fixedHeight = 0;
-        containmentSizeSyncTimer.restart();
-    }
-
-
-    Containment.onAppletAdded: {
-        addApplet(applet, x, y);
-        LayoutManager.save();
-    }
-
-    Containment.onAppletRemoved: {
-        LayoutManager.removeApplet(applet);
+        checkLastSpacer();
         LayoutManager.save();
     }
 
     Plasmoid.onUserConfiguringChanged: {
-        containmentSizeSyncTimer.restart();
-
-        if (plasmoid.immutable) {
-            if (dragOverlay) {
-                dragOverlay.destroy();
+        if (!Plasmoid.userConfiguring) {
+            if (root.configOverlay) {
+                root.configOverlay.destroy();
+                root.configOverlay = null;
             }
             return;
         }
 
-        if (plasmoid.userConfiguring) {
-            for (var i = 0; i < plasmoid.applets.length; ++i) {
-                plasmoid.applets[i].expanded = false;
-            }
-
-            if (!dragOverlay) {
-                var component = Qt.createComponent("ConfigOverlay.qml");
-                if (component.status === Component.Ready) {
-                    dragOverlay = component.createObject(root);
-                } else {
-                    console.log("Could not create ConfigOverlay:", component.errorString());
-                }
-                component.destroy();
-            } else {
-                dragOverlay.visible = true;
-            }
-        } else {
-            dragOverlay.destroy();
+        if (Plasmoid.immutable) {
+            return;
         }
-    }
 
-    Plasmoid.onFormFactorChanged: containmentSizeSyncTimer.restart();
-    Containment.onEditModeChanged: containmentSizeSyncTimer.restart();
-
-    onToolBoxChanged: {
-        containmentSizeSyncTimer.restart();
-        if (startupTimer.running) {
-            startupTimer.restart();
-        }
+        Plasmoid.applets.forEach(applet => applet.expanded = false);
+        const component = Qt.createComponent("ConfigOverlay.qml");
+        root.configOverlay = component.createObject(root, {
+            "anchors.fill": dropArea,
+        });
+        component.destroy();
     }
 //END connections
 
-//BEGIN components
-    Component {
-        id: appletContainerComponent
-        // This loader conditionally manages the BusyIndicator, it's not
-        // loading the applet. The applet becomes a regular child item.
-        Loader {
-            id: container
+    DragDrop.DropArea {
+        id: dropArea
+        anchors.fill: parent
+
+        // These are invisible and only used to read panel margins
+        // Both will fallback to "standard" panel margins if the theme does not
+        // define a normal or a thick margin.
+        KSvg.FrameSvgItem {
+            id: panelSvg
             visible: false
-            property bool inThickArea: false
-            property bool animationsEnabled: true
+            imagePath: "widgets/panel-background"
+            prefix: [root.plasmoidLocationString(), ""]
+        }
+        KSvg.FrameSvgItem {
+            id: thickPanelSvg
+            visible: false
+            prefix: ['thick'].concat(panelSvg.prefix)
+            imagePath: "widgets/panel-background"
+        }
+        property bool marginAreasEnabled: panelSvg.margins != thickPanelSvg.margins
+        property var marginHighlightSvg: KSvg.Svg{imagePath: "widgets/margins-highlight"}
+        //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
+        //the size a margin should be to force a panel to be the required size above
+        readonly property real spacingAtMinSize: Math.floor(Math.max(1, (isHorizontal ? root.height : root.width) - Kirigami.Units.iconSizes.smallMedium)/2)
 
-            //when the applet moves caused by its resize, don't animate.
-            //this is completely heuristic, but looks way less "jumpy"
-            property bool movingForResize: false
+        Component.onCompleted: {
+            LayoutManager.plasmoid = root.Plasmoid;
+            LayoutManager.root = root;
+            LayoutManager.layout = currentLayout;
+            LayoutManager.marginHighlights = [];
+            LayoutManager.appletsModel = appletsModel;
+            LayoutManager.restore();
 
-            Layout.fillWidth: applet && applet.Layout.fillWidth
-            Layout.onFillWidthChanged: {
-                if (plasmoid.formFactor !== PlasmaCore.Types.Vertical) {
-                    checkLastSpacer();
-                }
+            root.Plasmoid.internalAction("configure").visible = Qt.binding(function() {
+                return !root.Plasmoid.immutable;
+            });
+            root.Plasmoid.internalAction("configure").enabled = Qt.binding(function() {
+                return !root.Plasmoid.immutable;
+            });
+        }
+
+        onDragEnter: event => {
+            if (Plasmoid.immutable || root.appletRequestsInhibitDnD) {
+                event.ignore();
+                return;
             }
-            Layout.fillHeight: applet && applet.Layout.fillHeight
-            Layout.onFillHeightChanged: {
-                if (plasmoid.formFactor === PlasmaCore.Types.Vertical) {
-                    checkLastSpacer();
-                }
-            }
+            //during drag operations we disable panel auto resize
+            root.fixedWidth = root.Layout.preferredWidth
+            root.fixedHeight = root.Layout.preferredHeight
+            appletsModel.insert(LayoutManager.indexAtCoordinates(event.x, event.y), {applet: dndSpacer})
+        }
 
-            function getMargins(side) {
-                //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
-                var layout = {
-                    top: 'isLayoutHorizontal', bottom: 'isLayoutHorizontal',
-                    left: 'isLayoutVertical', right: 'isLayoutVertical'
-                };
-                var panelHeight = root.height+panelSvg.fixedMargins.top*2;
-                var panelWidth = root.width+panelSvg.fixedMargins.left*2;
-                var fillArea = applet && (applet.constraintHints & PlasmaCore.Types.CanFillArea);
-                return (currentLayout[layout[side]] && !fillArea) ?Math.round(Math.min(spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
-            }
+        onDragMove: event => {
+            LayoutManager.move(dndSpacer.parent, LayoutManager.indexAtCoordinates(event.x, event.y));
+        }
 
-            Layout.topMargin: getMargins('top')
-            Layout.bottomMargin: getMargins('bottom')
-            Layout.leftMargin: getMargins('left')
-            Layout.rightMargin: getMargins('right')
-
-            Layout.minimumWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.minimumWidth > 0 ? applet.Layout.minimumWidth : root.height) : root.width) - Layout.leftMargin - Layout.rightMargin
-            Layout.minimumHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.minimumHeight > 0 ? applet.Layout.minimumHeight : root.width) : root.height) - Layout.bottomMargin - Layout.topMargin
-
-            Layout.preferredWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.preferredWidth > 0 ? applet.Layout.preferredWidth : root.height) : root.width) - Layout.leftMargin - Layout.rightMargin
-            Layout.preferredHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.preferredHeight > 0 ? applet.Layout.preferredHeight : root.width) : root.height) - Layout.bottomMargin - Layout.topMargin
-
-            Layout.maximumWidth: (currentLayout.isLayoutHorizontal ? (applet && applet.Layout.maximumWidth > 0 ? applet.Layout.maximumWidth : (Layout.fillWidth ? root.width : root.height)) : root.height) - Layout.leftMargin - Layout.rightMargin
-            Layout.maximumHeight: (!currentLayout.isLayoutHorizontal ? (applet && applet.Layout.maximumHeight > 0 ? applet.Layout.maximumHeight : (Layout.fillHeight ? root.height : root.width)) : root.width) - Layout.bottomMargin - Layout.topMargin
-
-
-            property int oldX: x
-            property int oldY: y
-
-            property Item applet
-
-            onAppletChanged: {
-                if (!applet) {
-                    destroy();
-                }
-            }
-
-            active: applet && applet.busy
-            sourceComponent: PlasmaComponents.BusyIndicator {}
-
-            Layout.onMinimumWidthChanged: movingForResize = true;
-            Layout.onMinimumHeightChanged: movingForResize = true;
-            Layout.onMaximumWidthChanged: movingForResize = true;
-            Layout.onMaximumHeightChanged: movingForResize = true;
-
-            onXChanged: {
-                if (movingForResize) {
-                    movingForResize = false;
-                    return;
-                }
-                if (!animationsEnabled) {
-                    startupTimer.restart();
-                    return;
-                }
-                translation.x = oldX - x
-                translation.y = oldY - y
-                translAnim.running = true
-                oldX = x
-                oldY = y
-            }
-            onYChanged: {
-                if (movingForResize) {
-                    movingForResize = false;
-                    return;
-                }
-                if (!animationsEnabled) {
-                    startupTimer.restart();
-                    return;
-                }
-                translation.x = oldX - x
-                translation.y = oldY - y
-                translAnim.running = true
-                oldX = x
-                oldY = y
-            }
-            transform: Translate {
-                id: translation
-            }
-            NumberAnimation {
-                id: translAnim
-                duration: PlasmaCore.Units.longDuration
-                easing.type: Easing.InOutQuad
-                target: translation
-                properties: "x,y"
-                to: 0
+        onDragLeave: event => {
+            /*
+            * When reordering task items, dragLeave signal will be emitted directly
+            * without dragEnter, and in this case parent.index is undefined, so also
+            * check if dndSpacer is in appletsModel.
+            */
+            if (typeof(dndSpacer.parent.index) === "number") {
+                appletsModel.remove(dndSpacer.parent.index);
+                root.fixedWidth = root.fixedHeight = 0;
             }
         }
-    }
-    Component {
-        id: rectHighlightEl
-        Item {
-            visible: plasmoid.editMode && marginAreasEnabled
-            property Item startApplet
-            property Item endApplet
-            property bool thickArea
 
-            component HighlightPart: Item {
-                property bool topSide
-                property string part
-                // I don't know if the panel is vertical or horizontal, so I'll use panel
-                // (w) width and (h) height as a (w, h) coordinate system, defining two helper
-                // functions to switch between it and cartesian (x, y).
-                property bool horizontal: plasmoid.formFactor === PlasmaCore.Types.Horizontal
-                property int mod: topSide ? 1 : -1
-                property string svgSide: horizontal ? (topSide ? 'top' : 'bottom') : (topSide ? 'left' : 'right')
-                // Panel To Cartesian
-                property var ptc: ({
-                    w: horizontal ? 'x' : 'y', width: horizontal ? 'width' : 'height',
-                    h: horizontal ? 'y' : 'x', height: horizontal ? 'height' : 'width'
-                })
-                // Cartesian to Panel
-                property var ctp: ({
-                    x: horizontal ? 'w' : 'h', width: horizontal ? 'width' : 'height',
-                    y: horizontal ? 'h' : 'w', height: horizontal ? 'height' : 'width'
-                })
-                property var positions: ({
-                    fill: {
-                        w: startApplet ? (startApplet[ptc.w] + startApplet[ptc.width]) : -panelSvg.margins[horizontal ? 'left' : 'top'],
-                        get width() {return positions.step.w - positions.fill.w},
-                        get h() {return topSide ? 0 : root[ptc.height]-this.height},
-                        height: (thickArea ? thickPanelSvg : panelSvg).fixedMargins[svgSide],
-                        elementId: 'fill', visible: true
-                    },
-                    step: {
-                        w: endApplet ? endApplet[ptc.w] : root[ptc.width] + panelSvg.margins[horizontal ? 'right' : 'bottom'],
-                        width: endApplet ? endApplet[ptc.width] : 0,
-                        get h() {return (topSide ? 0 : root[ptc.height]-this.height)+mod*panelSvg.fixedMargins[svgSide]},
-                        height: thickPanelSvg.fixedMargins[svgSide] - panelSvg.fixedMargins[svgSide],
-                        elementId: ((horizontal ? topSide : thickArea) ? 'top' : 'bottom') + ((horizontal ? thickArea : topSide) ? "left" : "right"),
-                        visible: endApplet
-                    },
-                    filledstep: {
-                        get w() {return positions.step.w},
-                        get width() {return positions.step.width},
-                        get h() {return topSide ? 0 : root[ptc.height]-this.height},
-                        height: panelSvg.fixedMargins[svgSide],
-                        elementId: 'fill', visible: endApplet
+        onDrop: event => {
+            appletsModel.remove(dndSpacer.parent.index);
+            root.processMimeData(event.mimeData, event.x, event.y);
+            event.accept(event.proposedAction);
+            root.fixedWidth = root.fixedHeight = 0;
+        }
+
+//BEGIN components
+        Component {
+            id: appletContainerComponent
+            // This loader conditionally manages the BusyIndicator, it's not
+            // loading the applet. The applet becomes a regular child item.
+            Loader {
+                id: container
+                required property Item applet
+                required property int index
+                property Item dragging
+                property bool isAppletContainer: true
+                property bool isMarginSeparator: ((applet.plasmoid?.constraintHints & Plasmoid.MarginAreasSeparator) == Plasmoid.MarginAreasSeparator)
+                property int appletIndex: index // To make sure it's always readable even inside other models
+                property bool inThickArea: false
+                visible: applet.plasmoid?.status !== PlasmaCore.Types.HiddenStatus || (!Plasmoid.immutable && Plasmoid.userConfiguring);
+
+                //when the applet moves caused by its resize, don't animate.
+                //this is completely heuristic, but looks way less "jumpy"
+                property bool movingForResize: false
+
+                function getMargins(side, returnAllMargins = false, overrideFillArea = null, overrideThickArea = null): real {
+                    if (!applet || !applet.plasmoid) {
+                        return 0;
                     }
-                })
-                PlasmaCore.SvgItem {
-                    svg: marginHighlightSvg
-                    elementId: positions[part].elementId
-                    x: positions[part][ctp.x]
-                    y: positions[part][ctp.y]
-                    width: positions[part][ctp.width]
-                    height: positions[part][ctp.height]
-                    visible: positions[part].elementId
+                    //Margins are either the size of the margins in the SVG, unless that prevents the panel from being at least half a smallMedium icon + smallSpace) tall at which point we set the margin to whatever allows it to be that...or if it still won't fit, 1.
+                    let fillArea = overrideFillArea === null ? applet && (applet.plasmoid.constraintHints & Plasmoid.CanFillArea) : overrideFillArea
+                    let inThickArea = overrideThickArea === null ? container.inThickArea : overrideThickArea
+                    var layout = {
+                        top: isHorizontal, bottom: isHorizontal,
+                        right: !isHorizontal, left: !isHorizontal
+                    };
+                    return ((layout[side] || returnAllMargins) && !fillArea) ? Math.round(Math.min(dropArea.spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
+                }
+
+                Layout.topMargin: getMargins('top')
+                Layout.bottomMargin: getMargins('bottom')
+                Layout.leftMargin: getMargins('left')
+                Layout.rightMargin: getMargins('right')
+
+                // Always fill width/height, in order to still shrink the applet when there is not enough space.
+                // When the applet doesn't want to expand set a Layout.maximumWidth accordingly
+                // https://bugs.kde.org/show_bug.cgi?id=473420
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                property bool wantsToFillWidth: applet?.Layout.fillWidth
+                property bool wantsToFillHeight: applet?.Layout.fillHeight
+                onWantsToFillWidthChanged: checkLastSpacer()
+                onWantsToFillHeightChanged: checkLastSpacer()
+
+                property int availWidth: root.width - Layout.leftMargin - Layout.rightMargin
+                property int availHeight: root.height - Layout.topMargin - Layout.bottomMargin
+                function findPositive(first, second) {return first > 0 ? first : second}
+
+    // BEGIN BUG 454095: do not combine these expressions to a function or the bindings won't work
+                Layout.minimumWidth: root.isHorizontal ? findPositive(applet?.Layout.minimumWidth, availHeight) : availWidth
+                Layout.minimumHeight: !root.isHorizontal ? findPositive(applet?.Layout.minimumHeight, availWidth) : availHeight
+
+                Layout.preferredWidth: root.isHorizontal ? findPositive(applet?.Layout.preferredWidth, Layout.minimumWidth) : availWidth
+                Layout.preferredHeight: !root.isHorizontal ? findPositive(applet?.Layout.preferredHeight, Layout.minimumHeight) : availHeight
+
+                Layout.maximumWidth: root.isHorizontal ? (wantsToFillWidth ? findPositive(applet?.Layout.maximumWidth, root.width) : Math.min(applet?.Layout.maximumWidth, Layout.preferredWidth)) : availWidth
+                Layout.maximumHeight: !root.isHorizontal ? (wantsToFillHeight ? findPositive(applet?.Layout.maximumHeight, root.height) : Math.min(applet?.Layout.maximumHeight, Layout.preferredHeight)) : availHeight
+    // END BUG 454095
+
+                Item {
+                    id: marginHighlightElements
+                    anchors.fill: parent
+                    // index -1 is for floating applets, which do not need a margin highlight
+                    opacity: Plasmoid.containment.corona.editMode && dropArea.marginAreasEnabled && !root.dragAndDropping && index != -1 ? 1 : 0
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: Kirigami.Units.longDuration
+                            easing.type: Easing.InOutQuad
+                        }
+                    }
+
+                    component SideMargin: KSvg.SvgItem {
+                        property string side; property bool fill: true
+                        property int inset; property int padding
+                        property var west: ({'left': 'top', 'top': 'left', 'right': 'top', 'bottom': 'left'})
+                        property var mirror: ({'left': 'right', 'top': 'bottom', 'right': 'left', 'bottom': 'top'})
+                        property var onComponentCompleted: {
+                            let left = west[side]
+                            let right = mirror[left]
+                            let up = mirror[side]
+                            anchors[up] = undefined
+                            if (root.isHorizontal) {
+                                height = padding;
+                            } else {
+                                width = padding;
+                            }
+                            anchors[left+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == 0 ? dropArea.anchors[left + 'Margin'] + currentLayout.x : 0)
+                            anchors[right+'Margin'] = - currentLayout.rowSpacing/2 - (appletIndex == appletsModel.count-1 ? dropArea.anchors[right + 'Margin'] + currentLayout.toolBoxSize : 0)
+                            anchors[side+'Margin'] = - inset
+                        }
+                        elementId: fill ? 'fill' : (root.isHorizontal ? side + (inThickArea ? 'left' : 'right') : (inThickArea ? 'top' : 'bottom') + side)
+                        svg: dropArea.marginHighlightSvg
+                        anchors {top: parent.top; left: parent.left; right: parent.right; bottom: parent.bottom}
+                    }
+                    Repeater {
+                        model: ['top', 'bottom', 'right', 'left']
+                        SideMargin {
+                            side: modelData
+                            inset: container.getMargins(side)
+                            visible: (modelData === 'top' || modelData === 'bottom') === root.isHorizontal
+                            padding: container.getMargins(side, false, false, isMarginSeparator ? false : inThickArea)
+                        }
+                    }
+                    Repeater {
+                        model: ['top', 'bottom', 'right', 'left']
+                        SideMargin {
+                            side: modelData
+                            inset: -container.getMargins(side, false, false, false)
+                            padding: container.getMargins(side, false, false, true) + inset
+                            visible: isMarginSeparator && (modelData === 'top' || modelData === 'bottom') === root.isHorizontal
+                            fill: false
+                        }
+                    }
+                }
+
+                onAppletChanged: {
+                    if (applet) {
+                        applet.parent = container
+                        applet.anchors.fill = container
+                    } else {
+                        appletsModel.remove(index)
+                    }
+                }
+
+                active: applet && applet.Plasmoid.busy
+                sourceComponent: PC3.BusyIndicator {
+                    z: 999
+                }
+
+                property int oldX: 0
+                property int oldY: 0
+                onXChanged: if (oldX) animateFrom(oldX, y)
+                onYChanged: if (oldY) animateFrom(x, oldY)
+                transform: Translate{id: translation}
+                function animateFrom(xa, ya) {
+                    if (isHorizontal) translation.x = xa - x
+                    else translation.y = ya - y
+                    oldX = oldY = 0
+                    translAnim.running = true
+                }
+                NumberAnimation {
+                    id: translAnim
+                    duration: Kirigami.Units.shortDuration
+                    easing.type: Easing.OutCubic
+                    target: translation
+                    properties: "x,y"
+                    to: 0
                 }
             }
-            HighlightPart{topSide: true; part: 'fill'}
-            HighlightPart{topSide: true; part: 'step'}
-            HighlightPart{topSide: true; part: 'filledstep'}
-            HighlightPart{topSide: false; part: 'fill'}
-            HighlightPart{topSide: false; part: 'step'}
-            HighlightPart{topSide: false; part: 'filledstep'}
         }
-    }
 //END components
 
 //BEGIN UI elements
 
-    anchors {
-        leftMargin:0 //currentLayout.isLayoutHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.left) : 0
-        rightMargin:0// currentLayout.isLayoutHorizontal ? Math.min(spacingAtMinSize, panelSvg.fixedMargins.right) : 0
-        topMargin: currentLayout.isLayoutHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.top)
-        bottomMargin: currentLayout.isLayoutHorizontal ? 0 : Math.min(spacingAtMinSize, panelSvg.fixedMargins.bottom)
-    }
+        anchors {
+            leftMargin: 0//isHorizontal ? Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.left + currentLayout.rowSpacing) : 0
+            rightMargin: 0//isHorizontal ? Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.right + currentLayout.rowSpacing) : 0
+            topMargin: isHorizontal ? 0 : Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.top + currentLayout.rowSpacing)
+            bottomMargin: isHorizontal ? 0 : Math.min(dropArea.spacingAtMinSize, panelSvg.fixedMargins.bottom + currentLayout.rowSpacing)
+        }
 
-    Item {
-        id: lastSpacer
-        parent: currentLayout
+        Item {
+            id: dndSpacer
+            property bool busy: false
+            Layout.preferredWidth: width
+            Layout.preferredHeight: height
+            width: isHorizontal ? Kirigami.Units.iconSizes.sizeForLabels * 5 : currentLayout.width
+            height: isHorizontal ? currentLayout.height : Kirigami.Units.iconSizes.sizeForLabels * 5
+        }
 
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-    }
+        ListModel {
+            id: appletsModel
+        }
 
-    Item {
-        id: dndSpacer
-        Layout.preferredWidth: width
-        Layout.preferredHeight: height
-        width: (plasmoid.formFactor === PlasmaCore.Types.Vertical) ? currentLayout.width : theme.mSize(theme.defaultFont).width * 10
-        height: (plasmoid.formFactor === PlasmaCore.Types.Vertical) ?  theme.mSize(theme.defaultFont).width * 10 : currentLayout.height
-    }
+        GridLayout {
+            id: currentLayout
 
-    // while the user is moving the applet when configuring the panel, the applet is reparented
-    // here so it can be moved freely; previously it was reparented to "root" but this one does not
-    // take into account the toolbox (which is left-of) the layout in right-to-left languages
-    Item {
-        id: moveAppletLayer
-        anchors.fill: currentLayout
-    }
-
-    GridLayout {
-        id: currentLayout
-        property bool isLayoutHorizontal
-        rowSpacing: PlasmaCore.Units.smallSpacing
-        columnSpacing: 0//PlasmaCore.Units.smallSpacing
-
-        Layout.preferredWidth: {
-            var width = 0;
-            for (var i = 0, length = currentLayout.children.length; i < length; ++i) {
-                var item = currentLayout.children[i];
-                if (item.Layout) {
-                    width += Math.max(item.Layout.minimumWidth, item.Layout.preferredWidth);
-                }
+            Repeater {
+                model: appletsModel
+                delegate: appletContainerComponent
             }
-            return width;
-        }
-        Layout.preferredHeight: {
-            var height = 0;
-            for (var i = 0, length = currentLayout.children.length; i < length; ++i) {
-                var item = currentLayout.children[i];
-                if (item.Layout) {
-                    height += Math.max(item.Layout.minimumHeight, item.Layout.preferredHeight);
-                }
+
+            rowSpacing: Kirigami.Units.smallSpacing
+            columnSpacing: 0// Kirigami.Units.smallSpacing
+
+            x: Qt.application.layoutDirection === Qt.RightToLeft && isHorizontal ? toolBoxSize : 0;
+            readonly property int toolBoxSize: !toolBox || !Plasmoid.containment.corona.editMode || Qt.application.layoutDirection === Qt.RightToLeft ? 0 : (isHorizontal ? toolBox.width : toolBox.height)
+
+            PC3.ToolButton {
+                id: addWidgetsButton
+                Layout.preferredWidth: width
+                Layout.preferredHeight: height
+                Layout.alignment: Qt.AlignHCenter
+                visible: appletsModel.count === 0
+                text: isHorizontal ? i18nd("plasma_shell_org.kde.plasma.desktop", "Add Widgets…") : undefined
+                icon.name: "list-add-symbolic"
+                onClicked: Plasmoid.internalAction("add widgets").trigger()
             }
-            return height;
-        }
-        rows: 1
-        columns: 1
-        //when horizontal layout top-to-bottom, this way it will obey our limit of one row and actually lay out left to right
-        flow: isHorizontal ? GridLayout.TopToBottom : GridLayout.LeftToRight
-        layoutDirection: Qt.application.layoutDirection
-    }
 
-    onWidthChanged: {
-        containmentSizeSyncTimer.restart()
-        if (startupTimer.running) {
-            startupTimer.restart();
-        }
-    }
-    onHeightChanged: {
-        containmentSizeSyncTimer.restart()
-        if (startupTimer.running) {
-            startupTimer.restart();
-        }
-    }
+            property int horizontalDisplacement: dropArea.anchors.leftMargin + dropArea.anchors.rightMargin + (isHorizontal ? currentLayout.toolBoxSize : 0)
+            property int verticalDisplacement: dropArea.anchors.topMargin + dropArea.anchors.bottomMargin + (isHorizontal ? 0 : currentLayout.toolBoxSize)
 
-    Timer {
-        id: containmentSizeSyncTimer
-        interval: 150
-        onTriggered: {
-            dndSpacer.parent = root;
-            currentLayout.x = (isHorizontal && toolBox && Qt.application.layoutDirection === Qt.RightToLeft && plasmoid.editMode) ? toolBox.width : 0;
-            currentLayout.y = 0
-            currentLayout.width = root.width - (isHorizontal && toolBox && plasmoid.editMode ? toolBox.width : 0)
-            currentLayout.height = root.height - (!isHorizontal && toolBox && plasmoid.editMode ? toolBox.height : 0)
-            currentLayout.isLayoutHorizontal = isHorizontal
-        }
-    }
+    // BEGIN BUG 454095: use lastSpacer to left align applets, as implicitWidth is updated too late
+            width: root.width - horizontalDisplacement
+            height: root.height - verticalDisplacement
 
-    //FIXME: I don't see other ways at the moment a way to see when the UI is REALLY ready
-    Timer {
-        id: startupTimer
-        interval: 4000
-        onTriggered: {
-            for (var i = 0; i < currentLayout.children.length; ++i) {
-                var item = currentLayout.children[i];
-                if (item.hasOwnProperty("animationsEnabled")) {
-                    item.animationsEnabled = true;
-                }
+            Item {
+                id: lastSpacer
+                visible: !root.hasSpacer
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                /**
+                * This index will be used when adding a new panel.
+                *
+                * @see LayoutManager.indexAtCoordinates
+                */
+                readonly property alias index: appletsModel.count
             }
+    // END BUG 454095
+
+            rows: isHorizontal ? 1 : currentLayout.children.length
+            columns: isHorizontal ? currentLayout.children.length : 1
+            flow: isHorizontal ? GridLayout.LeftToRight : GridLayout.TopToBottom
+            layoutDirection: Qt.application.layoutDirection
         }
     }
 //END UI elements

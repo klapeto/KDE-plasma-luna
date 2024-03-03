@@ -7,19 +7,21 @@
 
 import QtQuick 2.2
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.ksvg 1.0 as KSvg
+import org.kde.kirigami 2.20 as Kirigami
 
-import org.kde.activities 0.1 as Activities
-import org.kde.activities.settings 0.1
+import org.kde.kcmutils  // KCMLauncher
+import org.kde.config  // KAuthorized
+
+import org.kde.plasma.activityswitcher as ActivitySwitcher
 
 import "static.js" as S
 
 Item {
     id: root
 
-    property int innerPadding: PlasmaCore.Units.smallSpacing
+    property int innerPadding: Kirigami.Units.smallSpacing
 
     property string activityId : ""
 
@@ -29,10 +31,10 @@ Item {
     signal clicked
 
     width  : 200
-    height : icon.height + 2 * PlasmaCore.Units.smallSpacing
+    height : icon.height + 2 * Kirigami.Units.smallSpacing
 
     // Background until we get something real
-    PlasmaCore.FrameSvgItem {
+    KSvg.FrameSvgItem {
         id: highlight
         imagePath: "widgets/viewitem"
         visible: rootArea.containsMouse
@@ -56,10 +58,10 @@ Item {
 
         // Title and the icon
 
-        PlasmaCore.IconItem {
+        Kirigami.Icon {
             id: icon
 
-            width  : PlasmaCore.Units.iconSizes.medium
+            width  : Kirigami.Units.iconSizes.medium
             height : width
 
             anchors {
@@ -108,13 +110,13 @@ Item {
 
             Behavior on height {
                 NumberAnimation {
-                    duration: PlasmaCore.Units.longDuration
+                    duration: Kirigami.Units.longDuration
                 }
             }
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: PlasmaCore.Units.shortDuration
+                    duration: Kirigami.Units.shortDuration
                 }
             }
 
@@ -129,14 +131,16 @@ Item {
             PlasmaComponents.Button {
                 id: configButton
 
-                iconSource: "configure"
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Configure activity")
+                icon.name: "configure"
+                PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
+                PlasmaComponents.ToolTip.visible: hovered
+                PlasmaComponents.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Configure activity")
 
-                onClicked: ActivitySettings.configureActivity(root.activityId)
+                onClicked: KCMLauncher.openSystemSettings("kcm_activities", root.activityId)
 
                 anchors {
-                    left       : parent.left
-                    leftMargin : 2 * PlasmaCore.Units.smallSpacing + 2
+                    right       : deleteButton.left
+                    rightMargin : 2 * Kirigami.Units.smallSpacing
                     verticalCenter: parent.verticalCenter
                 }
             }
@@ -144,15 +148,17 @@ Item {
             PlasmaComponents.Button {
                 id: deleteButton
 
-                iconSource: "edit-delete"
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Delete")
+                icon.name: "edit-delete"
+                PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
+                PlasmaComponents.ToolTip.visible: hovered
+                PlasmaComponents.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Delete")
 
-                onClicked: ActivitySettings.deleteActivity(root.activityId)
-                visible: ActivitySettings.newActivityAuthorized
+                onClicked: ActivitySwitcher.Backend.removeActivity(root.activityId)
+                visible: KAuthorized.authorize("plasma-desktop/add_activities")
 
                 anchors {
                     right       : parent.right
-                    rightMargin : 2 * PlasmaCore.Units.smallSpacing + 2
+                    rightMargin : 2 * Kirigami.Units.smallSpacing + 2
                     verticalCenter: parent.verticalCenter
                 }
             }
@@ -174,7 +180,7 @@ Item {
         Transition {
             NumberAnimation {
                 properties : "opacity"
-                duration   : PlasmaCore.Units.shortDuration
+                duration   : Kirigami.Units.shortDuration
             }
         }
     ]

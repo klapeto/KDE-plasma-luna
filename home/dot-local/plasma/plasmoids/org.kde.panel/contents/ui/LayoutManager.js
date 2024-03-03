@@ -1,31 +1,56 @@
 /*
- *   Copyright 2013 Marco Martin <mart@kde.org>
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+    SPDX-FileCopyrightText: 2013 Marco Martin <mart@kde.org>
+    SPDX-FileCopyrightText: 2022 Niccolò Venerandi <niccolo@venerandi.com>
+
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
 
 var layout;
 var root;
 var plasmoid;
-var lastSpacer;
 var marginHighlights;
+var appletsModel;
 
+function addApplet(applet, x, y) {
+    let appletItem = root.itemFor(applet);
+    // don't show applet if it chooses to be hidden but still make it
+    // accessible in the panelcontroller
+    // Due to the nature of how "visible" propagates in QML, we need to
+    // explicitly set it on the container (so the Layout ignores it)
+    // as well as the applet (so it reliably knows about), otherwise it can
+    // happen that an applet erroneously thinks it's visible, or suddenly
+    // starts thinking that way on teardown (virtual desktop pager)
+    // leading to crashes
+    var middle, new_element = {applet: appletItem}
+
+    appletItem.visible = Qt.binding(function() {
+        return applet.status !== PlasmaCore.Types.HiddenStatus || (!root.plasmoid.immutable && root.plasmoid.userConfiguring);
+    });
+
+    // Insert icons to the left of whatever is at the center (usually a Task Manager),
+    // if it exists.
+    // FIXME TODO: This is a real-world fix to produce a sensible initial position for
+    // launcher icons added by launcher menu applets. The basic approach has been used
+    // since Plasma 1. However, "add launcher to X" is a generic-enough concept and
+    // frequent-enough occurrence that we'd like to abstract it further in the future
+    // and get rid of the ugliness of parties external to the containment adding applets
+    // of a specific type, and the containment caring about the applet type. In a better
+    // system the containment would be informed of requested launchers, and determine by
+    // itself what it wants to do with that information.
+    if (applet.pluginName === "org.kde.plasma.icon" && x === 0 && y === 0 &&
+            (middle = currentLayout.childAt(root.width / 2, root.height / 2))) {
+        appletsModel.insert(middle.index, new_element);
+    // Fall through to determining an appropriate insert position.
+    } else if (x >= 0 && y >= 0) {
+        appletsModel.insert(indexAtCoordinates(x, y), new_element)
+    } else {
+        appletsModel.append(new_element);
+    }
+    updateMargins();
+}
 
 function restore() {
-    var configString = String(plasmoid.configuration.AppletOrder)
+    var configString = String(root.plasmoid.configuration.AppletOrder)
 
     //array, a cell for encoded item order
     var itemsArray = configString.split(";");
@@ -41,18 +66,18 @@ function restore() {
         idsOrder[itemsArray[i]] = i;
     }
 
-    for (var i = 0; i < plasmoid.applets.length; ++i) {
-        if (idsOrder[plasmoid.applets[i].id] !== undefined) {
-            appletsOrder[idsOrder[plasmoid.applets[i].id]] = plasmoid.applets[i];
+    for (var i = 0; i < root.plasmoid.applets.length; ++i) {
+        if (idsOrder[root.plasmoid.applets[i].id] !== undefined) {
+            appletsOrder[idsOrder[root.plasmoid.applets[i].id]] = root.plasmoid.applets[i];
         //ones that weren't saved in AppletOrder go to the end
         } else {
-            appletsOrder["unordered"+i] = plasmoid.applets[i];
+            appletsOrder["unordered"+i] = root.plasmoid.applets[i];
         }
     }
 
     //finally, restore the applets in the correct order
     for (var i in appletsOrder) {
-        root.addApplet(appletsOrder[i], -1, -1)
+        addApplet(appletsOrder[i], -1, -1)
     }
     //rewrite, so if in the orders there were now invalid ids or if some were missing creates a correct list instead
     save();
@@ -62,187 +87,73 @@ function save() {
     var ids = new Array();
     for (var i = 0; i < layout.children.length; ++i) {
         var child = layout.children[i];
-
-        if (child.applet) {
-            ids.push(child.applet.id);
+        if (child.hasOwnProperty("applet") && child.applet) {
+            ids.push(child.applet.plasmoid.id);
         }
     }
-    plasmoid.configuration.AppletOrder = ids.join(';');
+    root.plasmoid.configuration.AppletOrder = ids.join(';');
+    root.plasmoid.configuration.writeConfig();
     updateMargins();
 }
 
-function removeApplet (applet) {
-    for (var i = layout.children.length - 1; i >= 0; --i) {
-        var child = layout.children[i];
-        if (child.applet === applet) {
-            // This makes sure the child is not in the layout.children anymore
-            // even while it's being destroyed.
-            child.parent = root;
-            child.destroy();
-        }
-    }
-}
-
-//insert item2 before item1
-function insertBefore(item1, item2) {
-    if (item1 === item2) {
-        return;
-    }
-    var removed = new Array();
-
-    var child;
-
-    var i;
-    for (i = layout.children.length - 1; i >= 0; --i) {
-        child = layout.children[i];
-        removed.push(child);
-        child.parent = root;
-
-        if (child === item1) {
-            break;
-        }
-    }
-
-    item2.parent = layout;
-
-    for (var j = removed.length - 1; j >= 0; --j) {
-        removed[j].parent = layout;
-    }
-    return i;
-}
-
-//insert item2 after item1
-function insertAfter(item1, item2) {
-    if (item1 === item2) {
-        return;
-    }
-    var removed = new Array();
-
-    var child;
-
-    var i;
-    for (i = layout.children.length - 1; i >= 0; --i) {
-        child = layout.children[i];
-        //never ever insert after lastSpacer
-        if (child === item1) {
-            //Already in position, do nothing
-            if (layout.children[i+1] === item2) {
-                return;
-            }
-            break;
-        }
-
-        removed.push(child);
-        child.parent = root;
-    }
-
-    item2.parent = layout;
-
-    for (var j = removed.length - 1; j >= 0; --j) {
-        removed[j].parent = layout;
-    }
-    return i;
-}
-
-function insertAtIndex(item, position) {
-    if (position < 0 || position >= layout.children.length) {
-        return;
-    }
-
-    //never ever insert after lastSpacer
-    if (layout.children[position] === lastSpacer) {
-        --position;
-    }
-
-    var removedItems = new Array();
-
-    for (var i = position; i < layout.children.length; ++i) {
-        var child = layout.children[position];
-        child.parent = root;
-        removedItems.push(child);
-    }
-
-    item.parent = layout;
-    for (var i in removedItems) {
-        removedItems[i].parent = layout;
-    }
-}
-
-function insertAtCoordinates(item, x, y) {
+function childAtCoordinates(x, y) {
     if (root.isHorizontal) {
         y = layout.height / 2;
     } else {
         x = layout.width / 2;
     }
+    /*
+     * When adding a new panel, childAt will return lastSpacer, and that's where
+     * `index` property works.
+     */
     var child = layout.childAt(x, y);
-
-    //if we got a place inside the space between 2 applets, we have to find it manually
-    if (!child) {
+    while (!child) {
         if (root.isHorizontal) {
-            for (var i = 0; i < layout.children.length; ++i) {
-                var candidate = layout.children[i];
-                if (x >= candidate.x && x < candidate.x + candidate.width + layout.rowSpacing) {
-                    child = candidate;
-                    break;
-                }
-            }
+            // Only yields incorrect results for widgets smaller than the
+            // row/column spacing, which is luckly fairly unrealistic
+            x -= layout.rowSpacing
         } else {
-            for (var i = 0; i < layout.children.length; ++i) {
-                var candidate = layout.children[i];
-                if (y >= candidate.x && y < candidate.y + candidate.height + layout.columnSpacing) {
-                    child = candidate;
-                    break;
-                }
-            }
+            y -= layout.columnSpacing
         }
+        if (x < 0 || y < 0) {
+            return 0;
+        }
+        child = layout.childAt(x, y);
     }
-    //already in position
-    if (child === item) {
-        return;
-    }
-    if (!child) {
-        child = layout.children[0];
-    }
-    item.parent = root;
+    return child
+}
 
-    //PlasmaCore.Types.Vertical = 3
-    if ((plasmoid.formFactor === 3 && y < child.y + child.height/2) ||
-        (plasmoid.formFactor !== 3 && x < child.x + child.width/2)) {
-        return insertBefore(child, item);
+function indexAtCoordinates(x, y) {
+    let child = childAtCoordinates(x, y)
+    if ((root.plasmoid.formFactor === 3 && y < child.y + child.height/2) ||
+        (root.plasmoid.formFactor !== 3 && x < child.x + child.width/2)) {
+        return child.index;
     } else {
-        return insertAfter(child, item);
+        return child.index+1;
     }
 }
 
 function updateMargins() {
-    for (var i = 0; i < marginHighlights.length; ++i) {
-        marginHighlights[i].destroy();
-    }
-    marginHighlights = [];
     var inThickArea = false;
-    var startApplet = undefined;
-    for (var i = 0; i < layout.children.length; ++i) {
-        var child = layout.children[i];
+    for (var i = 0; i < appletsModel.count; ++i) {
+        var child = appletsModel.get(i).applet.parent
         if (child.dragging) {child = child.dragging}
-        if (child.applet) {
-            child.inThickArea = inThickArea;
-            if ((child.applet.constraintHints & PlasmaCore.Types.MarginAreasSeparator) == PlasmaCore.Types.MarginAreasSeparator) {
-                var marginRect = rectHighlightEl.createObject(root, {
-                    startApplet: startApplet,
-                    endApplet: child,
-                    thickArea: inThickArea
-                });
-                marginHighlights.push(marginRect);
-                var startApplet = child;
-                inThickArea = !inThickArea;
-            }
+        child.inThickArea = inThickArea
+        if (child.isMarginSeparator) {
+            inThickArea = !inThickArea
         }
     }
-    if (marginHighlights.length == 0) return;
-    var marginRect = rectHighlightEl.createObject(root, {
-        startApplet: startApplet,
-        endApplet: undefined,
-        thickArea: inThickArea
-    });
-    marginHighlights.push(marginRect);
+}
+
+function move(applet, end) {
+    var start = applet.index
+    var target = end - (start < end)
+    if (start == target) return;
+    // Setting oldX,oldY allows for position animations
+    for (let i = Math.min(start, end); i <= Math.max(start, end-1); i++) {
+        let el = layout.children[i]
+        el.oldX = el.x, el.oldY = el.y
+    }
+    appletsModel.move(start, target, 1)
+    save()
 }

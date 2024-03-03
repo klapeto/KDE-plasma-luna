@@ -5,27 +5,37 @@
 */
 
 import QtQuick 2.0
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.configuration 2.0
-import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
+import QtQuick.Layouts 1.0
+import QtQuick.Controls 2.4 as QQC2
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.kirigami 2.20 as Kirigami
+import org.kde.ksvg 1.0 as KSvg
+import org.kde.plasma.components 3.0 as PC3
+import org.kde.plasma.shell.panel 0.1 as Panel
+import org.kde.kquickcontrols 2.0
 
-
-PlasmaCore.FrameSvgItem {
+KSvg.FrameSvgItem {
     id: root
+
+    anchors.fill: parent
 
     //Those properties get updated by PanelConfiguration.qml whenever a value in the panel changes
     property alias offset: offsetHandle.value
-    property alias minimumLength: minimumLengthHandle.value
-    property alias maximumLength: maximumLengthHandle.value
+    property alias minimumLength: rightMinimumLengthHandle.value
+    property alias maximumLength: rightMaximumLengthHandle.value
+    property bool isHorizontal: root.prefix[0] === 'north' || root.prefix[0] === 'south'
+
+    property string maximumText: (dialogRoot.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to change maximum height.") : i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to change maximum width.")) + "\n" + i18nd("plasma_shell_org.kde.plasma.desktop", "Double click to reset.")
+    property string minimumText: (dialogRoot.vertical ? i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to change minimum height.") : i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to change minimum width.")) + "\n" + i18nd("plasma_shell_org.kde.plasma.desktop", "Double click to reset.")
 
     imagePath: "widgets/containment-controls"
-    state: "BottomEdge"
-    implicitWidth: offsetHandle.width + minimumLengthHandle.width
-    implicitHeight: offsetHandle.height + minimumLengthHandle.height
+    implicitWidth: Math.max(offsetHandle.width, rightMinimumLengthHandle.width + rightMaximumLengthHandle.width)
+    implicitHeight: Math.max(offsetHandle.height, rightMinimumLengthHandle.height + rightMaximumLengthHandle.height)
 
-    onMinimumLengthChanged: leftMinimumLengthHandle.value = minimumLength
-    onMaximumLengthChanged: leftMaximumLengthHandle.value = maximumLength
+    onMinimumLengthChanged: rightMinimumLengthHandle.value = leftMinimumLengthHandle.value = minimumLength
+    onMaximumLengthChanged: rightMaximumLengthHandle.value = leftMaximumLengthHandle.value = maximumLength
 
     /* As offset and length have a different meaning in all alignments, the panel shifts on alignment change.
      * This could result in wrong panel positions (e.g. panel shifted over monitor border).
@@ -42,19 +52,15 @@ PlasmaCore.FrameSvgItem {
 
     Component.onCompleted: {
         offsetHandle.value = panel.offset
-        minimumLengthHandle.value = panel.minimumLength
-        maximumLengthHandle.value = panel.maximumLength
+        rightMinimumLengthHandle.value = panel.minimumLength
+        rightMaximumLengthHandle.value = panel.maximumLength
         leftMinimumLengthHandle.value = panel.minimumLength
         leftMaximumLengthHandle.value = panel.maximumLength
     }
 
-    PlasmaCore.Svg {
-        id: containmentControlsSvg
-        imagePath: "widgets/containment-controls"
-    }
-    PlasmaCore.SvgItem {
+    KSvg.SvgItem {
         id: centerMark
-        svg: containmentControlsSvg
+        imagePath: "widgets/containment-controls"
         elementId: dialogRoot.vertical ? "vertical-centerindicator" : "horizontal-centerindicator"
         visible: panel.alignment === Qt.AlignCenter
         width: dialogRoot.vertical ? parent.width : naturalSize.width
@@ -64,9 +70,49 @@ PlasmaCore.FrameSvgItem {
 
     SliderHandle {
         id: offsetHandle
+        anchors {
+            right: !root.isHorizontal ? root.right : undefined
+            bottom: root.isHorizontal ? root.bottom : undefined
+        }
         graphicElementName: "offsetslider"
-        onValueChanged: panel.offset = value
-        property int position: (dialogRoot.vertical) ? y : x
+        description: i18nd("plasma_shell_org.kde.plasma.desktop", "Drag to change position on this screen edge.\nDouble click to reset.")
+        offset: panel.alignment === Qt.AlignCenter ? 0 : (dialogRoot.vertical ? panel.height : panel.width) / 2
+        property int position: (dialogRoot.vertical) ? y + height / 2 : x + width / 2
+        onPositionChanged: {
+            if (!offsetHandle.hasEverBeenMoved) return;
+            let panelLength = dialogRoot.vertical ? panel.height : panel.width
+            let rootLength = dialogRoot.vertical ? root.height : root.width
+            // Snap at the center
+            if (Math.abs(position - rootLength / 2) < 5) {
+                if (panel.alignment !== Qt.AlignCenter) {
+                    panel.alignment = Qt.AlignCenter
+                    // Coordinate change: since we switch from measuring the min/max
+                    // length from the side of the panel to the center of the panel,
+                    // we need to double the distance between the min/max indicators
+                    // and the panel side.
+                    panel.minimumLength += panel.minimumLength - panelLength
+                    panel.maximumLength += panel.maximumLength - panelLength
+                }
+                panel.offset = 0
+            } else if (position > rootLength / 2) {
+                if (panel.alignment === Qt.AlignCenter) {
+                    // This is the opposite of the previous comment, as we are
+                    // cutting in half the distance between the min/max indicators
+                    // and the side of the panel.
+                    panel.minimumLength -= (panel.minimumLength - panelLength) / 2
+                    panel.maximumLength -= (panel.maximumLength - panelLength) / 2
+                }
+                panel.alignment = Qt.AlignRight
+                panel.offset = Math.round(rootLength - position - offset)
+            } else if (position <= rootLength / 2) {
+                if (panel.alignment === Qt.AlignCenter) {
+                    panel.minimumLength -= (panel.minimumLength - panelLength) / 2
+                    panel.maximumLength -= (panel.maximumLength - panelLength) / 2
+                }
+                panel.alignment = Qt.AlignLeft
+                panel.offset = Math.round(position - offset)
+            }
+        }
         /* The maximum/minimumPosition values are needed to prevent the user from moving a panel with
          * center alignment to the left and then drag the position handle to the left.
          * This would make the panel to go off the monitor:
@@ -78,25 +124,28 @@ PlasmaCore.FrameSvgItem {
             var size = dialogRoot.vertical ? height : width
             switch(panel.alignment){
             case Qt.AlignLeft:
-                    return -size / 2
+                return -size / 2 + offset
             case Qt.AlignRight:
-                    return leftMaximumLengthHandle.value - size / 2
+                return leftMaximumLengthHandle.value - size / 2 - offset
             default:
-                    return panel.maximumLength / 2 - size / 2
+                return panel.maximumLength / 2 - size / 2
             }
         }
         //Needed for the same reason as above
         maximumPosition: {
             var size = dialogRoot.vertical ? height : width
-            var dialogRootSize = dialogRoot.vertical ? dialogRoot.height : dialogRoot.width
+            var rootSize = dialogRoot.vertical ? root.height : root.width
             switch(panel.alignment){
             case Qt.AlignLeft:
-                    return dialogRootSize - maximumLengthHandle.value - size / 2
+                return rootSize - rightMaximumLengthHandle.value - size / 2 + offset
             case Qt.AlignRight:
-                    return dialogRootSize - size / 2
+                return rootSize - size / 2 - offset
             default:
-                    return dialogRootSize - panel.maximumLength / 2 - size / 2
+                return rootSize - panel.maximumLength / 2 - size / 2
             }
+        }
+        function defaultPosition(): int /*override*/ {
+            return 0;
         }
     }
 
@@ -113,309 +162,80 @@ PlasmaCore.FrameSvgItem {
      */
 
     SliderHandle {
-        id: minimumLengthHandle
+        id: rightMinimumLengthHandle
+        anchors {
+            left: !root.isHorizontal ? root.left : undefined
+            top: root.isHorizontal ? root.top : undefined
+        }
+        description: root.minimumText
         alignment: panel.alignment | Qt.AlignLeft
         visible: panel.alignment !== Qt.AlignRight
         offset: panel.offset
         graphicElementName: "minslider"
         onValueChanged: panel.minimumLength = value
-        minimumPosition: offsetHandle.position + PlasmaCore.Units.gridUnit * 3
+        minimumPosition: offsetHandle.position + Kirigami.Units.gridUnit * 3
         maximumPosition: {
-            var dialogRootSize = dialogRoot.vertical ? dialogRoot.height : dialogRoot.width
+            var rootSize = dialogRoot.vertical ? root.height : root.width
             var size = dialogRoot.vertical ? height : width
-            panel.alignment === Qt.AlignCenter ? Math.min(dialogRootSize - size/2, dialogRootSize + offset * 2 - size/2) : dialogRootSize - size/2
+            panel.alignment === Qt.AlignCenter ? Math.min(rootSize - size/2, rootSize + offset * 2 - size/2) : rootSize - size/2
         }
     }
 
     SliderHandle {
-        id: maximumLengthHandle
+        id: rightMaximumLengthHandle
+        anchors {
+            right: !root.isHorizontal ? root.right : undefined
+            bottom: root.isHorizontal ? root.bottom : undefined
+        }
+        description: root.maximumText
         alignment: panel.alignment | Qt.AlignLeft
         visible: panel.alignment !== Qt.AlignRight
         offset: panel.offset
         graphicElementName: "maxslider"
         onValueChanged: panel.maximumLength = value
-        minimumPosition: offsetHandle.position + PlasmaCore.Units.gridUnit * 3
+        minimumPosition: offsetHandle.position + Kirigami.Units.gridUnit * 3
         maximumPosition: {
-            var dialogRootSize = dialogRoot.vertical ? dialogRoot.height : dialogRoot.width
+            var rootSize = dialogRoot.vertical ? root.height : root.width
             var size = dialogRoot.vertical ? height : width
-            panel.alignment === Qt.AlignCenter ? Math.min(dialogRootSize - size/2, dialogRootSize + offset * 2 - size/2) : dialogRootSize - size/2
+            panel.alignment === Qt.AlignCenter ? Math.min(rootSize - size/2, rootSize + offset * 2 - size/2) : rootSize - size/2
         }
     }
+
     SliderHandle {
         id: leftMinimumLengthHandle
-        alignment: panel.alignment | Qt.AlignRight
-        visible: panel.alignment !== Qt.AlignLeft
-        offset: panel.offset
-        graphicElementName: "minslider"
-        onValueChanged: panel.minimumLength = value
-        maximumPosition: offsetHandle.position - PlasmaCore.Units.gridUnit * 3
-        minimumPosition: {
-            var size = dialogRoot.vertical ? height : width
-            panel.alignment === Qt.AlignCenter ? Math.max(-size/2, offset*2 - size/2) : -size/2
+        anchors {
+            left: !root.isHorizontal ? root.left : undefined
+            top: root.isHorizontal ? root.top : undefined
         }
-    }
-    SliderHandle {
-        id: leftMaximumLengthHandle
+        description: root.minimumText
         alignment: panel.alignment | Qt.AlignRight
         visible: panel.alignment !== Qt.AlignLeft
         offset: panel.offset
         graphicElementName: "maxslider"
-        onValueChanged: panel.maximumLength = value
-        maximumPosition: offsetHandle.position - PlasmaCore.Units.gridUnit * 3
+        onValueChanged: panel.minimumLength = value
+        maximumPosition: offsetHandle.position - Kirigami.Units.gridUnit * 3
         minimumPosition: {
             var size = dialogRoot.vertical ? height : width
             panel.alignment === Qt.AlignCenter ? Math.max(-size/2, offset*2 - size/2) : -size/2
         }
     }
 
-    states: [
-        State {
-            name: "TopEdge"
-            PropertyChanges {
-                target: root
-                prefix: "north"
-                height: root.implicitHeight
-            }
-            AnchorChanges {
-                target: root
-                anchors {
-                    top: root.parent.top
-                    bottom: undefined
-                    left: root.parent.left
-                    right: root.parent.right
-                }
-            }
-            AnchorChanges {
-                target: offsetHandle
-                anchors {
-                    top: undefined
-                    bottom: root.bottom
-                    left: undefined
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: minimumLengthHandle
-                anchors {
-                    top: root.top
-                    bottom: undefined
-                    left: undefined
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: maximumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: root.bottom
-                    left: undefined
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: leftMinimumLengthHandle
-                anchors {
-                    top: root.top
-                    bottom: undefined
-                    left: undefined
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: leftMaximumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: root.bottom
-                    left: undefined
-                    right: undefined
-                }
-            }
-        },
-        State {
-            name: "BottomEdge"
-            PropertyChanges {
-                target: root
-                prefix: "south"
-                height: root.implicitHeight
-            }
-            AnchorChanges {
-                target: root
-                anchors {
-                    top: undefined
-                    bottom: root.parent.bottom
-                    left: root.parent.left
-                    right: root.parent.right
-                }
-            }
-            AnchorChanges {
-                target: offsetHandle
-                anchors {
-                    top: root.top
-                    bottom: undefined
-                    left: undefined
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: minimumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: root.bottom
-                    left: undefined
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: maximumLengthHandle
-                anchors {
-                    top: root.top
-                    bottom: undefined
-                    left: undefined
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: leftMinimumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: root.bottom
-                    left: undefined
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: leftMaximumLengthHandle
-                anchors {
-                    top: root.top
-                    bottom: undefined
-                    left: undefined
-                    right: undefined
-                }
-            }
-        },
-        State {
-            name: "LeftEdge"
-            PropertyChanges {
-                target: root
-                prefix: "west"
-                width: root.implicitWidth
-            }
-            AnchorChanges {
-                target: root
-                anchors {
-                    top: root.parent.top
-                    bottom: root.parent.bottom
-                    left: root.parent.left
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: offsetHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: undefined
-                    right: root.right
-                }
-            }
-            AnchorChanges {
-                target: minimumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: root.left
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: maximumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: undefined
-                    right: root.right
-                }
-            }
-            AnchorChanges {
-                target: leftMinimumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: root.left
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: leftMaximumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: undefined
-                    right: root.right
-                }
-            }
-        },
-        State {
-            name: "RightEdge"
-            PropertyChanges {
-                target: root
-                prefix: "east"
-                width: root.implicitWidth
-            }
-            AnchorChanges {
-                target: root
-                anchors {
-                    top: root.parent.top
-                    bottom: root.parent.bottom
-                    left: undefined
-                    right: root.parent.right
-                }
-            }
-            AnchorChanges {
-                target: offsetHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: parent.left
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: minimumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: undefined
-                    right: parent.right
-                }
-            }
-            AnchorChanges {
-                target: maximumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: parent.left
-                    right: undefined
-                }
-            }
-            AnchorChanges {
-                target: leftMinimumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: undefined
-                    right: parent.right
-                }
-            }
-            AnchorChanges {
-                target: leftMaximumLengthHandle
-                anchors {
-                    top: undefined
-                    bottom: undefined
-                    left: parent.left
-                    right: undefined
-                }
-            }
+    SliderHandle {
+        id: leftMaximumLengthHandle
+        anchors {
+            right: !root.isHorizontal ? root.right : undefined
+            bottom: root.isHorizontal ? root.bottom : undefined
         }
-    ]
+        description: root.maximumText
+        alignment: panel.alignment | Qt.AlignRight
+        visible: panel.alignment !== Qt.AlignLeft
+        offset: panel.offset
+        graphicElementName: "minslider"
+        onValueChanged: panel.maximumLength = value
+        maximumPosition: offsetHandle.position - Kirigami.Units.gridUnit * 3
+        minimumPosition: {
+            var size = dialogRoot.vertical ? height : width
+            panel.alignment === Qt.AlignCenter ? Math.max(-size/2, offset*2 - size/2) : -size/2
+        }
+    }
 }

@@ -11,9 +11,11 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 import QtQml.Models 2.15
+import org.kde.plasma.plasmoid 2.0
 
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.kirigami 2.20 as Kirigami
 
 Loader {
     id: toolTipDelegate
@@ -26,7 +28,7 @@ Loader {
     property bool isGroup
 
     property var windows
-    readonly property bool isWin: windows !== undefined
+    readonly property bool isWin: (windows?.length ?? 0) > 0
 
     property variant icon
     property url launcherUrl
@@ -43,31 +45,25 @@ Loader {
     property bool smartLauncherCountVisible
     property int smartLauncherCount
 
-    readonly property bool isVerticalPanel: plasmoid.formFactor === PlasmaCore.Types.Vertical
+    property bool blockingUpdates: false
+
+    readonly property bool isVerticalPanel: Plasmoid.formFactor === PlasmaCore.Types.Vertical
     // This number controls the overall size of the window tooltips
-    readonly property int tooltipInstanceMaximumWidth: PlasmaCore.Units.gridUnit * 16
+    readonly property int tooltipInstanceMaximumWidth: Kirigami.Units.gridUnit * 16
 
     // These properties are required to make tooltip interactive when there is a player but no window is present.
-    readonly property string mprisSourceName: mpris2Source.sourceNameForLauncherUrl(launcherUrl, pidParent)
-    readonly property var playerData: mprisSourceName != "" ? mpris2Source.data[mprisSourceName] : 0
-    readonly property bool hasPlayer: !!mprisSourceName && !!playerData
+    readonly property QtObject playerData: mpris2Source.playerForLauncherUrl(launcherUrl, pidParent)
 
-    Binding on Layout.minimumWidth {
-        value: implicitWidth
-        delayed: true // Prevent early hide of tooltip (BUG439522)
-    }
+    Layout.minimumWidth: implicitWidth
     Layout.maximumWidth: Layout.minimumWidth
 
-    Binding on Layout.minimumHeight {
-        value: implicitHeight
-        delayed: true // Prevent early hide of tooltip (BUG439522)
-    }
+    Layout.minimumHeight: implicitHeight
     Layout.maximumHeight: Layout.minimumHeight
 
     LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    active: rootIndex !== undefined
+    active: !blockingUpdates && rootIndex !== undefined && ((parentTask && parentTask.containsMouse) || Window.visibility !== Window.Hidden)
     asynchronous: true
 
     sourceComponent: isGroup ? groupToolTip : singleTooltip
@@ -84,31 +80,26 @@ Loader {
         id: groupToolTip
 
         PlasmaComponents3.ScrollView {
-            // 2 * PlasmaCore.Units.smallSpacing is for the margin of tooltipDialog
-            implicitWidth: leftPadding + rightPadding + Math.min(Screen.desktopAvailableWidth - 2 * PlasmaCore.Units.smallSpacing, Math.max(delegateModel.estimatedWidth, contentItem.contentItem.childrenRect.width))
-            implicitHeight: bottomPadding + Math.min(Screen.desktopAvailableHeight - 2 * PlasmaCore.Units.smallSpacing, Math.max(delegateModel.estimatedHeight, contentItem.contentItem.childrenRect.height))
-
-            // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-83890
-            PlasmaComponents3.ScrollBar.horizontal.policy: isVerticalPanel ? PlasmaComponents3.ScrollBar.AlwaysOff : PlasmaComponents3.ScrollBar.AsNeeded
-            PlasmaComponents3.ScrollBar.vertical.policy: isVerticalPanel ? PlasmaComponents3.ScrollBar.AsNeeded : PlasmaComponents3.ScrollBar.AlwaysOff
+            // 2 * Kirigami.Units.smallSpacing is for the margin of tooltipDialog
+            implicitWidth: leftPadding + rightPadding + Math.min(Screen.desktopAvailableWidth - 2 * Kirigami.Units.smallSpacing, Math.max(delegateModel.estimatedWidth, contentItem.contentItem.childrenRect.width))
+            implicitHeight: bottomPadding + Math.min(Screen.desktopAvailableHeight - 2 * Kirigami.Units.smallSpacing, Math.max(delegateModel.estimatedHeight, contentItem.contentItem.childrenRect.height))
 
             ListView {
                 id: groupToolTipListView
 
-                // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-102811
-                model: delegateModel.count > 0 ? delegateModel : null
+                model: delegateModel
 
                 orientation: isVerticalPanel ? ListView.Vertical : ListView.Horizontal
                 reuseItems: true
-                spacing: PlasmaCore.Units.largeSpacing
+                spacing: Kirigami.Units.gridUnit
             }
 
             DelegateModel {
                 id: delegateModel
 
                 // On Wayland, a tooltip has a significant resizing process, so estimate the size first.
-                readonly property int estimatedWidth: (toolTipDelegate.isVerticalPanel ? 1 : count) * (toolTipDelegate.tooltipInstanceMaximumWidth + PlasmaCore.Units.largeSpacing) - PlasmaCore.Units.largeSpacing
-                readonly property int estimatedHeight: (toolTipDelegate.isVerticalPanel ? count : 1) * (toolTipDelegate.tooltipInstanceMaximumWidth / 2 + PlasmaCore.Units.largeSpacing) - PlasmaCore.Units.largeSpacing
+                readonly property real estimatedWidth: (toolTipDelegate.isVerticalPanel ? 1 : count) * (toolTipDelegate.tooltipInstanceMaximumWidth + Kirigami.Units.gridUnit) - Kirigami.Units.gridUnit
+                readonly property real estimatedHeight: (toolTipDelegate.isVerticalPanel ? count : 1) * (toolTipDelegate.tooltipInstanceMaximumWidth / 2 + Kirigami.Units.gridUnit) - Kirigami.Units.gridUnit
 
                 model: tasksModel
 

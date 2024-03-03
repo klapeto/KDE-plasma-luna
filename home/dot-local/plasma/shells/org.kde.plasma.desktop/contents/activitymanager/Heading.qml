@@ -8,14 +8,12 @@
 import QtQuick 2.2
 import QtQuick.Layouts 1.2
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 2.0 as PlasmaComponents
+import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.kirigami 2.20 as Kirigami
 
-// for KCMShell
-import org.kde.kquickcontrolsaddons 2.0
-
-import org.kde.activities.settings 0.1
+import org.kde.kcmutils as KCM
+import org.kde.config as KConfig
 
 Item {
     id: root
@@ -52,7 +50,7 @@ Item {
         }
 
         Item {
-            PlasmaExtras.Heading {
+            Kirigami.Heading {
                 id: heading
 
                 anchors.fill: parent
@@ -64,18 +62,13 @@ Item {
                 visible: !root.showingSearch
             }
 
-            PlasmaComponents.TextField {
+            PlasmaExtras.SearchField {
                 id: searchText
 
                 anchors.fill: parent
 
                 focus: true
-                clearButtonShown: true
                 visible: root.showingSearch
-
-                inputMethodHints: Qt.ImhNoPredictiveText
-
-                placeholderText: i18nd("plasma_shell_org.kde.plasma.desktop", "Search…")
 
                 onTextChanged: if (text != "") root.showingSearch = true
             }
@@ -86,7 +79,7 @@ Item {
 
         PlasmaComponents.ToolButton {
             id: searchButton
-            iconSource: "edit-find"
+            icon.name: "edit-find"
 
             // checkable: true
             // onClicked: root.closeRequested()
@@ -96,17 +89,17 @@ Item {
 
         PlasmaComponents.ToolButton {
             id: configureButton
-            iconSource: "configure"
-            visible: KCMShell.authorize("kcm_activities.desktop").length > 0
+            icon.name: "configure"
+            visible: KConfig.KAuthorized.authorizeControlModule("kcm_activities")
             onClicked: {
-                KCMShell.openSystemSettings("kcm_activities");
+                KCM.KCMLauncher.openSystemSettings("kcm_activities");
                 root.closeRequested();
             }
         }
 
         PlasmaComponents.ToolButton {
             id: closeButton
-            iconSource: "window-close"
+            icon.name: "window-close"
             onClicked: root.closeRequested()
         }
 

@@ -1,73 +1,57 @@
 /*
- * Copyright 2015 Martin Klapetek <mklapetek@kde.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License or (at your option) version 3 or any later version
- * accepted by the membership of KDE e.V. (or its successor approved
- * by the membership of KDE e.V.), which shall act as a proxy
- * defined in Section 14 of version 3 of the license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
+    SPDX-FileCopyrightText: 2015 Martin Klapetek <mklapetek@kde.org>
+    SPDX-FileCopyrightText: 2023 ivan tkachenko <me@ratijas.tk>
 
-import QtQuick 2.0
-import QtQuick.Controls 2.4 as QtControls
-import QtQuick.Layouts 1.0 as QtLayouts
-import org.kde.plasma.calendar 2.0 as PlasmaCalendar
-import org.kde.kirigami 2.5 as Kirigami
+    SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
+*/
 
-Item {
+import QtQuick
+import QtQuick.Controls as QQC2
+import QtQuick.Layouts
+import org.kde.plasma.plasmoid 2.0
+import org.kde.plasma.workspace.calendar 2.0 as PlasmaCalendar
+import org.kde.kirigami 2.20 as Kirigami
+import org.kde.kcmutils as KCM
+
+KCM.SimpleKCM {
     id: calendarPage
-    width: childrenRect.width
-    height: childrenRect.height
 
-    signal configurationChanged
+    signal configurationChanged()
 
     property alias cfg_showWeekNumbers: showWeekNumbers.checked
     property int cfg_firstDayOfWeek
 
-    function saveConfig()
-    {
-        plasmoid.configuration.enabledCalendarPlugins = PlasmaCalendar.EventPluginsManager.enabledPlugins;
+    function saveConfig() {
+        Plasmoid.configuration.enabledCalendarPlugins = eventPluginsManager.enabledPlugins;
     }
 
     Kirigami.FormLayout {
-        anchors {
-            left: parent.left
-            right: parent.right
+        PlasmaCalendar.EventPluginsManager {
+            id: eventPluginsManager
+            Component.onCompleted: {
+                populateEnabledPluginsList(Plasmoid.configuration.enabledCalendarPlugins);
+            }
         }
 
-        QtControls.CheckBox {
+        QQC2.CheckBox {
             id: showWeekNumbers
             Kirigami.FormData.label: i18n("General:")
             text: i18n("Show week numbers")
         }
 
-        QtLayouts.RowLayout {
-            QtLayouts.Layout.fillWidth: true
+        RowLayout {
+            Layout.fillWidth: true
             Kirigami.FormData.label: i18n("First day of week:")
 
-            QtControls.ComboBox {
+            QQC2.ComboBox {
                 id: firstDayOfWeekCombo
                 textRole: "text"
-                model: [-1, 0, 1, 5, 6].map((day) => {
-                    return {
-                        day,
-                        text: day === -1 ? i18n("Use Region Defaults") : Qt.locale().dayName(day)
-                    };
-                })
+                model: [-1, 0, 1, 5, 6].map(day => ({
+                    day,
+                    text: day === -1 ? i18n("Use Region Defaults") : Qt.locale().dayName(day),
+                }))
                 onActivated: cfg_firstDayOfWeek = model[index].day
-                currentIndex: model.findIndex((item) => {
-                    return item.day === cfg_firstDayOfWeek;
-                })
+                currentIndex: model.findIndex(item => item.day === cfg_firstDayOfWeek)
             }
         }
 
@@ -75,30 +59,40 @@ Item {
             Kirigami.FormData.isSection: true
         }
 
-        QtLayouts.ColumnLayout {
+        ColumnLayout {
+            id: calendarPluginsLayout
+
             Kirigami.FormData.label: i18n("Available Plugins:")
-            Kirigami.FormData.buddyFor: children[1] // 0 is the Repeater
 
             Repeater {
                 id: calendarPluginsRepeater
-                model: PlasmaCalendar.EventPluginsManager.model
-                delegate: QtLayouts.RowLayout {
-                    QtControls.CheckBox {
-                        text: model.display
-                        checked: model.checked
-                        onClicked: {
-                            //needed for model's setData to be called
-                            model.checked = checked;
-                            calendarPage.configurationChanged();
-                        }
+
+                model: eventPluginsManager.model
+
+                delegate: QQC2.CheckBox {
+                    text: model.display
+                    checked: model.checked
+
+                    Accessible.onPressAction: {
+                        toggle();
+                        clicked();
+                    }
+
+                    onClicked: {
+                        //needed for model's setData to be called
+                        model.checked = checked;
+                        calendarPage.configurationChanged();
+                    }
+                }
+
+                onItemAdded: (index, item) => {
+                    if (index === 0) {
+                        // Set buddy once, for an item in the first row.
+                        // No, it doesn't work as a binding on children list.
+                        calendarPluginsLayout.Kirigami.FormData.buddyFor = item;
                     }
                 }
             }
         }
     }
-
-    Component.onCompleted: {
-        PlasmaCalendar.EventPluginsManager.populateEnabledPluginsList(plasmoid.configuration.enabledCalendarPlugins);
-    }
 }
-

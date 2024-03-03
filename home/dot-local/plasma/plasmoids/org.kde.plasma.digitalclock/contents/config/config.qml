@@ -1,29 +1,16 @@
 /*
- * Copyright 2013  Bhushan Shah <bhush94@gmail.com>
- * Copyright 2015  Martin Klapetek <mklapetek@kde.org>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License or (at your option) version 3 or any later version
- * accepted by the membership of KDE e.V. (or its successor approved
- * by the membership of KDE e.V.), which shall act as a proxy
- * defined in Section 14 of version 3 of the license.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
+    SPDX-FileCopyrightText: 2013 Bhushan Shah <bhush94@gmail.com>
+    SPDX-FileCopyrightText: 2015 Martin Klapetek <mklapetek@kde.org>
+
+    SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
+*/
 
 import QtQuick 2.0
 import QtQml 2.2
 
+import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.configuration 2.0
-import org.kde.plasma.calendar 2.0 as PlasmaCalendar
+import org.kde.plasma.workspace.calendar 2.0 as PlasmaCalendar
 
 ConfigModel {
     id: configModel
@@ -42,18 +29,26 @@ ConfigModel {
         name: i18n("Time Zones")
         icon: "preferences-system-time"
         source: "configTimeZones.qml"
+        includeMargins: false
+    }
+
+    property QtObject eventPluginsManager: PlasmaCalendar.EventPluginsManager {
+        Component.onCompleted: {
+            populateEnabledPluginsList(Plasmoid.configuration.enabledCalendarPlugins);
+        }
     }
 
     property Instantiator __eventPlugins: Instantiator {
-        model: PlasmaCalendar.EventPluginsManager.model
+        model: eventPluginsManager.model
         delegate: ConfigCategory {
             name: model.display
             icon: model.decoration
             source: model.configUi
-            visible: plasmoid.configuration.enabledCalendarPlugins.indexOf(model.pluginPath) > -1
+            includeMargins: false
+            visible: Plasmoid.configuration.enabledCalendarPlugins.indexOf(model.pluginId) > -1
         }
 
-        onObjectAdded: configModel.appendCategory(object)
-        onObjectRemoved: configModel.removeCategory(object)
+        onObjectAdded: (index, object) => configModel.appendCategory(object)
+        onObjectRemoved: (index, object) => configModel.removeCategory(object)
     }
 }

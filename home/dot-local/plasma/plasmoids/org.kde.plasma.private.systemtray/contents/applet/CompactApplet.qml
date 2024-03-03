@@ -1,73 +1,61 @@
 /*
- *   Copyright 2011 Marco Martin <mart@kde.org>
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as
- *   published by the Free Software Foundation; either version 2, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the
- *   Free Software Foundation, Inc.,
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+    SPDX-FileCopyrightText: 2011 Marco Martin <mart@kde.org>
+
+    SPDX-License-Identifier: LGPL-2.0-or-later
+*/
 
 import QtQuick 2.1
 import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
-
+import org.kde.kirigami 2.20 as Kirigami
 
 PlasmaCore.ToolTipArea {
     id: appletRoot
     objectName: "org.kde.desktop-CompactApplet"
     anchors.fill: parent
 
-    mainText: plasmoid.toolTipMainText
-    subText: plasmoid.toolTipSubText
-    location: if (plasmoid.parent && plasmoid.parent.inHiddenLayout && plasmoid.location !== PlasmaCore.Types.LeftEdge) {
-                return PlasmaCore.Types.RightEdge;
-              } else {
-                return plasmoid.location;
-              }
-    active: !plasmoid.expanded
-    textFormat: plasmoid.toolTipTextFormat
-    mainItem: plasmoid.toolTipItem ? plasmoid.toolTipItem : null
+    mainText: plasmoidItem ? plasmoidItem.toolTipMainText : ""
+    subText: plasmoidItem ? plasmoidItem.toolTipSubText : ""
+    location: if (plasmoidItem && plasmoidItem.parent && plasmoidItem.parent.inHiddenLayout && Plasmoid.location !== PlasmaCore.Types.LeftEdge) {
+        return PlasmaCore.Types.RightEdge;
+    } else {
+        return Plasmoid.location;
+    }
+    active: plasmoidItem ? !plasmoidItem.expanded : 0
+    textFormat: plasmoidItem ? plasmoidItem.toolTipTextFormat : 0
+    mainItem: plasmoidItem && plasmoidItem.toolTipItem ? plasmoidItem.toolTipItem : null
 
     property Item fullRepresentation
     property Item compactRepresentation
+    property PlasmoidItem plasmoidItem
 
     Connections {
-        target: plasmoid
+        target: Plasmoid
         function onContextualActionsAboutToShow() {
-            appletRoot.hideToolTip()
+            appletRoot.hideImmediately()
         }
     }
 
     Layout.minimumWidth: {
-        switch (plasmoid.formFactor) {
+        switch (Plasmoid.formFactor) {
         case PlasmaCore.Types.Vertical:
             return 0;
         case PlasmaCore.Types.Horizontal:
             return height;
         default:
-            return units.gridUnit * 3;
+            return Kirigami.Units.gridUnit * 3;
         }
     }
 
     Layout.minimumHeight: {
-        switch (plasmoid.formFactor) {
+        switch (Plasmoid.formFactor) {
         case PlasmaCore.Types.Vertical:
             return width;
         case PlasmaCore.Types.Horizontal:
             return 0;
         default:
-            return units.gridUnit * 3;
+            return Kirigami.Units.gridUnit * 3;
         }
     }
 

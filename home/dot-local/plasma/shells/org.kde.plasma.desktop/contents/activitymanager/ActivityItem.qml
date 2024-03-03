@@ -6,23 +6,18 @@
 
 import QtQuick 2.0
 
-import org.kde.plasma.components 2.0 as PlasmaComponents
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.extras 2.0 as PlasmaExtras
+import org.kde.plasma.components 3.0 as PlasmaComponents
+import org.kde.plasma.activityswitcher as ActivitySwitcher
+import org.kde.kirigami 2.20 as Kirigami
 
-import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddonsComponents
-
-import org.kde.plasma.activityswitcher 1.0 as ActivitySwitcher
-
-import org.kde.activities 0.1 as Activities
-import org.kde.activities.settings 0.1
+import org.kde.kcmutils  // KCMLauncher
 
 import "static.js" as S
 
 Item {
     id: root
 
-    property int innerPadding  : PlasmaCore.Units.largeSpacing
+    property int innerPadding  : Kirigami.Units.gridUnit
 
     property bool current      : false
     property bool selected     : false
@@ -52,8 +47,6 @@ Item {
     signal clicked
 
     width  : 200
-    // height : width * 1 / PlasmaCore.Units.displayAspectRatio
-    // Marco removed displayAspectRatio
     height : width * 9.0 / 16.0
 
     Item {
@@ -107,8 +100,8 @@ Item {
 
             visible:  root.current
 
-            border.width: root.current ? PlasmaCore.Units.smallSpacing : 0
-            border.color: PlasmaCore.Theme.highlightColor
+            border.width: root.current ? Kirigami.Units.smallSpacing : 0
+            border.color: Kirigami.Theme.highlightColor
 
             z: 10
 
@@ -129,8 +122,8 @@ Item {
                 left  : parent.left
                 right : parent.right
 
-                leftMargin : 2 * PlasmaCore.Units.smallSpacing + 2
-                topMargin  : 2 * PlasmaCore.Units.smallSpacing
+                leftMargin : 2 * Kirigami.Units.smallSpacing + 2
+                topMargin  : 2 * Kirigami.Units.smallSpacing
             }
 
             Text {
@@ -164,15 +157,15 @@ Item {
                 }
             }
 
-            PlasmaCore.IconItem {
+            Kirigami.Icon {
                 id: icon
 
-                width   : PlasmaCore.Units.iconSizes.medium
+                width   : Kirigami.Units.iconSizes.medium
                 height  : width
 
                 anchors {
                     right       : parent.right
-                    rightMargin : 2 * PlasmaCore.Units.smallSpacing
+                    rightMargin : 2 * Kirigami.Units.smallSpacing
                 }
             }
         }
@@ -180,19 +173,19 @@ Item {
         Column {
             id: statsBar
 
-            height: childrenRect.height + PlasmaCore.Units.smallSpacing
+            height: childrenRect.height + Kirigami.Units.smallSpacing
 
             anchors {
                 bottom : controlBar.top
                 left   : parent.left
                 right  : parent.right
 
-                leftMargin   : 2 * PlasmaCore.Units.smallSpacing + 2
-                rightMargin  : 2 * PlasmaCore.Units.smallSpacing
-                bottomMargin : PlasmaCore.Units.smallSpacing
+                leftMargin   : 2 * Kirigami.Units.smallSpacing + 2
+                rightMargin  : 2 * Kirigami.Units.smallSpacing
+                bottomMargin : Kirigami.Units.smallSpacing
             }
 
-            PlasmaCore.IconItem {
+            Kirigami.Icon {
                 id      : hasWindowsIndicator
                 source  : "window-duplicate"
                 width   : 16
@@ -229,11 +222,11 @@ Item {
 
             anchors {
                 fill: parent
-                topMargin: icon.height + 3 * PlasmaCore.Units.smallSpacing
+                topMargin: icon.height + 3 * Kirigami.Units.smallSpacing
             }
 
             opacity: .75
-            color: PlasmaCore.Theme.backgroundColor
+            color: Kirigami.Theme.backgroundColor
         }
 
         TaskDropArea {
@@ -246,7 +239,7 @@ Item {
                 bottom: parent.bottom
             }
 
-            topPadding: icon.height + 3 * PlasmaCore.Units.smallSpacing
+            topPadding: icon.height + 3 * Kirigami.Units.smallSpacing
             actionVisible: dropHighlight.visible
 
             actionTitle: i18nd("plasma_shell_org.kde.plasma.desktop", "Move to\nthis activity")
@@ -269,7 +262,7 @@ Item {
         TaskDropArea {
             id: copyDropAction
 
-            topPadding: icon.height + 3 * PlasmaCore.Units.smallSpacing
+            topPadding: icon.height + 3 * Kirigami.Units.smallSpacing
             actionVisible: dropHighlight.visible
 
             anchors {
@@ -302,18 +295,18 @@ Item {
             id: controlBar
 
             height: root.state == "showingControls" ?
-                        (configButton.height + 4 * PlasmaCore.Units.smallSpacing) :
+                        (configButton.height + 4 * Kirigami.Units.smallSpacing) :
                         0
 
             Behavior on height {
                 NumberAnimation {
-                    duration: PlasmaCore.Units.longDuration
+                    duration: Kirigami.Units.longDuration
                 }
             }
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: PlasmaCore.Units.shortDuration
+                    duration: Kirigami.Units.shortDuration
                 }
             }
 
@@ -328,26 +321,28 @@ Item {
             Rectangle {
                 anchors {
                     fill: parent
-                    margins: - 2 * PlasmaCore.Units.smallSpacing
+                    margins: - 2 * Kirigami.Units.smallSpacing
                 }
 
                 opacity: .75
-                color: PlasmaCore.Theme.backgroundColor
+                color: Kirigami.Theme.backgroundColor
             }
 
             PlasmaComponents.Button {
                 id: configButton
 
-                iconSource: "configure"
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Configure")
+                icon.name: "configure"
+                PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
+                PlasmaComponents.ToolTip.visible: hovered
+                PlasmaComponents.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Configure")
 
-                onClicked: ActivitySettings.configureActivity(root.activityId);
+                onClicked: KCMLauncher.openSystemSettings("kcm_activities", root.activityId);
 
                 anchors {
                     left       : parent.left
                     top        : parent.top
-                    leftMargin : 2 * PlasmaCore.Units.smallSpacing + 2
-                    topMargin  : 2 * PlasmaCore.Units.smallSpacing
+                    leftMargin : 2 * Kirigami.Units.smallSpacing + 2
+                    topMargin  : 2 * Kirigami.Units.smallSpacing
                 }
             }
 
@@ -355,16 +350,18 @@ Item {
                 id: stopButton
 
                 visible: stoppable
-                iconSource: "process-stop"
-                tooltip: i18nd("plasma_shell_org.kde.plasma.desktop", "Stop activity")
+                icon.name: "process-stop"
+                PlasmaComponents.ToolTip.delay: Kirigami.Units.toolTipDelay
+                PlasmaComponents.ToolTip.visible: hovered
+                PlasmaComponents.ToolTip.text: i18nd("plasma_shell_org.kde.plasma.desktop", "Stop activity")
 
                 onClicked: ActivitySwitcher.Backend.stopActivity(activityId);
 
                 anchors {
                     right       : parent.right
                     top         : parent.top
-                    rightMargin : 2 * PlasmaCore.Units.smallSpacing + 2
-                    topMargin   : 2 * PlasmaCore.Units.smallSpacing
+                    rightMargin : 2 * Kirigami.Units.smallSpacing + 2
+                    topMargin   : 2 * Kirigami.Units.smallSpacing
                 }
             }
         }
@@ -393,7 +390,7 @@ Item {
         Transition {
             NumberAnimation {
                 properties : "opacity"
-                duration   : PlasmaCore.Units.shortDuration
+                duration   : Kirigami.Units.shortDuration
             }
         }
     ]

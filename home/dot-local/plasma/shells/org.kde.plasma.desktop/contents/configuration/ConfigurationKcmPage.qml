@@ -7,7 +7,6 @@
 */
 
 import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
 import org.kde.kirigami 2.5 as Kirigami
 
 Kirigami.Page {
@@ -24,8 +23,7 @@ Kirigami.Page {
     rightPadding: 0
     bottomPadding: 0
     flickable: internalPage.flickable
-    actions.main: internalPage.actions.main
-    actions.contextualActions: internalPage.contextualActions
+    actions: internalPage.actions
 
     onInternalPageChanged: {
         internalPage.parent = contentItem;
