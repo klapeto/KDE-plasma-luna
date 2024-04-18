@@ -96,7 +96,7 @@ Decoration {
             }
         
             width: titleBarCornerWidth
-            height: titleBarCornerWidth
+            height: borders.top
         
             imagePath: backgroundSvg.imagePath
             prefix: "ActiveBarLeft"
