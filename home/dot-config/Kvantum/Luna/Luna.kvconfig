@@ -75,9 +75,11 @@ min_height=32
 splitter_width=6
 drag_from_buttons=false
 opaque=kaffeine,kmplayer,subtitlecomposer,kdenlive,vlc,smplayer,smplayer2,avidemux,avidemux2_qt4,avidemux3_qt4,avidemux3_qt5,kamoso,QtCreator,VirtualBox,VirtualBoxVM,trojita,dragon,digikam,lyx
+menu_blur_radius=0
+tooltip_blur_radius=0
 
 [GeneralColors]
-window.color=#eeede8
+window.color=#eeead4
 base.color=white
 alt.base.color=#f9f7ea
 button.color=#efebe7

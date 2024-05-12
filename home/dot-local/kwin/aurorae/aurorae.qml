@@ -24,7 +24,7 @@ Decoration {
         maximizedBorders.left   = Qt.binding(function() { return Math.max(0, auroraeTheme.borderLeftMaximized);});
         maximizedBorders.right  = Qt.binding(function() { return Math.max(0, auroraeTheme.borderRightMaximized);});
         maximizedBorders.bottom = Qt.binding(function() { return Math.max(0, auroraeTheme.borderBottomMaximized);});
-        maximizedBorders.top    = Qt.binding(function() { return Math.max(0, auroraeTheme.borderTopMaximized);});
+        maximizedBorders.top    = Qt.binding(function() { return calculateSizeFloor(26)/*Math.max(0, auroraeTheme.borderTopMaximized)*/;});
         padding.left   = auroraeTheme.paddingLeft;
         padding.right  = auroraeTheme.paddingRight;
         padding.bottom = auroraeTheme.paddingBottom;
@@ -45,7 +45,7 @@ Decoration {
         id: titleRect
         x: decoration.client.maximized ? maximizedBorders.left : borders.left
         y: decoration.client.maximized ? 0 : root.borders.bottom
-        width: decoration.client.width//parent.width - x - (decoration.client.maximized ? maximizedBorders.right : borders.right)
+        width: decoration.client.width
         height: decoration.client.maximized ? maximizedBorders.top : borders.top
         Component.onCompleted: {
             decoration.installTitleItem(titleRect);
@@ -75,7 +75,7 @@ Decoration {
            left: root.left
            right: root.right
         }
-        height: titleBarCornerWidth
+        height: decoration.client.maximized ? maximizedBorders.top : borders.top
     }
     
     Item {
@@ -314,7 +314,7 @@ Decoration {
                 rightMargin: 0
                 topMargin: 0
             }
-            
+
             height: borders.top
             
             imagePath: backgroundSvg.imagePath
@@ -623,9 +623,9 @@ Decoration {
             left: root.left
             top: root.top
             bottom: titleBarPlaceholder.bottom
-            topMargin: decoration.client.maximized ? calculateSize(6) : calculateSize(8)
+            topMargin: decoration.client.maximized ? calculateSize(4) : calculateSize(8)
             leftMargin: decoration.client.maximized ? calculateSize(2) : calculateSize(6)
-            bottomMargin: decoration.client.maximized ? calculateSize(8) : calculateSize(6)
+            bottomMargin: calculateSize(5)//calculateSize(6)
         }
     }
     AuroraeButtonGroup {
@@ -637,9 +637,9 @@ Decoration {
             right: root.right
             top: root.top
             bottom: titleBarPlaceholder.bottom
-            rightMargin: decoration.client.maximized ? calculateSize(2) : calculateSize(6)
-            topMargin: decoration.client.maximized ? calculateSize(4) : calculateSize(5)
-            bottomMargin: decoration.client.maximized ? calculateSize(4) : calculateSize(3)
+            rightMargin: decoration.client.maximized ? calculateSize(2) : calculateSize(5)
+            topMargin: decoration.client.maximized ? calculateSize(2) : calculateSize(5)
+            bottomMargin: calculateSize(3)
         }
     }
     Text {
@@ -651,21 +651,16 @@ Decoration {
         elide: Text.ElideRight
         color: decoration.client.active ? auroraeTheme.activeTextColor : auroraeTheme.inactiveTextColor
         font.family: "Trebuchet MS"
-        font.pointSize: 10.2 //+ ((1 - 1.0) / 10.0) //magic calculation to make size consistent across scallings
+        font.pointSize: 9.5
         font.weight: Font.Bold
         renderType: Text.NativeRendering
-        //style: decoration.client.active ? Text.Raised : Text.Normal;
         font.hintingPreference: Font.PreferFullHinting
         //Rectangle {anchors.fill:parent}
         lineHeight: 1.0
         anchors {
             left: leftButtonGroup.right
             right: rightButtonGroup.left
-            //verticalCenter: titleBarPlaceholder.verticalCenter
             bottom: leftButtonGroup.bottom
-            bottomMargin: calculateSize(-2.0)
-            //bottomMargin: calculateSize(5)
-            //top: leftButtonGroup.top
             top: leftButtonGroup.top
             leftMargin: calculateSize(4)
             rightMargin: auroraeTheme.titleBorderRight

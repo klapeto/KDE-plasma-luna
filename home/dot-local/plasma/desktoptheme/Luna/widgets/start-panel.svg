@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    sodipodi:docname="start-panel.svg"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
    id="svg8"
    version="1.1"
    viewBox="0 0 108 108"
@@ -86,9 +86,9 @@
   <sodipodi:namedview
      inkscape:window-maximized="1"
      inkscape:window-y="0"
-     inkscape:window-x="0"
-     inkscape:window-height="2043"
-     inkscape:window-width="3840"
+     inkscape:window-x="1920"
+     inkscape:window-height="1024"
+     inkscape:window-width="1920"
      inkscape:document-rotation="0"
      fit-margin-bottom="30"
      fit-margin-right="30"
@@ -100,18 +100,25 @@
      showgrid="true"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="56.063466"
-     inkscape:cx="23.296643"
-     inkscape:zoom="15.839192"
+     inkscape:cy="63.692389"
+     inkscape:cx="-40.785477"
+     inkscape:zoom="1.7898528"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
      bordercolor="#666666"
      pagecolor="#ffffff"
-     id="base">
+     id="base"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        id="grid1763"
-       type="xygrid" />
+       type="xygrid"
+       originx="0"
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px"
+       visible="true" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">

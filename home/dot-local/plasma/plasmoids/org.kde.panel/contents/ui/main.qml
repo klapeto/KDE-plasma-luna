@@ -222,8 +222,8 @@ ContainmentItem {
                     return ((layout[side] || returnAllMargins) && !fillArea) ? Math.round(Math.min(dropArea.spacingAtMinSize, (inThickArea ? thickPanelSvg.fixedMargins[side] : panelSvg.fixedMargins[side]))) : 0;
                 }
 
-                Layout.topMargin: 0//getMargins('top')
-                Layout.bottomMargin: 0//getMargins('bottom')
+                Layout.topMargin: getMargins('top')
+                Layout.bottomMargin: getMargins('bottom')
                 Layout.leftMargin: getMargins('left')
                 Layout.rightMargin: getMargins('right')
 
