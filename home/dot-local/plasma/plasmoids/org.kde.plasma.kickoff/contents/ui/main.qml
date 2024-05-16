@@ -237,12 +237,43 @@ PlasmoidItem {
 
         hoverEnabled: true
 
+        property bool hovered: false
+
         property bool wasExpanded
 
         Accessible.name: Plasmoid.title
 
-        onPressed: wasExpanded = kickoff.expanded
+        onPressed: {
+            bgFrame.basePrefix = "Pressed";
+            wasExpanded = kickoff.expanded;
+        }
         onClicked: kickoff.expanded = !wasExpanded
+
+        onContainsMouseChanged: {
+            if (containsMouse) {
+                hovered = true;
+                if (!kickoff.expanded) {
+                    bgFrame.basePrefix = "Hover"
+                }
+            } else {
+                hovered = false;
+                if (!kickoff.expanded) {
+                    bgFrame.basePrefix = "Normal"
+                }
+            }
+        }
+
+        Connections {
+            target: kickoff
+
+            function onexpandedChanged() {
+                if (kickoff.expanded) {
+                    bgFrame.basePrefix = "Pressed"
+                } else {
+                    bgFrame.basePrefix = hovered ? "Hover" : "Normal"
+                }
+            }
+        }
 
         DropArea {
             id: compactDragArea
