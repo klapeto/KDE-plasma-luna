@@ -232,7 +232,7 @@ PlasmoidItem {
         //Layout.preferredWidth: sizing.preferredWidth
         //Layout.preferredHeight: sizing.preferredHeight
         //width: Math.round(height * 4)
-        Layout.minimumWidth: Math.round(height * 4)
+        Layout.minimumWidth: Math.round(height * 3.86)
         //Layout.minimumHeight: Layout.preferredHeight
 
         hoverEnabled: true
@@ -337,7 +337,7 @@ PlasmoidItem {
                     top: parent.top
                     bottom: parent.bottom
                     topMargin: 1
-                    bottomMargin: 1
+                    bottomMargin: 2
                     leftMargin: 6
                 }
                 text: Plasmoid.configuration.menuLabel
@@ -367,8 +367,8 @@ PlasmoidItem {
                 anchors.fill: labelTextField
                 horizontalOffset: 1
                 verticalOffset: 1
-                radius: 3
-                samples: 9
+                radius: 4
+                samples: 7
                 color: "#ff000000"
                 source: labelTextField
             }

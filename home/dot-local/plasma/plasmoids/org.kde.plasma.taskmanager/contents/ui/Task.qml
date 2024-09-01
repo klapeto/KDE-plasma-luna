@@ -569,8 +569,10 @@ PlasmaCore.ToolTipArea {
         }
 
         minimumPointSize: 8
-        font.pointSize: 8
+        font.pointSize: 9
         font.family: "Tahoma"
+        //font.weight: Font.Bold
+        //font.letterSpacing: 0.2
         color: "white"
         text: model.display
         font.hintingPreference: Font.PreferDefaultHinting

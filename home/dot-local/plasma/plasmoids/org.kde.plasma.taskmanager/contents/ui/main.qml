@@ -224,9 +224,9 @@ PlasmoidItem {
             tasks.addLauncher(url);
         }
 
-        onWindowViewAvailableChanged: TaskTools.windowViewAvailable = windowViewAvailable;
+        //onWindowViewAvailableChanged: TaskTools.windowViewAvailable = windowViewAvailable;
 
-        Component.onCompleted: TaskTools.windowViewAvailable = windowViewAvailable;
+        //Component.onCompleted: TaskTools.windowViewAvailable = windowViewAvailable;
     }
 
     property Component taskInitComponent: Component {

@@ -23,7 +23,7 @@ scroll_width=17
 menubar_mouse_tracking=true
 toolbutton_style=0
 click_behavior=0
-vertical_spin_indicators=false
+vertical_spin_indicators=true
 translucent_windows=false
 blurring=false
 popup_blurring=false
@@ -213,7 +213,7 @@ frame.right=4
 
 [IndicatorSpinBox]
 indicator.element=spind
-indicator.size=9
+indicator.size=16
 frame.top=4
 frame.bottom=4
 frame.left=4

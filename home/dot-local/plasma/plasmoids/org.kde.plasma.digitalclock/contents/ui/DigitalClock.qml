@@ -151,7 +151,7 @@ MouseArea {
 
                 height: timeLabel.height + (main.showDate || timezoneLabel.visible ? 0.8 * timeLabel.height : 0)
                 width: Math.max(timeLabel.width + (main.showDate ? timezoneLabel.paintedWidth : 0),
-                                timezoneLabel.paintedWidth, dateLabel.paintedWidth) + Kirigami.Units.largeSpacing
+                                timezoneLabel.paintedWidth, dateLabel.paintedWidth) + Kirigami.Units.largeSpacing * 3
             }
 
             PropertyChanges {
@@ -596,8 +596,9 @@ MouseArea {
         font.family: (Plasmoid.configuration.autoFontAndSize || Plasmoid.configuration.fontFamily.length === 0) ? Kirigami.Theme.defaultFont.family : Plasmoid.configuration.fontFamily
         font.weight: Plasmoid.configuration.autoFontAndSize ? Kirigami.Theme.defaultFont.weight : Plasmoid.configuration.fontWeight
         font.italic: Plasmoid.configuration.autoFontAndSize ? Kirigami.Theme.defaultFont.italic : Plasmoid.configuration.italicText
-        font.pixelSize: Plasmoid.configuration.autoFontAndSize ? 3 * Kirigami.Theme.defaultFont.pixelSize : pointToPixel(Plasmoid.configuration.fontSize)
-        font.pointSize: -1
+        //font.pixelSize: Plasmoid.configuration.autoFontAndSize ? 3 * Kirigami.Theme.defaultFont.pixelSize : pointToPixel(Plasmoid.configuration.fontSize)
+        //font.pointSize: -1
+        font.pointSize: 9
         fontSizeMode: Text.VerticalFit
 
         visible: false

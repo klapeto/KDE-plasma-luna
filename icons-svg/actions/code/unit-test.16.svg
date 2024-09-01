@@ -3,13 +3,13 @@
    inkscape:export-ydpi="96"
    inkscape:export-xdpi="96"
    inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/code-variable.png"
-   width="48"
-   height="48"
-   viewBox="0 0 48 48"
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
    version="1.1"
    id="svg8"
    inkscape:version="1.3.2 (1:1.3.2+202311252150+091e20ef0f)"
-   sodipodi:docname="unit-test.svg"
+   sodipodi:docname="unit-test.16.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -32,13 +32,13 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="19.676904"
-     inkscape:cx="10.926516"
-     inkscape:cy="32.576264"
+     inkscape:zoom="53.3427"
+     inkscape:cx="0.41242757"
+     inkscape:cy="9.3546071"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
-     showgrid="false"
+     showgrid="true"
      units="px"
      inkscape:window-width="3840"
      inkscape:window-height="2059"
@@ -64,7 +64,7 @@
        spacingy="1"
        spacingx="1"
        units="px"
-       visible="false" />
+       visible="true" />
     <inkscape:grid
        type="xygrid"
        id="grid1765"
@@ -73,7 +73,7 @@
        originx="0"
        originy="0"
        units="px"
-       visible="false" />
+       visible="true" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -93,23 +93,23 @@
      transform="translate(-12.567709)">
     <g
        id="g1867"
-       transform="matrix(-0.20244395,0,0,0.20244395,77.737439,-3.3827167)"
-       style="stroke-width:4.93963885;stroke-dasharray:none">
+       transform="matrix(-0.07290288,0,0,0.07290288,35.393501,-2.5908886)"
+       style="stroke-width:13.7169;stroke-dasharray:none">
       <path
          sodipodi:nodetypes="ccccc"
          id="path1781"
-         d="m 140.91072,92.891924 53.92407,-53.924073 70.98169,71.531939 -53.37383,48.97186 z"
-         style="fill:#99ff66;fill-opacity:1;stroke:#66cc33;stroke-width:4.93963885;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         d="m 141.63764,86.977204 54.86752,-41.150637 68.58439,61.725953 -52.6469,51.91913 z"
+         style="fill:#99ff66;fill-opacity:1;stroke:#66cc33;stroke-width:13.7169;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="ccccc"
          id="path1779"
-         d="M 212.44265,159.47165 140.91072,92.891924 v 70.431446 l 71.53193,68.23046 z"
-         style="fill:#006600;fill-opacity:1;stroke:#2a4b2a;stroke-width:4.93963885;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         d="m 210.22204,148.70316 -68.5844,-61.725956 v 75.442836 l 68.5844,61.72596 z"
+         style="fill:#006600;fill-opacity:1;stroke:#2a4b2a;stroke-width:13.7169;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          sodipodi:nodetypes="ccccc"
          id="path1777"
-         d="m 212.44265,159.47165 53.37383,-48.97186 v 71.53193 l -53.37383,49.52211 z"
-         style="fill:#66cc33;fill-opacity:1;stroke:#009900;stroke-width:4.93963885;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         d="m 210.22204,148.70316 54.86751,-41.15064 v 75.44284 L 210.22204,224.146 Z"
+         style="fill:#66cc33;fill-opacity:1;stroke:#009900;stroke-width:13.7169;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
   </g>
 </svg>

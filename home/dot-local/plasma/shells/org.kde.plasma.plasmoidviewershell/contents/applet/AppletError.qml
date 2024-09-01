@@ -6,19 +6,19 @@
 
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.plasmoid 2.0
+import org.kde.kirigami 2.20 as Kirigami
 import org.kde.plasma.components 3.0 as PlasmaComponents
-import org.kde.plasma.extras 2.0 as PlasmaExtras
 
-Item {
+PlasmoidItem {
     id: root
-    Layout.minimumWidth: PlasmaCore.Units.gridUnit * 15
-    Layout.minimumHeight: PlasmaCore.Units.gridUnit * 15
-    Layout.maximumWidth: PlasmaCore.Units.gridUnit * 15
-    Layout.maximumHeight: PlasmaCore.Units.gridUnit * 15
+    Layout.minimumWidth: Kirigami.Units.gridUnit * 15
+    Layout.minimumHeight: Kirigami.Units.gridUnit * 15
+    Layout.maximumWidth: Kirigami.Units.gridUnit * 15
+    Layout.maximumHeight: Kirigami.Units.gridUnit * 15
 
     property var reason
-    property var errorInformation: {}
+    property var errorInformation
 
     clip: true
 
@@ -29,14 +29,14 @@ Item {
             right: parent.right
         }
 
-        PlasmaCore.IconItem {
-            Layout.minimumWidth: PlasmaCore.Units.iconSizes.huge
-            Layout.minimumHeight: PlasmaCore.Units.iconSizes.huge
+        Kirigami.Icon {
+            Layout.minimumWidth: Kirigami.Units.iconSizes.huge
+            Layout.minimumHeight: Kirigami.Units.iconSizes.huge
             source: "dialog-error"
             Layout.alignment: Qt.AlignHCenter
         }
 
-        PlasmaExtras.Heading {
+        Kirigami.Heading {
             text: i18nd("plasma_shell_org.kde.plasma.desktop", "Sorry! There was an error loading %1.", root.errorInformation.appletName)
             level: 2
             wrapMode: Text.Wrap
@@ -58,6 +58,7 @@ Item {
 
             text: root.errorInformation.errors.join("\n\n")
             readOnly: true
+            wrapMode: TextEdit.Wrap
             Layout.fillHeight: true
             Layout.fillWidth: true
 

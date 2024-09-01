@@ -9,9 +9,8 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.3 as QtControls
 import QtQuick.Window 2.2
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.kirigami 2.20 as Kirigami
 
-import org.kde.kquickcontrolsaddons 2.0
 import org.kde.kirigami 2.5 as Kirigami
 
 QtControls.ItemDelegate {
@@ -44,29 +43,29 @@ QtControls.ItemDelegate {
 //BEGIN UI components
     contentItem: ColumnLayout {
         id: delegateContents
-        spacing: PlasmaCore.Units.smallSpacing
+        spacing: Kirigami.Units.smallSpacing
 
-        QIconItem {
-            id: iconItem
+        Kirigami.Icon {
             Layout.alignment: Qt.AlignHCenter
-            width: PlasmaCore.Units.iconSizes.medium
-            height: width
-            icon: model.icon
-            state: highlighted && Window.active ? QIconItem.SelectedState : QIconItem.DefaultState
+            implicitWidth: Kirigami.Units.iconSizes.medium
+            implicitHeight: Kirigami.Units.iconSizes.medium
+            source: model.icon
+            selected: Window.active && (delegate.highlighted || delegate.pressed)
         }
+
 
         QtControls.Label {
             id: nameLabel
             Layout.fillWidth: true
-            Layout.leftMargin: PlasmaCore.Units.smallSpacing
-            Layout.rightMargin: PlasmaCore.Units.smallSpacing
+            Layout.leftMargin: Kirigami.Units.smallSpacing
+            Layout.rightMargin: Kirigami.Units.smallSpacing
             text: model.name
             wrapMode: Text.Wrap
             horizontalAlignment: Text.AlignHCenter
             color: highlighted && Window.active ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
             Behavior on color {
                 ColorAnimation {
-                    duration: PlasmaCore.Units.longDuration
+                    duration: Kirigami.Units.longDuration
                     easing.type: Easing.InOutQuad
                 }
             }
