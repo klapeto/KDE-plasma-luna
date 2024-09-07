@@ -32,10 +32,10 @@ Decoration {
         root.animate = true;
     }
     function calculateSize(pixels) {
-        return Math.round((Kirigami.Units.gridUnit / 16.0) * pixels);
+        return Math.round((Kirigami.Units.gridUnit / 10.0) * pixels);
     }
     function calculateSizeFloor(pixels) {
-        return Math.floor((Kirigami.Units.gridUnit / 16.0) * pixels);
+        return Math.floor((Kirigami.Units.gridUnit / 10.0) * pixels);
     }
     DecorationOptions {
         id: options
