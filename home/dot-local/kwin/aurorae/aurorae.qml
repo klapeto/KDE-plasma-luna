@@ -8,6 +8,7 @@ import org.kde.kwin.decoration
 import org.kde.plasma.core as PlasmaCore
 import org.kde.ksvg 1.0 as KSvg
 import org.kde.kirigami as Kirigami
+import org.kde.kwindowsystem 1.0
 
 import Qt5Compat.GraphicalEffects
 //import QtGraphicalEffects 1.15
@@ -32,10 +33,10 @@ Decoration {
         root.animate = true;
     }
     function calculateSize(pixels) {
-        return Math.round((Kirigami.Units.gridUnit / 10.0) * pixels);
+        return KWindowSystem.isPlatformWayland ? pixels : Math.round((Kirigami.Units.gridUnit / 10.0) * pixels);
     }
     function calculateSizeFloor(pixels) {
-        return Math.floor((Kirigami.Units.gridUnit / 10.0) * pixels);
+        return KWindowSystem.isPlatformWayland ? pixels : Math.floor((Kirigami.Units.gridUnit / 10.0) * pixels);
     }
     DecorationOptions {
         id: options
