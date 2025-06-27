@@ -5,7 +5,7 @@
             {
                 "Email": "mart@kde.org",
                 "Name": "Marco Martin",
-                "Name[ar]": "Marco Martin",
+                "Name[ar]": "ماركو مارتن",
                 "Name[ast]": "Marco Martin",
                 "Name[az]": "Marco Martin",
                 "Name[be]": "Marco Martin",
@@ -15,6 +15,7 @@
                 "Name[cs]": "Marco Martin",
                 "Name[da]": "Marco Martin",
                 "Name[de]": "Marco Martin",
+                "Name[el]": "Marco Martin",
                 "Name[en_GB]": "Marco Martin",
                 "Name[eo]": "Marco Martin",
                 "Name[es]": "Marco Martin",
@@ -34,6 +35,8 @@
                 "Name[ka]": "მაკრო მარტინი",
                 "Name[ko]": "Marco Martin",
                 "Name[lt]": "Marco Martin",
+                "Name[lv]": "Marco Martin",
+                "Name[nb]": "Marco Martin",
                 "Name[nl]": "Marco Martin",
                 "Name[nn]": "Marco Martin",
                 "Name[pa]": "ਮਾਰਕੋ ਮਾਰਟਿਨ",
@@ -55,7 +58,7 @@
                 "Name[zh_TW]": "Marco Martin"
             }
         ],
-        "BugReportUrl": "https://bugs.kde.org/enter_bug.cgi?product=plasmashell&component=System%20Tray",
+        "BugReportUrl": "https://bugs.kde.org/enter_bug.cgi?product=plasmashell&component=System%20Tray%20widget",
         "Category": "Windows and Tasks",
         "Description": "Access hidden applications minimized in the system tray",
         "Description[ar]": "الوصول إلى التطبيقات المصغّرة في صينية النظام",
@@ -67,6 +70,7 @@
         "Description[cs]": "Přístup ke skrytým aplikacím, které jsou minimalizované v systémovém panelu",
         "Description[da]": "Tilgå skjulte programmer der er minimeret i statusområdet",
         "Description[de]": "Ermöglicht den Zugriff auf Programme, die im Systemabschnitt der Kontrollleiste laufen",
+        "Description[el]": "Πρόσβαση σε κρυφές εφαρμογές που έχουν ελαχιστοποιηθεί στο πλαίσιο συστήματος",
         "Description[en_GB]": "Access hidden applications minimised in the system tray",
         "Description[eo]": "Aliri kaŝitajn aplikaĵojn minimumigitaj en la taskopleto",
         "Description[es]": "Acceder a aplicaciones ocultas minimizadas en la bandeja del sistema",
@@ -86,6 +90,8 @@
         "Description[ka]": "წვდომა სისტემის კუთხეში ჩაკეცილ აპლიკაციებთან",
         "Description[ko]": "시스템 트레이에 숨어 있는 앱에 접근합니다",
         "Description[lt]": "Gauti prieigą prie į sistemos dėklą suskleistų paslėptų programų",
+        "Description[lv]": "Piekļūst paslēptām programmām, kas ir minimizētas sistēmas ikonu joslā",
+        "Description[nb]": "Tilgang til program minimerte i systemkurven",
         "Description[nl]": "Biedt toegang tot programma's die in het systeemvak draaien",
         "Description[nn]": "Tilgang til program minimerte i systemtrauet",
         "Description[pa]": "ਸਿਸਟਮ ਟਰੇ ਵਿੱਚ ਲੁਕਵੀਆਂ ਘੱਟੋ-ਘੱਟ ਕੀਤੀਆਂ ਆਈਟਮਾਂ ਲਈ ਅਸੈੱਸ",
@@ -189,10 +195,11 @@
         "Name[sr@latin]": "sistemska kaseta",
         "Name[sr]": "системска касета",
         "Name[sv]": "Systembricka",
-        "Name[ta]": "சாதனத் தட்டு",
+        "Name[ta]": "கணினித் தட்டு",
         "Name[te]": "వ్యవస్థ ట్రె",
         "Name[tg]": "Лавҳачаи низомӣ",
         "Name[th]": "ถาดระบบ",
+        "Name[tok]": "poki pi sitelen lili",
         "Name[tr]": "Sistem Tepsisi",
         "Name[ug]": "سىستېما قوندىقى",
         "Name[uk]": "Системний лоток",
@@ -204,5 +211,6 @@
         "Name[zh_TW]": "系統匣",
         "Website": "https://www.kde.org/plasma-desktop"
     },
-    "X-Plasma-API-Minimum-Version": "6.0"
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-Plasma-ContainmentType": "CustomEmbedded"
 }
