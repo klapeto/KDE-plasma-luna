@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    version="1.1"
-   viewBox="0 0 256 256"
+   viewBox="0 0 48 48"
    id="svg38"
-   sodipodi:docname="setp-over.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="step-over.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   width="48"
+   height="48"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -18,16 +20,22 @@
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
-     showgrid="false"
-     inkscape:zoom="2.1185582"
-     inkscape:cx="47.437922"
-     inkscape:cy="421.27707"
+     showgrid="true"
+     inkscape:zoom="16.948466"
+     inkscape:cx="32.510318"
+     inkscape:cy="40.21013"
      inkscape:window-width="3840"
-     inkscape:window-height="2043"
-     inkscape:window-x="3840"
+     inkscape:window-height="2061"
+     inkscape:window-x="1280"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg38" />
+     inkscape:current-layer="svg38"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid312" />
+  </sodipodi:namedview>
   <defs
      id="defs8">
     <linearGradient
@@ -43,64 +51,105 @@
     </linearGradient>
     <linearGradient
        id="linearGradient40993"
-       x1="-25.432"
-       x2="-20.932"
-       y1="-9.1114"
-       y2="-5.6114"
+       x1="-25.431999"
+       x2="-20.931999"
+       y1="-9.1113997"
+       y2="-5.6114001"
        gradientUnits="userSpaceOnUse"
        xlink:href="#linearGradient40991" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient40991"
+       id="linearGradient250"
+       gradientUnits="userSpaceOnUse"
+       x1="-25.431999"
+       y1="-9.1113997"
+       x2="-20.931999"
+       y2="-5.6114001" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient40991"
+       id="linearGradient252"
+       gradientUnits="userSpaceOnUse"
+       x1="-25.431999"
+       y1="-9.1113997"
+       x2="-20.931999"
+       y2="-5.6114001" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient40991"
+       id="linearGradient254"
+       gradientUnits="userSpaceOnUse"
+       x1="-25.431999"
+       y1="-9.1113997"
+       x2="-20.931999"
+       y2="-5.6114001" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient40991"
+       id="linearGradient256"
+       gradientUnits="userSpaceOnUse"
+       x1="-25.431999"
+       y1="-9.1113997"
+       x2="-20.931999"
+       y2="-5.6114001" />
   </defs>
   <g
-     transform="translate(-12.568)"
+     transform="matrix(0.18749994,0,0,0.18749994,-5.5415554,-0.23925382)"
      id="g36">
     <g
-       transform="translate(0 25.111)"
+       transform="translate(0,25.111)"
        id="g34">
       <g
-         transform="matrix(15.829 0 0 15.829 449.53 183.41)"
+         transform="matrix(15.829,0,0,15.829,449.53,183.41)"
          fill="none"
          stroke-linecap="round"
          id="g32">
         <g
-           stroke="#000"
+           stroke="#000000"
            stroke-width="1px"
            id="g20">
           <path
-             d="m-11.932-9.6114h-7"
+             d="m -11.932,-9.6114 h -7"
              id="path10" />
           <path
-             d="m-11.932-1.6114h-7"
+             d="m -11.932,-1.6114 h -7"
              id="path12" />
           <path
-             d="m-11.932-7.6114h-4"
+             d="m -11.932,-7.6114 h -4"
              id="path14" />
           <path
-             d="m-11.932-5.6114h-4"
+             d="m -11.932,-5.6114 h -4"
              id="path16" />
           <path
-             d="m-11.932-3.6114h-4"
+             d="m -11.932,-3.6114 h -4"
              id="path18" />
         </g>
         <g
            stroke="url(#linearGradient40993)"
            stroke-width="1.2"
-           id="g30">
+           id="g30"
+           style="stroke:url(#linearGradient40993)">
           <path
-             d="m -18.932,0.39544048 h -5 c -1.108,0 -2,-0.892 -2,-1.99999998 l 0,-8.0068405 c 0,-1.108 0.892,-2 2,-2 h 5"
+             d="m -18.932,0.39544048 h -5 c -1.108,0 -2,-0.892 -2,-1.99999998 V -9.6114 c 0,-1.108 0.892,-2 2,-2 h 5"
              stop-color="#000000"
              stroke-linejoin="round"
              id="path22"
-             sodipodi:nodetypes="cssssc" />
+             sodipodi:nodetypes="cssssc"
+             style="stroke:url(#linearGradient250)" />
           <g
-             id="g28">
+             id="g28"
+             style="stroke:url(#linearGradient256)">
             <path
                d="m -18.932,0.39544048 -3.5,-1.99999998"
                id="path24"
-               sodipodi:nodetypes="cc" />
+               sodipodi:nodetypes="cc"
+               style="stroke:url(#linearGradient252)" />
             <path
                d="m -18.932,0.39544048 -3.5,2.00000002"
                id="path26"
-               sodipodi:nodetypes="cc" />
+               sodipodi:nodetypes="cc"
+               style="stroke:url(#linearGradient254)" />
           </g>
         </g>
       </g>
