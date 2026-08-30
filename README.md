@@ -102,6 +102,7 @@ If anything goes wrong (like crashes) or you simply don't want it anymore do the
   - Size: 16px
 
 - Internal shadows are +0.75 +0.75 23% blur
+- For SVG (48px): +1x +0.75y 20% blur 83% opacity
 # Known Issues
  - Emojis are removed from window titles. It causes crashes to Kwin. This a known QT [bug](https://bugreports.qt.io/browse/QTBUG-82311)
 

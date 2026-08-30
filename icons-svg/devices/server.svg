@@ -4,12 +4,12 @@
    inkscape:export-xdpi="96"
    inkscape:export-filename="/media/klapeto/Αρχεία/WindowsXP Theme/Vectors/RASTER/network-server.png"
    sodipodi:docname="server.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    id="svg8"
    version="1.1"
-   viewBox="0 0 256 256"
-   height="256"
-   width="256"
+   viewBox="0 0 48 48"
+   height="48"
+   width="48"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -101,19 +101,6 @@
          stop-color="#666699"
          offset="1.0" />
     </linearGradient>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter868"
-       x="-0.05035466"
-       y="-0.045855717"
-       width="1.1007093"
-       height="1.0917114">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="4.6810355"
-         id="feGaussianBlur870" />
-    </filter>
   </defs>
   <sodipodi:namedview
      inkscape:snap-global="true"
@@ -126,24 +113,26 @@
      inkscape:snap-bbox="true"
      inkscape:window-maximized="1"
      inkscape:window-y="0"
-     inkscape:window-x="3840"
-     inkscape:window-height="2045"
+     inkscape:window-x="1280"
+     inkscape:window-height="2061"
      inkscape:window-width="3840"
      units="px"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="106.24612"
-     inkscape:cx="-90.6099"
-     inkscape:zoom="2.4942087"
+     inkscape:cy="28.641348"
+     inkscape:cx="17.816272"
+     inkscape:zoom="19.95367"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
      bordercolor="#666666"
      pagecolor="#ffffff"
      id="base"
-     inkscape:pagecheckerboard="0">
+     inkscape:pagecheckerboard="0"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        originy="0"
        originx="0"
@@ -174,17 +163,13 @@
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
     <path
-       d="M 116.02529,4 32.591709,19.312274 32.968431,131.97559 v 6.03735 l -0.376722,39.25807 141.567281,71.72538 81.53988,-41.52843 V 28.159593 L 140.56157,8.1538616 134.90092,7.4004654 Z"
-       style="mix-blend-mode:normal;fill:#212121;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:7.54996;filter:url(#filter868)"
-       id="path861" />
-    <path
-       style="fill:#8b8bbc;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 109.9731,4.060264 32.591709,19.312274 33.35686,169.7672 169.65747,238.65472 247.15776,201.73042 246.6564,29.173843 Z"
+       style="fill:#8b8bbc;fill-opacity:1;stroke:none;stroke-width:0.187758px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 30.953443,0 16.424477,2.863685 16.56814,31.112781 42.159652,44.046955 56.710942,37.114128 56.616807,4.7152721 Z"
        id="path1038"
        sodipodi:nodetypes="ccccccc" />
     <g
        id="g876"
-       transform="matrix(5.2126891,0,0,5.2126891,-51.467848,0.05613033)">
+       transform="matrix(0.97872341,0,0,0.97872341,0.77803615,-4.7019448e-8)">
       <path
          d="M 42.325029,10.500771 16.139584,3.9687501 31.220836,1.3229167 56.753125,6.0854168 42.025167,11.154566"
          id="path14"
